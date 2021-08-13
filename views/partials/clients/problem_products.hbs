@@ -1,0 +1,158 @@
+    <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper">
+            <!-- Content Header (Page header) -->
+            <div class="content-header">
+                <div class="container-fluid">
+                    <div class="row mb-2">
+                        <div class="col-sm">
+                            <nav aria-label="breadcrumb float-sm-left">
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item"><a href="#">Профиль клиента</a></li>
+                                    <li class="breadcrumb-item"><a href="#">Детали сделки</a></li>
+                                    <li class="breadcrumb-item active" aria-current="page">Проблемная сделка</li>
+                                </ol>
+                            </nav>
+                        </div> 
+                    </div> 
+                </div> 
+            </div>
+            <!-- /.content-header -->
+
+            <!-- Main content -->
+            <section class="content">
+                <div class="row">
+
+
+                    <div class="col-md-12 ">
+                        <div class="card card-primary">
+                            
+                            <div class="card-header">
+                                <h3 class="card-title"> Решенные проблемные товары </h3>
+                            </div>
+                                
+                            <div class="card-body">
+
+                                <div class="row">
+
+                                    <div class="table-responsive">
+                                                
+                                        <table id="problemTable"  class="table table-bordered table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th>ID </th>
+                                                    <th>ID Проданного продукта</th>
+                                                    <th>Проблемная общая цена</th>
+                                                    <th>Проблемное количество</th>
+                                                    <th>Описание проблемы</th>
+                                                    <th>Оплачено</th>
+                                                    <th>Долг</th>
+                                                    <th>Подробнее</th>
+                                                </tr>
+                                            </thead>
+                                                <tbody>
+                                                    {{#each client_deals}}
+                                                    <tr>
+                                                        <td>{{id}}</td>
+                                                        <td>{{formatTime deal_date "YYYY-MM-DD"}}</td>
+                                                        
+                                                        {{#if fixed_price}}
+                                                            <td>{{currencyFormat fixed_price}}</td>
+                                                        {{else}}
+                                                            <td>0</td>
+                                                        {{/if}}
+
+                                                        {{#if cash_discount}}
+                                                            <td>{{currencyFormat cash_discount}}</td>
+                                                        {{else}}
+                                                            <td>0</td>
+                                                        {{/if}}
+                                                        
+                                                        {{#if final_price}}
+                                                            <td>{{currencyFormat final_price}}</td>
+                                                        {{else}}
+                                                            <td>0</td>
+                                                        {{/if}}
+
+                                                        {{#if paid_cash}}
+                                                        <td>{{currencyFormat paid_cash}}</td>
+                                                        {{else}}
+                                                        <td>0</td>
+                                                        {{/if}}
+
+                                                        {{#if final_price}}
+                                                        <td>{{currencyFormat (math  final_price "-" paid_cash)}}</td>
+                                                        {{else}}
+                                                        <td>0</td>
+                                                        {{/if}}
+                                                        
+                                                        <td>
+                                                            <a href="/client/client-deal-detail/{{id}}"  class="btn btn-primary">Подробнее</a>
+                                                        </td>
+                                                    </tr>
+                                                    {{/each }}
+                                                </tbody>
+                                                <tfoot>
+                                                    
+                                                    <tr>
+                                                        <th>ID сделки</th>
+                                                        <th>Дата</th>
+                                                        <th>Общая Цена</th>
+                                                        <th>Скидка</th>
+                                                        <th>К Оплате</th>
+                                                        <th>Оплачено</th>
+                                                        <th>Долг</th>
+                                                        <th>Подробнее</th>
+                                                    </tr>
+                                                    
+                                                </tfoot>
+                                        </table>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+      
+            </section>
+     
+        </div>
+ 
+
+
+    
+    <script src="/plugins/create_deal.js"></script>
+    <script src="/plugins/create_deal_events.js"></script>
+   <!-- jQuery -->
+    <script src="/plugins/jquery/jquery.min.js"></script>
+    <!-- Bootstrap 4 -->
+    <script src="/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- Select2 -->
+    <script src="/plugins/select2/js/select2.full.min.js"></script>
+
+    <!-- DataTables -->
+    <script src="/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+
+ 
+    <!-- AdminLTE App -->
+    <script src="/dist/js/adminlte.min.js"></script>
+    <!-- AdminLTE for demo purposes -->
+    <script src="/dist/js/demo.js"></script>
+    <!-- SweetAlert2 -->
+ 
+
+        <script>
+        $(function () {
+            $("#problemTable").DataTable({
+                "responsive": true,
+                "autoWidth": false,
+                 
+            });
+        });
+    </script>

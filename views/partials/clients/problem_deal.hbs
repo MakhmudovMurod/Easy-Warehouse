@@ -1,0 +1,441 @@
+    <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper">
+            <!-- Content Header (Page header) -->
+            <div class="content-header">
+                <div class="container-fluid">
+                    <div class="row mb-2">
+                        <div class="col-sm">
+                            <nav aria-label="breadcrumb float-sm-left">
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item"><a href="#">Профиль клиента</a></li>
+                                    <li class="breadcrumb-item"><a href="#">Детали сделки</a></li>
+                                    <li class="breadcrumb-item active" aria-current="page">Проблемная сделка</li>
+                                </ol>
+                            </nav>
+                        </div> 
+                    </div> 
+                </div> 
+            </div>
+            <!-- /.content-header -->
+
+            <!-- Main content -->
+            <section class="content">
+                <div class="row">
+
+
+                    <div class="col-md-12 ">
+                        <div class="card card-primary">
+                            
+                            <div class="card-header">
+                                <h3 class="card-title"> Проблемные сделки </h3>
+                            </div>
+                                
+                            <div class="card-body">
+
+                                <div class="row">
+
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <h4>Проблемный Товар</h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <div class="row">
+
+                                                <div class="col-md-4">
+                                                    <label for="date">Дата Сделки</label>
+                                                    <div id="date" class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text"><i
+                                                                    class="far fa-calendar-alt"></i></span>
+                                                        </div>
+                                                        <input id="date" value="2020-07-04"
+                                                            autocomplete="off" type="date"
+                                                            class="form-control"
+                                                            placeholder="Дата Сделки" disabled>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <div class="row">
+
+                                                <div class="col-md-1" id="id">
+                                                    <label>ID</label>
+                                                    <input type="text" class="form-control"
+                                                        value="23" disabled placeholder="ID"
+                                                        min="1">
+                                                </div>
+
+                                                <div class="col-md-2">
+                                                    <label>Класс</label>
+                                                    <input type="text" class="form-control"
+                                                        value="Чайник" placeholder="Класс" disabled>
+                                                </div>
+
+                                                <div class="col-md-2">
+                                                    <label>Подкласс</label>
+                                                    <input type="text" class="form-control"
+                                                        value="Хороз" placeholder="Подкласс"
+                                                        disabled>
+                                                </div>
+
+                                                <div class="col-md-2">
+                                                    <label>Рисунок</label>
+                                                    <input type="text" class="form-control"
+                                                        value="Пахта" placeholder="Рисунок"
+                                                        disabled>
+                                                </div>
+
+                                                <div class="col-md-1">
+                                                    <label>Сорт</label>
+                                                    <input type="text" class="form-control"
+                                                        value="1" placeholder="Сорт" disabled>
+                                                </div>
+
+                                                <div class="col-md-1">
+                                                    <label>Цена</label>
+                                                    <input type="text" class="form-control"
+                                                        value="7500" placeholder="Цена" disabled>
+                                                </div>
+
+                                                <div class="col-md-1">
+                                                    <label>Кол-во</label>
+                                                    <input type="text" value="4"
+                                                        placeholder="Кол-во" class="form-control"
+                                                        disabled>
+                                                </div>
+
+                                                <div class="col-md-2">
+                                                    <label>Сумма</label>
+                                                    <input type="text" id="problem-summ"
+                                                        value="30000" name="total"
+                                                        class="form-control" placeholder="Сумма"
+                                                        disabled>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <div class="row">
+                                                                    <div class="col-md-12">
+                                                                        <h4>Тип Проблемы</h4>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <div class="row">
+
+                                                                    <div class="col-lg-12"
+                                                                        onchange="change_problem_div()">
+                                                                        <div class="btn-group btn-group-toggle"
+                                                                            data-toggle="buttons">
+                                                                            <label class="btn btn-secondary active">
+                                                                                <input type="radio" name="problem_types"
+                                                                                    id="problem_type_1"
+                                                                                    autocomplete="off" checked> Разбитый
+                                                                                или Бракованный
+                                                                            </label>
+                                                                            <label class="btn btn-secondary">
+                                                                                <input type="radio" name="problem_types"
+                                                                                    id="problem_type_2"
+                                                                                    autocomplete="off"> Не Верный
+                                                                                Продукт
+                                                                            </label>
+                                                                            <label class="btn btn-secondary">
+                                                                                <input type="radio" name="problem_types"
+                                                                                    id="problem_type_3"
+                                                                                    autocomplete="off"> Другая проблема
+                                                                            </label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-md-12" id="problem_div_2"
+                                                            style="pointer-events: none; opacity: 0.4;">
+                                                            <div class="form-group">
+                                                                <div class="col-md-6">
+                                                                    <label>Ошибка в ...</label>
+                                                                </div>
+                                                                <div class="row">
+                                                                    <div class="col-md-2">
+                                                                        <div class="custom-control custom-checkbox">
+                                                                            <input class="custom-control-input"
+                                                                                type="checkbox" id="customCheckbox1"
+                                                                                value="option1">
+                                                                            <label for="customCheckbox1"
+                                                                                class="custom-control-label">Класс</label>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-2">
+                                                                        <div class="custom-control custom-checkbox">
+                                                                            <input class="custom-control-input"
+                                                                                type="checkbox" id="customCheckbox2"
+                                                                                value="option2">
+                                                                            <label for="customCheckbox2"
+                                                                                class="custom-control-label">Подкласс</label>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-2">
+                                                                        <div class="custom-control custom-checkbox">
+                                                                            <input class="custom-control-input"
+                                                                                type="checkbox" id="customCheckbox3"
+                                                                                value="option3">
+                                                                            <label for="customCheckbox3"
+                                                                                class="custom-control-label">Рисунок</label>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-2">
+                                                                        <div class="custom-control custom-checkbox">
+                                                                            <input class="custom-control-input"
+                                                                                type="checkbox" id="customCheckbox4"
+                                                                                value="option4">
+                                                                            <label for="customCheckbox4"
+                                                                                class="custom-control-label">Сорт</label>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-2">
+                                                                        <div class="custom-control custom-checkbox">
+                                                                            <input class="custom-control-input"
+                                                                                type="checkbox" id="customCheckbox5"
+                                                                                value="option5">
+                                                                            <label for="customCheckbox5"
+                                                                                class="custom-control-label">Размер</label>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-2">
+                                                                        <div class="custom-control custom-checkbox">
+                                                                            <input class="custom-control-input"
+                                                                                type="checkbox" id="customCheckbox6"
+                                                                                value="option6">
+                                                                            <label for="customCheckbox6"
+                                                                                class="custom-control-label">Другое</label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-md-12" id="problem_div_3"
+                                                            style="display: none;">
+                                                            <div class="form-group">
+                                                                <label>Комментарий</label>
+                                                                <textarea class="form-control" rows="2"
+                                                                    placeholder="Опешите проблему ..."></textarea>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <div class="row">
+                                                                    <div class="col-md-12">
+                                                                        <h4>Решение Проблемы</h4>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <div class="row">
+
+                                                                    <div class="col-lg-12"
+                                                                        onchange="change_solution_div()">
+                                                                        <div class="btn-group btn-group-toggle"
+                                                                            data-toggle="buttons">
+                                                                            <label class="btn bg-olive active">
+                                                                                <input type="radio"
+                                                                                    name="solution_types"
+                                                                                    id="solution_type_1"
+                                                                                    autocomplete="off" checked>Возврат
+                                                                                Денег
+                                                                            </label>
+                                                                            <label class="btn bg-olive">
+                                                                                <input type="radio"
+                                                                                    name="solution_types"
+                                                                                    id="solution_type_2"
+                                                                                    autocomplete="off"> Замена Товара
+                                                                            </label>
+                                                                            <label class="btn bg-olive">
+                                                                                <input type="radio"
+                                                                                    name="solution_types"
+                                                                                    id="solution_type_3"
+                                                                                    autocomplete="off"> Другое Решение
+                                                                            </label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-md-12" id="solution_div_2"
+                                                            style="pointer-events: none; opacity: 0.4;">
+                                                            <div id="rows" class="col-md-12">
+                                                                <div class="form-group">
+                                                                    <div class="row">
+
+                                                                        <div class="col-md-1" id="id">
+                                                                            <label>ID</label>
+                                                                            <input type="text" class="form-control"
+                                                                                id="solution_id" placeholder="ID"
+                                                                                min="1">
+                                                                        </div>
+
+                                                                        <div class="col-md-2">
+                                                                            <label>Класс</label>
+                                                                            <input type="text" class="form-control"
+                                                                                id="solution-class" placeholder="Класс"
+                                                                                disabled>
+                                                                        </div>
+
+                                                                        <div class="col-md-2">
+                                                                            <label>Подкласс</label>
+                                                                            <input type="text" class="form-control"
+                                                                                id="solution-subclass"
+                                                                                placeholder="Подкласс" disabled>
+                                                                        </div>
+
+                                                                        <div class="col-md-2">
+                                                                            <label>Рисунок</label>
+                                                                            <input type="text" class="form-control"
+                                                                                id="solution-drawing"
+                                                                                placeholder="Рисунок" disabled>
+                                                                        </div>
+
+                                                                        <div class="col-md-1">
+                                                                            <label>Сорт</label>
+                                                                            <input type="text" class="form-control"
+                                                                                id="solution-sort" placeholder="Сорт"
+                                                                                disabled>
+                                                                        </div>
+
+                                                                        <div class="col-md-1">
+                                                                            <label>Цена</label>
+                                                                            <input type="text" class="form-control"
+                                                                                id="solution-price" placeholder="Цена"
+                                                                                disabled>
+                                                                        </div>
+
+                                                                        <div class="col-md-1">
+                                                                            <label>Кол-во</label>
+                                                                            <input type="text" id="solution-amount"
+                                                                                placeholder="Кол-во"
+                                                                                class="form-control" disabled>
+                                                                        </div>
+
+                                                                        <div class="col-md-2">
+                                                                            <label>Сумма</label>
+                                                                            <input type="text" id="solution-total"
+                                                                                name="total" class="form-control"
+                                                                                placeholder="Сумма" disabled>
+                                                                        </div>
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-md-12" id="solution_div_3"
+                                                            style="display: none;">
+                                                            <div class="form-group">
+                                                                <div class="col-md-6">
+                                                                    <label>Комментарий</label>
+                                                                    <textarea class="form-control" rows="2"
+                                                                        placeholder="Опешите проблему ..."></textarea>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+
+
+
+                                </div>
+                                
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="offset-md-8 col-md-4">
+                                                <label>Разница</label>
+                                                <input autocomplete="off" type="text" value="-30000"
+                                                    class="form-control" id="difference"
+                                                    placeholder="Разница" disabled>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="offset-md-8 col-md-4">
+                                                <button style="width: 100%;" type="submit" class="btn btn-primary" id="solutionConfirmButton">Подтвердить</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+      
+            </section>
+     
+        </div>
+ 
+
+
+    
+    <script src="/plugins/create_deal.js"></script>
+    <script src="/plugins/create_deal_events.js"></script>
+   <!-- jQuery -->
+    <script src="/plugins/jquery/jquery.min.js"></script>
+    <!-- Bootstrap 4 -->
+    <script src="/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- Select2 -->
+    <script src="/plugins/select2/js/select2.full.min.js"></script>
+
+    <!-- DataTables -->
+    <script src="/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+
+ 
+    <!-- AdminLTE App -->
+    <script src="/dist/js/adminlte.min.js"></script>
+    <!-- AdminLTE for demo purposes -->
+    <script src="/dist/js/demo.js"></script>
+    <!-- SweetAlert2 -->
+ 
+
+        <script>
+        $(function () {
+            $("#example1").DataTable({
+                "responsive": true,
+                "autoWidth": false,
+                 "lengthMenu": [[2], [2, "All"]]
+            });
+        });
+    </script>

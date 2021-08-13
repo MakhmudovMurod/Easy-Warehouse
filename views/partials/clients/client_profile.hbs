@@ -1,0 +1,331 @@
+   <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper">
+            <!-- Content Header (Page header) -->
+            <div class="content-header">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <nav aria-label="breadcrumb float-sm-left">
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item"><a href="/client/client-list">Список клиентов</a></li>
+                                    <li class="breadcrumb-item active" aria-current="page">Профиль клиента</li>
+                                </ol>
+                            </nav>
+                        </div><!-- /.col -->
+                        {{!-- <div class="col-sm-8">
+                            <div class="card">
+                                <div class="card-header text-center">
+                                    Current status of client
+                                </div>
+                                <div class="card-body text-info">
+                                    
+                                </div>
+                            </div>
+                            
+                        </div> --}}
+                    </div><!-- /.row -->
+                </div><!-- /.container-fluid -->
+            </div>
+            <!-- /.content-header -->
+
+            <!-- Main content -->
+            <div class="content">
+                <div class="container-fluid">
+                    <div class="row">
+
+                        {{!-- Left Side | Client Information | col-3  --}}
+                        <div class="col-md-3">
+
+                            {{!---------PROFILE INFORMATION-----------------------}}
+                            
+                            <div class="card">
+                                <div class="card-body box-profile">
+                                    <div class="text-center">
+                                        <img class="profile-user-img img-fluid img-circle"
+                                            src="/dist/img/user.png" alt="User profile picture">
+                                    </div>
+                                    {{#each clients}}
+                                    <h3 class="profile-username text-center">{{first_name}}</h3>
+
+                                    <ul class="list-group list-group-unbordered mb-3">
+                                        <li class="list-group-item">
+                                            <b>Компания</b> <a class="float-right">{{company}}</a>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <b>Тел:</b> <a class="float-right">{{phone_number}}</a>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <b>Долг</b> <a href="/client/client-balance/{{id}}" class="float-right ">{{currencyFormat balance}} <strong> UZS</strong></a>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <b>Предоплата</b> <a href="/client/client-balance/{{id}}" class="float-right ">{{currencyFormat balance}} <strong> UZS</strong></a>
+                                        </li>
+                                    </ul>
+                                    
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <a  href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample" class="btn btn-success" data-toggle="collapse">Пополнить баланс</a>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <a href="/client/client-edit/{{id}}" class="btn btn-primary float-right"><b>Изменить</b></a>
+                                        </div>
+
+                                        <div class="collapse p-3" id="collapseExample">
+                                            <form action="/client/client-balance-update/{{id}}" method="POST"> 
+                                                <div class="form-group mt-2">
+                                                    <label for="">Способ оплаты :</label>
+                                                    <select name="payment_type" id="" class="form-control">
+                                                        <option value="Наличные">Наличные</option>
+                                                        <option value="Банковские переводы">Банковские переводы</option>
+                                                        <option value="Кредитные карты">Кредитные карты</option>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group mt-2">
+                                                    <label for="">Тип оплаты :</label>
+                                                    <select name="payment_type" id="" class="form-control">
+                                                        <option value="Долг">Долг</option>
+                                                        <option value="Предоплата">Предоплата</option>
+                                                    </select>
+                                                </div>
+                                                <div class="input-group mt-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text"><strong>UZS</strong></span>
+                                                    </div>
+                                                    <input type="number" class="form-control" name="balance_add_amount" min="1">
+                                                    <button type="submit" class="btn btn-success"><i class="fas fa-plus"></i></button>
+                                                </div>
+                                                {{!-- <div class="form-group mt-2">
+                                                    <label for="">Описание платежа:</label>
+                                                    <textarea class="form-control"></textarea>
+                                                </div> --}}
+                                            </form>    
+                                        </div>
+                                   </div>
+                                   
+                                    
+                                    {{/each }}
+                                </div>
+                                
+                            </div>
+
+                            {{!---------------------------------------------GENERAL INFORMATION ABOUT USER---------------------------------------------------------}}
+
+                           
+                            <div class="card card-default">
+                                <div class="card-header">
+                                    <h3 class="card-title">Общая Информация</h3>
+                                </div>
+                                <!-- /.card-header -->
+                                <div class="card-body">
+                                    <strong><i class="fas fa-cart-arrow-down mr-1"></i> Кол-во Сделок</strong>
+
+                                    <p class="text-muted">
+                                        {{deals_number}}
+                                    </p>
+
+                                    <hr>
+
+                                    <strong><i class="fas fa-donate mr-1"></i> Общая Стоимость Сделок</strong>
+
+                                    <p class="text-muted">
+                                        {{#if overal_deals_cost}}
+                                        {{currencyFormat overal_deals_cost}} UZS
+                                        {{else}}
+                                        0 
+                                        {{/if}}
+                                    </p>
+
+                                    <hr>
+
+                                    <strong><i class="fas fa-calendar-check mr-1"></i> Последняя Сделка</strong>
+
+                                    <p class="text-muted">
+                                        {{#if last_deal_date }}
+                                        {{formatTime last_deal_date "YYYY-MM-DD"}}
+                                        {{else}}
+                                        {{last_deal_date_none}}
+                                        {{/if}}
+                                    </p>
+                                </div>
+                                <!-- /.card-body -->
+                            </div>
+                            
+
+                        
+                        {{!-- End of Left Side |Client Information |  col-3  --}}
+
+                        </div>    
+                            
+                            
+                        
+
+                        
+                        {{!-----------------------------------------------------RIGHT SIDE  -------------------------------------------------------------------------------------}}
+                        
+                        
+                        
+                        <div class="col-md-9">
+                            <div class="card">
+                                <div class="card-header">
+                                    <ul class="nav nav-pills">
+                                        <li class="nav-item">
+                                            <a class="nav-link active" href="#deals" data-toggle="tab">История Сделок</a>
+                                        </li>
+                                        
+                                        <li class="nav-item ml-2">
+                                            {{#each clients}}
+                                            <form action="/client/client-deal/{{id}}">
+                                                <button type="submit" class="btn btn-info"><i class="fas fa-plus"></i>  Создать Новую Сделку</button>
+                                            </form>
+                                            {{/each}}
+                                        </li>
+
+                                        <li class="nav-item ml-2">
+                                            <a class="nav-link " href="#problem" data-toggle="tab">Проблемные продукты</a>
+                                        </li>
+                                        
+                                       
+                                    </ul>
+                                </div>
+                                <div class="card-body">
+                                    
+                                    <div class="tab-content">
+                                        
+                                        <div class="tab-pane active" id="deals">
+                                            
+                                            <div class="table-responsive">
+                                                <table id="dealsTable"  class="table table-bordered table-striped">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>ID сделки</th>
+                                                            <th>Дата</th>
+                                                            <th>Общая Цена</th>
+                                                            <th>Скидка</th>
+                                                            <th>К Оплате</th>
+                                                            <th>Оплачено</th>
+                                                            <th>Долг</th>
+                                                            <th>Подробнее</th>
+                                                        </tr>
+                                                    </thead>
+                                                        <tbody>
+                                                            {{#each client_deals}}
+                                                            <tr>
+                                                                <td>{{id}}</td>
+                                                                <td>{{formatTime deal_date "YYYY-MM-DD"}}</td>
+                                                                
+                                                                {{#if fixed_price}}
+                                                                    <td>{{currencyFormat fixed_price}}</td>
+                                                                {{else}}
+                                                                    <td>0</td>
+                                                                {{/if}}
+
+                                                                {{#if cash_discount}}
+                                                                    <td>{{currencyFormat cash_discount}}</td>
+                                                                {{else}}
+                                                                    <td>0</td>
+                                                                {{/if}}
+                                                                
+                                                                {{#if final_price}}
+                                                                    <td>{{currencyFormat final_price}}</td>
+                                                                {{else}}
+                                                                    <td>0</td>
+                                                                {{/if}}
+
+                                                                {{#if paid_cash}}
+                                                                <td class="text-success text-bold">{{currencyFormat paid_cash}}</td>
+                                                                {{else}}
+                                                                <td>0</td>
+                                                                {{/if}}
+
+                                                                {{#if final_price}}
+                                                                <td class="text-danger text-bold">{{currencyFormat (math  final_price "-" paid_cash)}}</td>
+                                                                {{else}}
+                                                                <td>0</td>
+                                                                {{/if}}
+                                                                
+                                                                <td>
+                                                                    <a href="/client/client-deal-detail/{{id}}"  class="btn btn-primary">Подробнее</a>
+                                                                </td>
+                                                            </tr>
+                                                            {{/each }}
+                                                        </tbody>
+                                                        <tfoot>
+                                                            
+                                                            <tr>
+                                                                <th>ID сделки</th>
+                                                                <th>Дата</th>
+                                                                <th>Общая Цена</th>
+                                                                <th>Скидка</th>
+                                                                <th>К Оплате</th>
+                                                                <th>Оплачено</th>
+                                                                <th>Долг</th>
+                                                                <th>Подробнее</th>
+                                                            </tr>
+                                                            
+                                                        </tfoot>
+                                                </table>
+                                            </div>
+
+                                        </div>
+
+                                    
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    
+                        
+                    
+                    <!-- /.row -->
+                
+                </div>
+                <!-- /.container-fluid -->
+            </div>
+            <!-- /.content -->
+        </div>
+        <!-- /.content-wrapper -->
+
+ 
+
+
+    <!-- REQUIRED SCRIPTS -->
+    <script src="/dist/js/adminlte.min.js"></script>
+
+
+
+    <!-- jQuery -->
+    <script src="/plugins/jquery/jquery.min.js"></script>
+
+    <!-- Bootstrap -->
+    <script src="/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- AdminLTE -->
+    <script src="/dist/js/adminlte.js"></script>
+
+ 
+    
+    <!-- Select2 -->
+    <script src="/plugins/select2/js/select2.full.min.js"></script>
+    <!-- DataTables -->
+    <script src="/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+
+    <script>
+        $(function () {
+            $("#dealsTable").DataTable({
+                "responsive": true,
+                "autoWidth": false,
+            });
+            $("#problemTable").DataTable({
+                "responsive": true,
+                "autoWidth": false,
+                
+            });
+        });
+    </script>
+    

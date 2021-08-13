@@ -1,0 +1,112 @@
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+      <!-- Content Header (Page header) -->
+      <div class="content-header">
+        <div class="container-fluid">
+          <div class="row mb-2">
+            <div class="col-sm-12">
+              <ol class="breadcrumb float-sm-left">
+                <!-- <li class="breadcrumb-item"><a href="#">Главная</a></li> -->
+                <li class="breadcrumb-item active">История Пополненения Склада</li>
+              </ol>
+            </div><!-- /.col -->
+          </div><!-- /.row -->
+        </div><!-- /.container-fluid -->
+      </div>
+      <!-- /.content-header -->
+
+      <!-- Main content -->
+      <div class="content">
+        <div class="container-fluid">
+          <div class="row">
+
+
+            <!-- Tables -->
+            <div class="col-12">
+                <!-- 1 sort -->
+                <div class="card card-info">
+                    <div class="card-header">
+                        <h3 class="card-title">История Пополненения Склада</h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <table id="supplementTable" class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>ID Продукта</th>
+                                    <th>Клаcc</th>
+                                    <th>Кол-во</th>
+                                    <th>Дата Пополненения</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                
+                                {{#each data}}
+                                <tr>
+                                    <td>{{ProductId}}</td>
+                                    <td>{{Product.product_class}}</td>
+                                    <td>{{currencyFormat added_quantity}}</td>
+                                    <td>{{formatTime added_date "YYYY-MM-DD"}}</td>
+                                </tr>
+                              
+                              {{/each}}
+                                 
+                            </tbody>
+
+
+                            <tfoot>
+                                <tr>
+                                    <th>ID Продукта</th>
+                                    <th>Клаcc</th>
+                                    <th>Кол-во</th>
+                                    <th>Дата Пополненения</th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+            </div>
+            <!-- /.col -->
+
+          </div>
+          <!-- /.row -->
+        </div><!-- /.container-fluid -->
+      </div>
+      <!-- /.content -->
+    </div>
+  
+  <!-- REQUIRED SCRIPTS -->
+  <script src=" /dist/js/adminlte.min.js"></script>
+
+  <!-- jQuery -->
+  <script src=" /plugins/jquery/jquery.min.js"></script>
+  <!-- Bootstrap -->
+  <script src=" /plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <!-- AdminLTE -->
+  <script src=" /dist/js/adminlte.js"></script>
+  
+
+  <!-- OPTIONAL SCRIPTS -->
+  <script src=" /plugins/chart.js/Chart.min.js"></script>
+  <script src=" /dist/js/pages/dashboard3.js"></script>
+
+  <!-- Select2 -->
+  <script src=" /plugins/select2/js/select2.full.min.js"></script>
+  <!-- DataTables -->
+  <script src=" /plugins/datatables/jquery.dataTables.min.js"></script>
+  <script src=" /plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+  <script src=" /plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+  <script src=" /plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+
+  <script>
+    $(function () {
+      $("#supplementTable").DataTable({
+        "responsive": true,
+        "autoWidth": false,
+      });
+    });
+  </script>

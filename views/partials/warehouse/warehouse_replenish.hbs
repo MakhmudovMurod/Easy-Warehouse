@@ -1,0 +1,209 @@
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+      <!-- Content Header (Page header) -->
+      <div class="content-header">
+        <div class="container-fluid">
+          <div class="row mb-2">
+            <div class="col-sm-12">
+              <ol class="breadcrumb float-sm-left">
+                <!-- <li class="breadcrumb-item"><a href="#">Главная</a></li> -->
+                <li class="breadcrumb-item active">Пополнять Резерв</li>
+              </ol>
+            </div><!-- /.col -->
+          </div><!-- /.row -->
+        </div><!-- /.container-fluid -->
+      </div>
+      <!-- /.content-header -->
+
+      <!-- Main content -->
+      <div class="content">
+        <div class="container-fluid">
+          
+          <div class="row">
+            <div class="col-md-12">
+              <div class="card card-primary">
+                  <div class="card-header">
+                      <h3 class="card-title">Пополнить Резерв</h3>
+                  </div>
+                  <form role="form" action="/warehouse/warehouse-replenish" method="POST" id="add_products">
+                      <div class="card-body">
+                          <div class="row">
+
+                              <div class="col-md-2">
+                                  <div class="form-group">
+                                      <label for="date">Дата</label>
+                                      <input type="date" name="added_date" id="date" class="form-control" placeholder="Дата">
+                                  </div>
+                              </div>
+
+                              <div class="col-md-2">
+                                  <div class="form-group">
+                                      <div class="ui-widget">
+                                          <label for="">Название продукта</label>
+                                          <input   type="text" name="product_name"  id="product_name" class="form-control" placeholder="" autocomplete="off" >
+                                          <div id="match-list"></div>
+                                      </div>
+                                  </div>
+                              </div>
+                              
+                              
+                              <div class="col-md-2">
+                                  <div class="form-group">
+                                      <label for="quantity">Рисунок</label>
+                                      <input type="text" name="drawing" id="drawing" class="form-control" placeholder="" min="1" readonly>
+                                  </div>
+                              </div>
+                              
+                              <div class="col-md-1">
+                                  <div class="form-group">
+                                      <label for="quantity">Сорт</label>
+                                      <input type="number" name="sort" id="sort" class="form-control" placeholder="" min="1" readonly>
+                                  </div>
+                              </div>
+
+                              <div class="col-md-1">
+                                  <div class="form-group">
+                                      <label for="product_id">Код </label>
+                                      <input   type="number" name="overall_code"  id="overall_code" class="form-control" placeholder="" readonly>
+                                  </div>
+                              </div> 
+
+                              <div class="col-md-1">
+                                  <div class="form-group">
+                                      <label for="quantity">Цена (UZS)</label>
+                                      <input type="number" name="price" id="price" class="form-control" placeholder="" min="1" readonly>
+                                  </div>
+                              </div>
+                              
+                              <div class="col-md-1">
+                                  <div class="form-group">
+                                      <label for="quantity">Кол-во</label>
+                                      <input type="number" name="added_quantity" id="added_quantity" class="form-control" placeholder="" min="1">
+                                  </div>
+                              </div>
+                              
+                              <div class="col-md-2">
+                                  <div class="form-group">
+                                      <label for="quantity">Итого</label>
+                                      <input type="number" name="overall_sum" id="overall_sum" class="form-control" placeholder="" min="1">
+                                  </div>
+                              </div>
+                              
+                              
+
+                              <div class="col-md-12">
+                                <div class="form-group">
+                                  <input type="submit" name="submit" class="btn btn-primary swalDefaultSuccess float-right" value="Добавить">
+                                    
+                                </div>
+                              </div>
+                          </div>
+                      </div>
+                  </form>
+
+
+              
+  
+
+
+
+
+
+
+
+
+
+
+              </div>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <script src="/dist/js/adminlte.min.js"></script>
+  <script src="/plugins/jquery/jquery.min.js"></script>
+  <script src="/plugins/jquery-ui/jquery-ui.js"></script>
+  <script src="/plugins/jquery-ui/jquery-ui.min.js"></script>
+  <script src="/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="/dist/js/adminlte.js"></script>
+  <script src="/plugins/select2/js/select2.full.min.js"></script>
+  <script src="/plugins/datatables/jquery.dataTables.min.js"></script>
+  <script src="/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+  <script src="/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+  <script src="/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+
+  <script>
+    $(function () {
+      $("#warehouseTable").DataTable({
+        "responsive": true,
+        "autoWidth": false,
+      });
+    });
+  </script>
+
+    <script src="/dist/js/jquery-ui/jquery-ui.js"></script>
+    <script src="/dist/js/jquery-ui/jquery-ui.min.js"></script>
+    <script>
+    $.getJSON("/product/product-search", function(data){
+        var products = $.map( data, function(item) {
+            return {
+              label: `${item.product_name} - ${item.overall_code}`,
+              value:item.product_name
+                
+            }
+        });
+
+        $("#product_name").autocomplete({
+        minLength: 3,
+        source: products,
+        select: function (event,ui){
+          $("#product_name").val(ui.item.label);
+        }
+        
+        })
+    });
+    </script>
+
+    <script>
+      const product_name = document.getElementById('product_name');
+
+
+    
+      const getValues = async searchText => {
+        
+        const res = await fetch('/product/product-search');
+        const products = await res.json();
+
+        
+
+        products.forEach( function(item) {
+          
+          var search_value = parseInt(searchText);
+
+        
+          
+          if(item.overall_code == search_value)
+          {
+            document.getElementById('product_name').value = item.product_name;
+            document.getElementById('drawing').value = item.drawing;
+            document.getElementById('sort').value = item.sort;
+            document.getElementById('overall_code').value = item.overall_code;
+            document.getElementById('price').value = item.price;
+
+            var price = Number(document.getElementById('price').value);
+            var quant = Number(document.getElementById('added_quantity').value);
+
+            document.getElementById('overall_sum').value = price * quant;
+          }
+        });
+      };
+
+      
+
+      product_name.addEventListener('input', ()=>getValues(product_name.value));
+  
+    </script>
+

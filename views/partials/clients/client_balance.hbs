@@ -1,0 +1,111 @@
+    <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper">
+            <!-- Content Header (Page header) -->
+            <div class="content-header">
+                <div class="container-fluid">
+                    <div class="row mb-2">
+                        <div class="col-sm">
+                            <nav aria-label="breadcrumb float-sm-left">
+                                <ol class="breadcrumb">
+                                    {{#each client}}
+                                    <li class="breadcrumb-item"><a href="/client/client-profile/{{id}}">Профиль клиента</a></li>
+                                    {{/each}}
+                                    <li class="breadcrumb-item active" aria-current="page">История баланса</li>
+                                </ol>
+                            </nav>
+                        </div> 
+                    </div> 
+                </div> 
+            </div>
+            <!-- /.content-header -->
+
+            <!-- Main content -->
+            <section class="content">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card card-primary">
+                            <div class="card-header">
+                                <h3 class="card-title"> Все денежные операции Клиента </h3>
+                            </div>
+                            
+                            <div class="card-body">
+                                
+                                
+                                    
+                                    <table id="dealsTable"  class="table table-bordered table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>ID </th>
+                                                <th>Сумма к оплате</th>
+                                                <th>Способ оплаты</th>
+                                                <th>Дата оплаты</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {{#each balance}}
+                                            <tr>
+                                                <td>{{id}}</td>
+                                                <td>{{currencyFormat payment_amount}}</td>
+                                                <td>{{payment_type}}</td>
+                                                <td>{{formatTime payment_date "YYYY-MM-DD"}}</td>
+                                                
+                                            </tr>
+                                            {{/each}}
+                                        </tbody>
+                                        <tfoot>
+                                                
+                                            <tr>
+                                                <th>ID </th>
+                                                <th>Сумма к оплате</th>
+                                                <th>Способ оплаты</th>
+                                                <th>Дата оплаты</th>
+                                            </tr>
+                                                
+                                        </tfoot>
+                                    </table>
+                                    
+
+                                    
+                                
+
+                            </div>
+                            
+                        </div>
+                    </div>
+
+                </div>
+      
+            </section>
+     
+        </div>
+ 
+        
+     
+   
+    <!-- jQuery -->
+    <script src="/plugins/jquery/jquery.min.js"></script>
+    <!-- Bootstrap 4 -->
+    <script src="/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- Select2 -->
+    <script src="/plugins/select2/js/select2.full.min.js"></script>
+ 
+    <!-- AdminLTE App -->
+    <script src="/dist/js/adminlte.min.js"></script>
+    <!-- AdminLTE for demo purposes -->
+    <script src="/dist/js/demo.js"></script>
+    
+    <!-- DataTables -->
+    <script src="/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+ 
+    <script>
+        $(function () {
+            $("#dealsTable").DataTable({
+                "responsive": true,
+                "autoWidth": false,
+            });
+            
+        });
+    </script>

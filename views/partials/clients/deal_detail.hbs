@@ -1,0 +1,240 @@
+    <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper">
+            <!-- Content Header (Page header) -->
+            <div class="content-header">
+                <div class="container-fluid">
+                    <div class="row mb-2">
+                        <div class="col-sm">
+                            <nav aria-label="breadcrumb float-sm-left">
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item"><a href="/client/client-profile/{{client_id}}">Профиль клиента</a></li>
+                                    <li class="breadcrumb-item active" aria-current="page">Детали сделки</li>
+                                </ol>
+                            </nav>
+                        </div> 
+                    </div> 
+                </div> 
+            </div>
+            <!-- /.content-header -->
+
+            <!-- Main content -->
+            <section class="content">
+                <div class="row">
+
+
+                    <div class="col-md-12 ">
+                        <div class="card card-primary">
+                            
+                            <div class="card-header">
+                                <h3 class="card-title"> Детали сделки </h3>
+                            </div>
+                                
+                            <div class="card-body">
+                                
+                                <div class="row">
+                                    
+                                    {{#each deals}}
+                                    <div class="col-md-12">
+                                        <form action="/client/client-pay-debt/{{id}}" method="POST">
+                                            <div class="form-group">
+                                                <div class="row">
+
+                                                    <div class="col-md-6">
+                                                        <label for="date">Дата Сделки</label>
+                                                        <div id="date" class="input-group">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
+                                                            </div>
+                                                            <input id="date" value="{{formatTime deal_date "YYYY-MM-DD"}}" autocomplete="off" type="" class="form-control" placeholder="Дата Сделки" disabled>
+                                                        </div>
+                                                    </div>
+                                        
+                                                    <div class="col-md-6">
+                                                        <label for="dept">Долг Сделки</label>
+                                                        <input id="dept" value="{{math final_price "-" paid_cash}}" type="text" class="form-control" placeholder="Долг Сделки" name="debt_amount" readonly>
+                                                    </div>
+                                        
+                                                    
+
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    {{/each}}
+
+                                    <div id="cartRow" class="col-md-12">
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-md-1">
+                                                    <label>ID</label>
+                                                    <input autocomplete="off" type="text" class="form-control" placeholder="ID" min="1" value="ID" disabled>
+                                                </div>
+
+                                                <div class="col-md-2">
+                                                    <label>Класс</label>
+                                                    <input autocomplete="off" type="text" class="form-control" placeholder="class" value="Класс" disabled>
+                                                </div>
+
+                                                <div class="col-md-2">
+                                                    <label>Подкласс</label>
+                                                    <input autocomplete="off" type="text" class="form-control" placeholder="subclass" value="Подкласс" disabled>
+                                                </div>
+
+                                                <div class="col-md-2">
+                                                    <label>Рисунок</label>
+                                                    <input autocomplete="off" type="text" class="form-control" placeholder="Рисунок" value="Рисунок" disabled>
+                                                </div>
+
+                                                <div class="col-md-1">
+                                                    <label>Сорт</label>
+                                                    <input autocomplete="off" type="text" class="form-control" disabled value="Сорт">
+                                                </div>
+
+                                                <div class="col-md-1">
+                                                    <label>Цена</label>
+                                                    <input autocomplete="off" type="text" class="form-control" placeholder="Цена" disabled value="Цена">
+                                                </div>
+
+                                                <div class="col-md-1">
+                                                    <label>Кол-во</label>
+                                                    <input autocomplete="off" type="text" class="form-control" value="Кол-во" disabled>
+                                                </div>
+
+                                                <div class="col-md-2">
+                                                    <div class="row">
+                                                        <div class="col-md-8">
+                                                            <label>Сумма</label>
+                                                            <input autocomplete="off" type="text" class="form-control" placeholder="Сумма" value="Сумма" disabled>
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <label>Prb</label>
+                                                            <a href="#problem" name="problemBtn">
+                                                                <button type="button" class="btn btn-success" disabled><i class="fas fa-recycle"></i></button>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {{#each sold_products}}
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <div class="row">
+
+                                                <div class="col-md-1" id="id">
+                                                    <input type="text" class="form-control" value="23" disabled placeholder="{{ProductId}}" min="1">
+                                                </div>
+
+                                                <div class="col-md-2">
+                                                    <input type="text" class="form-control" value="Чайник" placeholder="Класс" disabled>
+                                                </div>
+
+                                                <div class="col-md-2">
+                                                    <input type="text" class="form-control" value="Хороз" placeholder="Подкласс" disabled>
+                                                </div>
+
+                                                <div class="col-md-2">
+                                                    <input type="text" class="form-control" value="Пахта" placeholder="Рисунок" disabled>
+                                                </div>
+
+                                                <div class="col-md-1">
+                                                    <input type="text" class="form-control" value="1" placeholder="Сорт" disabled>
+                                                </div>
+
+                                                <div class="col-md-1">
+                                                    <input type="text" class="form-control" value="7500" placeholder="{{product_price}}" disabled>
+                                                </div>
+
+                                                <div class="col-md-1">
+                                                    <input type="text" value="4" placeholder="{{sold_quantity}}" class="form-control" disabled>
+                                                </div>
+
+                                                <div class="col-md-2">
+                                                    <div class="row">
+                                                        <div class="col-md-8">
+                                                            <input type="text" id="total-${row_id}" value="30000" name="total" class="form-control" placeholder="{{overall_sold_cost}}" disabled>
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <a href="/client/client-problem-deal/{{id}}" name="problemBtn">
+                                                                <button type="button" class="btn btn-success"><i class="fas fa-recycle"></i></button>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {{/each}}
+
+
+                                </div>
+                                                
+                                <form class="form-horizontal">
+                                    <div class="card-body">
+                                        {{#each deals}}
+                                        <div class="form-group row">
+                                            <label for="result_price" class="offset-sm-6 col-sm-2 col-form-label">Общая Цена</label>
+                                            <div class="col-sm-4">
+                                                <input autocomplete="off" type="text" value="{{fixed_price}}" class="form-control" placeholder="Общая Цена" disabled>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="discount" class="offset-sm-6 col-sm-2 col-form-label">Скидка</label>
+                                            <div class="col-sm-4">
+                                                <input autocomplete="off" type="text" value="{{cash_discount}}" class="form-control" placeholder="Скидка" disabled>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="final_price" class="offset-sm-6 col-sm-2 col-form-label">К Оплате</label>
+                                            <div class="col-sm-4">
+                                                <input autocomplete="off" type="text" class="form-control" value="{{final_price}}" placeholder="К Оплате" disabled>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="paid_cash" class="offset-sm-6 col-sm-2 col-form-label">Оплачено</label>
+                                            <div class="col-sm-4">
+                                                <input autocomplete="off" type="text" class="form-control" value="{{paid_cash}}" placeholder="Оплачено" disabled>
+                                            </div>
+                                        </div>
+                                        {{/each}}
+
+                                    </div>
+
+                                </form>
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+      
+            </section>
+     
+        </div>
+ 
+
+
+    
+    <script src="/plugins/create_deal.js"></script>
+    <script src="/plugins/create_deal_events.js"></script>
+   <!-- jQuery -->
+    <script src="/plugins/jquery/jquery.min.js"></script>
+    <!-- Bootstrap 4 -->
+    <script src="/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- Select2 -->
+    <script src="/plugins/select2/js/select2.full.min.js"></script>
+
+ 
+ 
+    <!-- AdminLTE App -->
+    <script src="/dist/js/adminlte.min.js"></script>
+    <!-- AdminLTE for demo purposes -->
+    <script src="/dist/js/demo.js"></script>
+    <!-- SweetAlert2 -->
+ 
+ 

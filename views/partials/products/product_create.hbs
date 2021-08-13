@@ -1,0 +1,350 @@
+
+
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper">
+            <!-- Content Header (Page header) -->
+            <div class="content-header">
+                <div class="container-fluid">
+                    <div class="row mb-2">
+                        <div class="col-sm-12">
+                            <ol class="breadcrumb float-sm-left">
+                                <!-- <li class="breadcrumb-item"><a href="#">Главная</a></li> -->
+                                <li class="breadcrumb-item active">Создать Продукт</li>
+                            </ol>
+                        </div><!-- /.col -->
+                    </div><!-- /.row -->
+                </div><!-- /.container-fluid -->
+            </div>
+            <!-- /.content-header -->
+
+            <!-- Main content -->
+            <div class="content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card card-success">
+                                <div class="card-header">
+                                    <h3 class="card-title">Новый Продукт</h3>
+                                </div>
+                                <!-- card-header -->
+                                <form action="/product/product-create" method="POST">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                
+                                                {{!-- {{#each messages}} --}}
+                                                {{!-- <div class="alert alert-success alert-dismissible fade show">
+                                                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                                    {{messages.type}}
+                                                </div> --}}
+
+                                                {{!-- {{/each}}  --}}
+
+                                                {{success}}
+
+                                                {{#if errors }}
+                                                    {{#each errors }}
+                                                        
+                                                        <div class="alert alert-danger alert-dismissible fade show">
+                                                            <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                                            {{ this.msg }}
+                                                        </div>
+
+                                                    {{/each}}
+                                                {{/if}}
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-8">
+                                                <div class="form-group">
+                                                    <div class="auto-container">
+                                                        <label>Наименование продкции</label>
+                                                        <input type="text" name="product_name" id="product_name" class="form-control select2 txt-auto ui-autocomplete-input" autocomplete="off" style="font-weight:bold" >
+                                                        {{!-- <span class="text-danger" id="">Product name validation message here</span> --}}
+                                                    </div>
+
+                                                   
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label>Код</label>
+                                                    <input type="number" name="name_code" id="name_code" min="100" max="999" class="form-control select2" style="font-weight:bold" >
+                                                    {{!-- <span class="text-danger" id="">Product code validation message here</span> --}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-8 mb-3">
+                                                <div class="form-group">
+                                                    <label>Рисунок</label>
+                                                    <input type="text" name="drawing" id="drawing" class="form-control select2 txt-auto ui-autocomplete-input" autocomplete="off"   style="font-weight:bold" >
+                                                    {{!-- <span class="text-danger" id="">Product picture validation message here</span> --}}
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label>Код</label>
+                                                    <input type="number" name="drawing_code" id="drawing_code" class="form-control select2" style="font-weight:bold" >
+                                                    {{!-- <span class="text-danger" id="">Product code validation message here</span> --}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                            
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <div class="row">
+                                                        <div class="col-md-3">
+                                                            <div class="custom-control custom-checkbox">
+                                                                <input class="custom-control-input" type="checkbox" id="customCheckbox1" 
+                                                                    value="1" name="sort1">
+                                                                <label for="customCheckbox1" class="custom-control-label">Сорт 1</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-3">
+                                                            <input type="number" class="form-control" placeholder="Цена" id="price_input1" disabled name="sort1_price" min="1">
+                                                            {{!-- <span class="text-danger" id="">Incorrect input / Fill this field</span> --}}
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <div class="custom-control custom-checkbox">
+                                                                <input class="custom-control-input" type="checkbox" id="serviceCheckbox1"
+                                                                    value="4" name="serviceCheckbox1" disabled>
+                                                                <label for="serviceCheckbox1" class="custom-control-label">Доп. услуга</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <select name="add_service1" id="add_service1" class="form-control select2" disabled>
+                                                                <option disabled="disabled" selected="selected" style="display:none;" value="0">Выберите один из них</option>
+                                                                {{#each services}}
+                                                                <option value="{{id}}">{{name}}  - {{price}} (UZS)</option>
+                                                                {{/each}}
+                                                            </select>
+                                                            
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                
+                                
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <div class="row">
+                                                        <div class="col-md-3">
+                                                            <div class="custom-control custom-checkbox">
+                                                                <input class="custom-control-input" type="checkbox" id="customCheckbox2"
+                                                                    value="2" name="sort2">
+                                                                <label for="customCheckbox2" class="custom-control-label">Сорт 2</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-3">
+                                                            <input type="number" class="form-control" placeholder="Цена" id="price_input2" disabled name="sort2_price" min="1">
+                                                            {{!-- <span class="text-danger" id="">Incorrect input / Fill this field</span> --}}
+                                                        </div>
+
+                                                        <div class="col-3">
+                                                            <div class="custom-control custom-checkbox">
+                                                                <input class="custom-control-input" type="checkbox" id="serviceCheckbox2"
+                                                                    value="5" name="serviceCheckbox2" disabled>
+                                                                <label for="serviceCheckbox2" class="custom-control-label">Доп. услуга</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-3">
+                                                            <select name="add_service2" id="add_service2" class="form-control select2" disabled>
+                                                                <option disabled="disabled" selected="selected" style="display:none;" value="0">Выберите один из них</option>
+                                                                {{#each services}}
+                                                                <option value="{{id}}">{{name}}  - {{price}} (UZS)</option>
+                                                                {{/each}}
+                                                            </select>
+                                                        </div>
+                                                        
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                
+                                
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <div class="row">
+                                                        <div class="col-md-3">
+                                                            <div class="custom-control custom-checkbox">
+                                                                <input class="custom-control-input" type="checkbox" id="customCheckbox3"
+                                                                    value="3" name="sort3">
+                                                                <label for="customCheckbox3" class="custom-control-label">Сорт 3</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-3">
+                                                            <input type="number" class="form-control" placeholder="Цена" id="price_input3" disabled name="sort3_price" min="1">
+                                                            {{!-- <span class="text-danger" id="">Incorrect input / Fill this field</span> --}}
+                                                        </div>
+
+                                                        <div class="col-3">
+                                                            <div class="custom-control custom-checkbox">
+                                                                <input class="custom-control-input" type="checkbox" id="serviceCheckbox3"
+                                                                    value="6" name="serviceCheckbox3" disabled>
+                                                                <label for="serviceCheckbox3" class="custom-control-label">Доп. услуга</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-3">
+                                                            <select name="add_service3" id="add_service3" class="form-control select2" disabled>
+                                                                <option disabled="disabled" selected="selected" style="display:none;" value="0">Выберите один из них</option>
+                                                                {{#each services}}
+                                                                <option value="{{id}}">{{name}} - {{price}} (UZS)</option>
+                                                                {{/each}}
+                                                            </select>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+
+                                            
+                                
+                                            <div class="col-12">
+                                                <div class="form-group">
+                                                    <input type="submit" id="create-btn" value="Создать" class="btn btn-success swalDefaultSuccess" name="submit">
+                                                        
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                                <!-- card-body -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.container-fluid -->
+            </div>
+            <!-- /.content -->
+        </div>
+    </div>
+    <!-- /.content-wrapper -->
+ 
+
+    <!-- REQUIRED SCRIPTS -->
+    <script src="/dist/js/adminlte.min.js"></script>
+
+    <!-- jQuery -->
+    <script src="/plugins/jquery/jquery.min.js"></script>
+    <!-- Bootstrap -->
+    <script src="/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- AdminLTE -->
+    <script src="/dist/js/adminlte.js"></script>
+
+    <script src="/dist/js/jquery-ui/jquery-ui.js"></script>
+    <script src="/dist/js/jquery-ui/jquery-ui.min.js"></script>
+ 
+
+    <script>
+    $('#customCheckbox1').click(function(){
+    
+    if($(this).is(':checked')){
+        $('#price_input1').attr("disabled", false);
+        $('#serviceCheckbox1').attr("disabled", false);
+        $('#price_input1').attr("required", true);
+    } else{
+        
+        $('#price_input1').attr("disabled", true);
+        $('#price_input1').val("null");
+        $('#serviceCheckbox1').attr("disabled", true);
+        $( "#serviceCheckbox1" ).prop( "checked", false );
+        $('#add_service1').attr("disabled", true);
+        $("select#add_service1").val("0");
+        $('#price_input1').attr("required", false);
+
+    }
+    });
+
+      
+    $('#customCheckbox2').click(function(){
+     
+    if($(this).is(':checked')){
+         
+        $('#price_input2').attr("disabled", false);
+        $('#serviceCheckbox2').attr("disabled", false);
+        $('#price_input2').attr("required", true);
+    } else{
+        
+        $('#price_input2').attr("disabled", true);
+        $('#price_input2').val("null");
+        $('#serviceCheckbox2').attr("disabled", true);
+        $( "#serviceCheckbox2" ).prop( "checked", false );
+        $('#add_service2').attr("disabled", true);
+        $("select#add_service2").val("0");
+        $('#price_input2').attr("required", false);
+    }
+    });
+
+    $('#customCheckbox3').click(function(){
+     if($(this).is(':checked')){
+ 
+        $('#price_input3').attr("disabled", false);
+        $('#serviceCheckbox3').attr("disabled", false);
+        $('#price_input3').attr("required", true);
+ 
+    } else{
+ 
+        $('#price_input3').attr("disabled", true);
+        $('#price_input3').val("null");
+        $('#serviceCheckbox3').attr("disabled", true);
+        $( "#serviceCheckbox3" ).prop( "checked", false );
+        $('#add_service3').attr("disabled", true);
+        $("select#add_service3").val("0");
+        $('#price_input3').attr("required", false);
+    }
+    });
+
+    $('#serviceCheckbox1').click(function(){
+     if($(this).is(':checked')){
+ 
+        $('#add_service1').attr("disabled", false);
+        $('#add_service1').attr("required", true);
+ 
+    } else{
+ 
+        $('#add_service1').attr("disabled", true);
+        $("select#add_service1").val("0");
+        $('#add_service1').attr("required", false);
+    }
+    });
+
+    $('#serviceCheckbox2').click(function(){
+     if($(this).is(':checked')){
+ 
+        $('#add_service2').attr("disabled", false);
+        $('#add_service2').attr("required", true);
+ 
+    } else{
+ 
+         $('#add_service2').attr("disabled", true);
+         $("select#add_service2").val("0");
+         $('#add_service2').attr("required", false);
+    }
+    });
+
+    $('#serviceCheckbox3').click(function(){
+     if($(this).is(':checked')){
+ 
+        $('#add_service3').attr("disabled", false);
+        $('#add_service3').attr("required", true);
+ 
+    } else{
+ 
+         $('#add_service3').attr("disabled", true);
+         $("select#add_service3").val("0");
+         $('#add_service3').attr("required", false);
+    }
+    });
+    
+
+    
+    </script>
+
+
+    
+    
