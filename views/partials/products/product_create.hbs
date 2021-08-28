@@ -32,25 +32,67 @@
                                         <div class="row">
                                             <div class="col-12">
                                                 
-                                                {{!-- {{#each messages}} --}}
-                                                {{!-- <div class="alert alert-success alert-dismissible fade show">
+                                                {{#if success}}
+                                                <div class="alert alert-success alert-dismissible fade show">
                                                     <button type="button" class="close" data-dismiss="alert">&times;</button>
-                                                    {{messages.type}}
-                                                </div> --}}
+                                                    <span>{{success}}</span>
+                                                </div>
 
-                                                {{!-- {{/each}}  --}}
+                                                {{/if}} 
 
-                                                {{success}}
+                                                {{#if warning}}
+                                                <div class="alert alert-warning alert-dismissible fade show">
+                                                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                                    <span>
+                                                        {{#each warning}}
+                                                            <span>- {{msg}}</span><br>
+                                                        {{/each}}
+                                                    </span>
+                                                    <table class="table table-bordered mt-2">
+                                                        <thead>
+                                                            <tr>
+                                                                {{#each existed_product}}
+                                                                <td style="border:1px solid black">Название продкта - {{product_name}} <span class="font-weight-bold">[{{name_code}}]</span></td>
+                                                                <td style="border:1px solid black">Рисунок - {{drawing}} <span class="font-weight-bold">[{{drawing_code}}]</span></td>
+                                                                <td style="border:1px solid black">Сорт - <span class="font-weight-bold">{{sort}}</span></td>
+                                                                <td style="border:1px solid black">Цена - {{price}} (UZS)</td>
+                                                                <td style="border:1px solid black">Общий код - <span class="font-weight-bold">{{overall_code}}</span></td>
+                                                                {{#if AdditionalServiceId}}
+                                                                <td style="border:1px solid black">Доп. услуга - ЕСТЬ</td>
+                                                                {{else}}
+                                                                <td style="border:1px solid black">Доп. услуга - НЕТ</td>
+                                                                {{/if}}
+                                                                {{/each}}
+                                                            </tr>
+                                                        </thead>
+                                                    </table>
+                                                </div>
 
-                                                {{#if errors }}
-                                                    {{#each errors }}
-                                                        
-                                                        <div class="alert alert-danger alert-dismissible fade show">
-                                                            <button type="button" class="close" data-dismiss="alert">&times;</button>
-                                                            {{ this.msg }}
-                                                        </div>
+                                                {{/if}} 
 
-                                                    {{/each}}
+                                                {{#if code_error_message }}
+                                                    <div class="alert alert-warning alert-dismissible fade show">
+                                                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                                    <span>
+                                                        {{#each code_error_message}}
+                                                            <span>- {{msg}}</span><br>
+                                                        {{/each}}
+                                                    </span>
+                                                </div>
+                                                {{/if}}
+
+                                        
+
+                                                {{#if alert}}
+                                                    
+                                                    <div class="alert alert-danger alert-dismissible fade show">
+                                                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                                        {{#each alert }}
+                                                            <span>- {{ msg }} </span><br>
+                                                        {{/each}}
+                                                    </div>
+
+                                                    
                                                 {{/if}}
                                             </div>
                                         </div>
@@ -59,8 +101,12 @@
                                                 <div class="form-group">
                                                     <div class="auto-container">
                                                         <label>Наименование продкции</label>
-                                                        <input type="text" name="product_name" id="product_name" class="form-control select2 txt-auto ui-autocomplete-input" autocomplete="off" style="font-weight:bold" >
-                                                        {{!-- <span class="text-danger" id="">Product name validation message here</span> --}}
+                                                        <input type="text" name="product_name" id="product_name" class="form-control" autocomplete="off"  
+                                                        {{#if req_values}}
+                                                        value="{{req_values.product_name}}"
+                                                        {{/if}}
+                                                        >
+                                                        
                                                     </div>
 
                                                    
@@ -69,25 +115,37 @@
                                             <div class="col-md-4">
                                                 <div class="form-group">
                                                     <label>Код</label>
-                                                    <input type="number" name="name_code" id="name_code" min="100" max="999" class="form-control select2" style="font-weight:bold" >
-                                                    {{!-- <span class="text-danger" id="">Product code validation message here</span> --}}
+                                                    <input type="number" name="name_code" id="name_code" min="100" max="999" class="form-control" 
+                                                    {{#if req_values}}
+                                                        value="{{req_values.name_code}}"
+                                                    {{/if}}
+                                                    >
+                                                    
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="row">
-                                            <div class="col-md-8 mb-3">
+                                            <div class="col-md-8">
                                                 <div class="form-group">
                                                     <label>Рисунок</label>
-                                                    <input type="text" name="drawing" id="drawing" class="form-control select2 txt-auto ui-autocomplete-input" autocomplete="off"   style="font-weight:bold" >
-                                                    {{!-- <span class="text-danger" id="">Product picture validation message here</span> --}}
+                                                    <input type="text" name="drawing" id="drawing" class="form-control" autocomplete="off" 
+                                                    {{#if req_values}}
+                                                        value="{{req_values.drawing}}"
+                                                    {{/if}}
+                                                    >
+                                                    
                                                 </div>
                                             </div>
 
                                             <div class="col-md-4">
                                                 <div class="form-group">
                                                     <label>Код</label>
-                                                    <input type="number" name="drawing_code" id="drawing_code" class="form-control select2" style="font-weight:bold" >
-                                                    {{!-- <span class="text-danger" id="">Product code validation message here</span> --}}
+                                                    <input type="number" name="drawing_code" id="drawing_code" class="form-control" 
+                                                    {{#if req_values}}
+                                                        value="{{req_values.drawing_code}}"
+                                                    {{/if}}
+                                                    >
+                                                    
                                                 </div>
                                             </div>
                                         </div>
@@ -97,29 +155,37 @@
                                                 <div class="form-group">
                                                     <div class="row">
                                                         <div class="col-md-3">
-                                                            <div class="custom-control custom-checkbox">
-                                                                <input class="custom-control-input" type="checkbox" id="customCheckbox1" 
-                                                                    value="1" name="sort1">
-                                                                <label for="customCheckbox1" class="custom-control-label">Сорт 1</label>
-                                                            </div>
+                                                            <label for="">Сорт</label>
+                                                            <input type="number" name="sort1" class="form-control select2" style="font-weight:bold" min="1" max="5"
+                                                                {{#if req_values.sort1}}
+                                                                    value="{{req_values.sort1}}"
+                                                                {{/if}}
+                                                            >
                                                         </div>
                                                         <div class="col-sm-3">
-                                                            <input type="number" class="form-control" placeholder="Цена" id="price_input1" disabled name="sort1_price" min="1">
-                                                            {{!-- <span class="text-danger" id="">Incorrect input / Fill this field</span> --}}
+                                                            <label for="">Цена</label>
+                                                            <input type="number" class="form-control" placeholder="Цена" id="price_input1"  name="sort1_price" min="1"
+                                                            {{#if req_values.sort1_price}}
+                                                            value="{{req_values.sort1_price}}"
+                                                            {{/if}}
+                                                            >
+                                                            
                                                         </div>
                                                         <div class="col-md-3">
-                                                            <div class="custom-control custom-checkbox">
+                                                            <div class="custom-control custom-checkbox float-right" style="margin-top:37px;">
                                                                 <input class="custom-control-input" type="checkbox" id="serviceCheckbox1"
-                                                                    value="4" name="serviceCheckbox1" disabled>
+                                                                    value="4" name="serviceCheckbox1">
                                                                 <label for="serviceCheckbox1" class="custom-control-label">Доп. услуга</label>
                                                             </div>
                                                         </div>
                                                         <div class="col-md-3">
-                                                            <select name="add_service1" id="add_service1" class="form-control select2" disabled>
+                                                            <select name="add_service1" id="add_service1" class="form-control select2" disabled style="margin-top: 34px;">
                                                                 <option disabled="disabled" selected="selected" style="display:none;" value="0">Выберите один из них</option>
+                                                                
                                                                 {{#each services}}
                                                                 <option value="{{id}}">{{name}}  - {{price}} (UZS)</option>
                                                                 {{/each}}
+                                                                
                                                             </select>
                                                             
                                                         </div>
@@ -128,7 +194,7 @@
                                             </div>
                                 
                                 
-                                            <div class="col-md-12">
+                                            {{!-- <div class="col-md-12">
                                                 <div class="form-group">
                                                     <div class="row">
                                                         <div class="col-md-3">
@@ -140,7 +206,6 @@
                                                         </div>
                                                         <div class="col-sm-3">
                                                             <input type="number" class="form-control" placeholder="Цена" id="price_input2" disabled name="sort2_price" min="1">
-                                                            {{!-- <span class="text-danger" id="">Incorrect input / Fill this field</span> --}}
                                                         </div>
 
                                                         <div class="col-3">
@@ -162,10 +227,10 @@
 
                                                     </div>
                                                 </div>
-                                            </div>
+                                            </div> --}}
                                 
                                 
-                                            <div class="col-md-12">
+                                            {{!-- <div class="col-md-12">
                                                 <div class="form-group">
                                                     <div class="row">
                                                         <div class="col-md-3">
@@ -177,7 +242,6 @@
                                                         </div>
                                                         <div class="col-sm-3">
                                                             <input type="number" class="form-control" placeholder="Цена" id="price_input3" disabled name="sort3_price" min="1">
-                                                            {{!-- <span class="text-danger" id="">Incorrect input / Fill this field</span> --}}
                                                         </div>
 
                                                         <div class="col-3">
@@ -198,7 +262,7 @@
 
                                                     </div>
                                                 </div>
-                                            </div>
+                                            </div> --}}
 
 
 
