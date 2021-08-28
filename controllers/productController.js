@@ -79,6 +79,8 @@ router.get('/product-create',(req,res)=>{
 router.post('/product-create',
 [
     check('product_name')
+        .isLength({ min: 10 })
+        .withMessage('Название продукта должно состоять не менее чем из 10 символов.')
         .trim()
         .not()
         .isEmpty()
@@ -121,7 +123,7 @@ router.post('/product-create',
             const alert = errors.array();
             const req_values = req.body;
             
-            res.render('partials/products/product_create', {alert,services,req_values});
+            return res.render('partials/products/product_create', {alert,services,req_values});
         }
         else 
         {
@@ -136,7 +138,6 @@ router.post('/product-create',
             const service1 = req.body.add_service1 ? parseInt(req.body.add_service1) : null;
             //-----------------------------------------------------------------//
             
-
             // Variables to check the input values are created before or not
             let equality = 0;
             var same_product;
@@ -181,8 +182,8 @@ router.post('/product-create',
             }
             
             console.log(equality);
-            if(equality == 0 ){
-
+            if(equality == 0 )
+            {
                 var name_code_error_count = 0;
                 var drawing_code_error_count = 0;
                 var name_error_count = 0;
@@ -244,7 +245,7 @@ router.post('/product-create',
                     })
     
                     const success = 'Товар создан успешно!';
-                    res.render('partials/products/product_create', {success,services});
+                    return  res.render('partials/products/product_create', {success,services});
                 }
                 if(error_counter > 0)
                 {
@@ -310,7 +311,7 @@ router.post('/product-create',
                 
                 const req_values = req.body;
                 
-                res.render('partials/products/product_create', {code_error_message,services,req_values});
+                return res.render('partials/products/product_create', {code_error_message,services,req_values});
 
             }
             if(equality > 0) // It means already existed product created again
@@ -336,7 +337,7 @@ router.post('/product-create',
                         warning.push({msg:'Использован неправильный код рисунок для '+existed_product[0].drawing+'.  Должно быть - [' + existed_product[0].drawing_code + ']'});
                     }
 
-                    res.render('partials/products/product_create', {warning,services,req_values,existed_product});
+                    return res.render('partials/products/product_create', {warning,services,req_values,existed_product});
                 
                 })
                 
