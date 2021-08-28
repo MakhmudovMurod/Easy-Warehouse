@@ -79,6 +79,7 @@ router.get('/product-create',(req,res)=>{
 router.post('/product-create',
 [
     check('product_name')
+        .trim()
         .not()
         .isEmpty()
         .withMessage('Название продукта не может быть пустым!'),
@@ -87,87 +88,264 @@ router.post('/product-create',
         .isEmpty()
         .withMessage('Код продукта не может быть пустым!'),
     check('drawing')
+        .trim()
         .not()
         .isEmpty()
         .withMessage('Рисунок товара не может быть пустым!'),
     check('drawing_code')
         .not()
         .isEmpty()
-        .withMessage('Код продукта не может быть пустым!'),
-
+        .withMessage('Код рисунка не может быть пустым!'),
+    check('sort1')
+        .not()
+        .isEmpty()
+        .withMessage('Сорт продукта не может быть пустым!'),
+    check('sort1_price')
+        .not()
+        .isEmpty()
+        .withMessage('Цена продукта не может быть пустым!'),
 ],(req,res)=>{
     
-    // All requested values
-    const p_name = (req.body.product_name).toUpperCase();
-    const name_code = req.body.name_code;
-    const drawing = (req.body.drawing).toUpperCase();
-    const drawing_code = req.body.drawing_code;
-    // --------------------------------------//
-    const sort1 = req.body.sort1;
-    const sort1_price = req.body.sort1_price
-    const p1_code = req.body.add_service1 ? name_code + drawing_code + sort1 + req.body.add_service1 : name_code + drawing_code + sort1 + 0;
-    const service1 = req.body.add_service1 ? parseInt(req.body.add_service1) : null;
+    Promise.all([
+        Additional_service.findAll(),
+        Product.findAll(),
+    ])
+    .then(data => {
 
-    // --------------------------------------//
-    const sort2 = req.body.sort2;
-    const sort2_price = req.body.sort2_price;
-    const p2_code = req.body.add_service2 ? name_code + drawing_code + sort2 + req.body.add_service2 : name_code + drawing_code + sort2 + 0;
-    const service2 = req.body.add_service2 ? parseInt(req.body.add_service2) : null;
-    // --------------------------------------//
-    const sort3 = req.body.sort3;
-    const sort3_price = req.body.sort3_price;
-    const p3_code = req.body.add_service3 ? name_code + drawing_code + sort3 + req.body.add_service3 : name_code + drawing_code + sort3 + 0;
-    const service3 = req.body.add_service3 ? parseInt(req.body.add_service3) : null;
-    
-    
-    if(req.body.sort2)
-    {
-        Product.create({
-            product_name:p_name,
-            name_code:name_code,
-            drawing:drawing,
-            drawing_code:drawing_code,
-            sort:sort2,
-            overall_code:p2_code,
-            price:sort2_price,
-            available_quantity:0,
-            AdditionalServiceId:service2,
-        })
-        
-    }
-    if(req.body.sort3){
-        Product.create({
-            product_name:p_name,
-            name_code:name_code,
-            drawing:drawing,
-            drawing_code:drawing_code,
-            sort:sort3,
-            overall_code:p3_code,
-            price:sort3_price,
-            available_quantity:0,
-            AdditionalServiceId:service3,
-        })
-    }
-    if(req.body.sort1)
-    {
-        Product.create({
-            product_name:p_name,
-            name_code:name_code,
-            drawing:drawing,
-            drawing_code:drawing_code,
-            sort:sort1,
-            overall_code:p1_code,
-            price:sort1_price,
-            available_quantity:0,
-            AdditionalServiceId:service1,
-        })
-    }
+        const services = data[0];
+        const products = data[1];
+        const errors = validationResult(req);
 
-    var errors = validationResult(req).array();
-    
-    res.redirect('/product/product-create');
-    
+        if(!errors.isEmpty())
+        {
+            const alert = errors.array();
+            const req_values = req.body;
+            
+            res.render('partials/products/product_create', {alert,services,req_values});
+        }
+        else 
+        {
+            // All requested values
+            const p_name = (req.body.product_name).toUpperCase();
+            const name_code = req.body.name_code;
+            const drawing = (req.body.drawing).toUpperCase();
+            const drawing_code = req.body.drawing_code;
+            const sort1 = req.body.sort1;
+            const sort1_price = req.body.sort1_price
+            const p1_code = req.body.add_service1 ? name_code + drawing_code + sort1 + req.body.add_service1 : name_code + drawing_code + sort1 + 0;
+            const service1 = req.body.add_service1 ? parseInt(req.body.add_service1) : null;
+            //-----------------------------------------------------------------//
+            
 
+            // Variables to check the input values are created before or not
+            let equality = 0;
+            var same_product;
+            var price_difference;
+            var name_code_difference;
+            var drawing_code_difference;
+
+            // Requested values caompared (by linear search) with database rows until it finds same product with exact same name, drawing and sort
+            for(let i=0; i<products.length; i++)
+            {
+                if(p_name.localeCompare(products[i].product_name) == 0) 
+                {
+                    if(drawing.localeCompare(products[i].drawing) == 0) 
+                    { 
+                       if(sort1 == products[i].sort)
+                        {
+                            if(service1 == products[i].AdditionalServiceId)
+                            {
+                                ++equality;
+                                same_product = products[i].id;
+                                
+                                if(sort1_price != products[i].price)
+                                {
+                                    price_difference = true; 
+                                } 
+                                if(name_code != products[i].name_code)
+                                {
+                                    name_code_difference = true;
+                                }
+                                if(drawing_code != products[i].drawing_code)
+                                {
+                                    drawing_code_difference = true;
+                                }
+                            }
+                            
+                        }
+                        
+                    }          
+                      
+                }
+                
+            }
+            
+            console.log(equality);
+            if(equality == 0 ){
+
+                var name_code_error_count = 0;
+                var drawing_code_error_count = 0;
+                var name_error_count = 0;
+                var drawing_error_count = 0;
+                var error_counter = 0;
+                let code_error_message = [];
+                
+                for(let i=0; i<products.length; i++)
+                {
+                    if(name_code == products[i].name_code)
+                    {
+                        if(p_name != products[i].product_name)
+                        {
+                            ++name_code_error_count;
+                            ++error_counter;
+                        }
+                    }
+                    if(p_name == products[i].product_name)
+                    {
+                        if(name_code != products[i].name_code)
+                        {
+                            ++name_error_count;
+                            ++error_counter;
+                        }
+                    }
+                    if(drawing_code == products[i].drawing_code)
+                    {
+                        if(drawing != products[i].drawing)
+                        {
+                            ++drawing_code_error_count;
+                            ++error_counter;
+                        }
+                    }
+                    if(drawing == products[i].drawing)
+                    {
+                        if(drawing_code != products[i].drawing_code)
+                        {
+                            ++drawing_error_count;
+                            ++error_counter;
+                        }
+                    }
+                    
+                }
+
+
+                console.log("Error Counter value: "+error_counter);
+                if(error_counter == 0)
+                {
+                    Product.create({
+                        product_name:p_name,
+                        name_code:name_code,
+                        drawing:drawing,
+                        drawing_code:drawing_code,
+                        sort:sort1,
+                        overall_code:p1_code,
+                        price:sort1_price,
+                        available_quantity:0,
+                        AdditionalServiceId:service1,
+                    })
+    
+                    const success = 'Товар создан успешно!';
+                    res.render('partials/products/product_create', {success,services});
+                }
+                if(error_counter > 0)
+                {
+                    if(name_code_error_count > 0)
+                    {
+                        
+                        Promise.all([
+                            Product.findAll({where:{name_code:parseInt(req.body.name_code)}}),
+                        ])  
+                        .then(data=>{
+                            let existed_product = data[0];
+                            
+                            let message = {msg:'Этот код названия раньше использовался для '+ existed_product[0].product_name +'. Вы не можете использовать этот код для других продуктов!'};
+                            
+                            code_error_message.push(message);
+                            
+                        })
+                    }
+                    if(name_error_count > 0)
+                    {
+                        Promise.all([
+                            Product.findAll({where:{product_name:p_name}}),
+                        ])  
+                        .then(data=>{
+                            let existed_product = data[0];
+                            
+                            let message = {msg:'Это имя использовалось ранее с кодом  '+ existed_product[0].name_code +'. Вы не можете использовать разные коды для одного название!'};
+                            
+                            code_error_message.push(message);
+                            
+                        })
+                    }
+                    if(drawing_error_count > 0)
+                    {
+                        Promise.all([
+                            Product.findAll({where:{drawing:drawing}}),
+                        ])  
+                        .then(data=>{
+                            let existed_product = data[0];
+                            
+                            let message = {msg:'Использован неправильный код рисунок для '+existed_product[0].drawing +'.  Должно быть - [' + existed_product[0].drawing_code + ']'};
+                            
+                            code_error_message.push(message);
+                            
+                        })
+                    }
+                    if(drawing_code_error_count > 0)
+                    {
+                        Promise.all([
+                            Product.findAll({where:{drawing_code:parseInt(req.body.drawing_code)}}),
+                        ])  
+                        .then(data=>{
+                            let existed_product = data[0];
+                            
+                            let message = {msg:'Этот код рисунок раньше использовался для '+ existed_product[0].drawing +'. Вы не можете использовать этот код для других рисунок!'};
+
+                            code_error_message.push(message);
+                            
+                        })
+
+                    }
+                }
+                
+                const req_values = req.body;
+                
+                res.render('partials/products/product_create', {code_error_message,services,req_values});
+
+            }
+            if(equality > 0) // It means already existed product created again
+            {
+                Promise.all([
+                    Product.findAll({where:{id:same_product}}),
+                ])  
+                .then(data=>{
+                    let existed_product = data[0];
+                    console.log(existed_product);
+                    const req_values = req.body;
+                    let warning = [{msg:'Этот продукт уже создан!'}];
+                    if(price_difference)
+                    {
+                        warning.push({msg:'Этот товар создавался раньше по другой цене : ['+ existed_product[0].price + ' UZS]'});
+                    }
+                    if(name_code_difference)
+                    {
+                        warning.push({msg:'Использован неправильный код названия для '+existed_product[0].product_name+'.  Должно быть - [' + existed_product[0].name_code + ']'});
+                    }
+                    if(drawing_code_difference)
+                    {
+                        warning.push({msg:'Использован неправильный код рисунок для '+existed_product[0].drawing+'.  Должно быть - [' + existed_product[0].drawing_code + ']'});
+                    }
+
+                    res.render('partials/products/product_create', {warning,services,req_values,existed_product});
+                
+                })
+                
+                
+            }
+            
+        }
+
+    }) // end of promise then
     
 });
 
