@@ -85,7 +85,7 @@ app.use('/product', require('./controllers/productController'));
 app.use('/', require('./controllers/userController'));
 app.use('/warehouse', require('./controllers/warehouseController'));
 app.use('/client', require('./controllers/clientController'));
-
+app.use('/settings',require('./controllers/settingController'));
 
 app.listen(PORT,()=>{
     console.log(`Express server started at port : ${PORT}` );

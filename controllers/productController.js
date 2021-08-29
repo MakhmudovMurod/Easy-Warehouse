@@ -258,7 +258,7 @@ router.post('/product-create',
                         .then(data=>{
                             let existed_product = data[0];
                             
-                            let message = {msg:'Этот код названия раньше использовался для '+ existed_product[0].product_name +'. Вы не можете использовать этот код для других продуктов!'};
+                            let message = {msg:'Этот код названия ('+ existed_product[0].name_code +') раньше использовался для '+ existed_product[0].product_name +'. Вы не можете использовать этот код для других продуктов!'};
                             
                             code_error_message.push(message);
                             
@@ -272,7 +272,7 @@ router.post('/product-create',
                         .then(data=>{
                             let existed_product = data[0];
                             
-                            let message = {msg:'Это имя использовалось ранее с кодом  '+ existed_product[0].name_code +'. Вы не можете использовать разные коды для одного название!'};
+                            let message = {msg:'Это имя ('+ existed_product[0].product_name +') использовалось ранее с кодом  '+ existed_product[0].name_code +'. Вы не можете использовать разные коды для одного название!'};
                             
                             code_error_message.push(message);
                             
@@ -439,67 +439,5 @@ router.post('/product-delete/:id', (req,res)=>{
     res.redirect('/product/price-list');
 });
 
-
-//----------------------------------------------------//
-    
-//PRODUCT SETTINGS
-
-//PRODUCT CONSTANT PAGE
-router.get('/constant-create', (req,res)=>{
-    
-    Promise.all([
-        Product_Constant.findAll(),
-        Additional_service.findAll(),
-    ])
-    .then(data =>{
-
-        var drawings = data[0];
-        var services = data[1];
-
-        res.render('partials/products/product_constants', {drawings, services}) 
-    })
-    .catch( err => console.log(err));
-});
-router.post('/constant-create', (req,res)=>{
-
-    Product_Constant.create({
-        name:req.body.const_name,
-        code:req.body.const_code,
-    })
-    .then(
-        res.redirect('/product/constant-create') 
-    )
-    .catch( err => console.log(err));
-});
-
-//PRODUCT CONSTANT DELETE ENDPOINT
-router.post('/constant-delete/:id', (req,res) =>{
-    Product_Constant.destroy({where:{id:req.params.id}});
-
-    res.redirect('/product/constant-create');
-});
-
-//ADDITIONAL SERVICE CREATE PAGE
-router.post('/service-create', (req,res)=>{
-    Additional_service.create({
-        name:req.body.service_name,
-        code:req.body.service_code,
-        price:req.body.service_price
-    })
-    .then(
-        res.redirect('/product/constant-create')
-    )
-    .catch( err => console.log(err));
-
-});
-
-//ADDITIONAL SERVICE DELETE ENDPOINT
-router.post('/service-delete/:id', (req,res)=>{
-
-    Additional_service.destroy({where:{id:req.params.id}});
-
-    res.redirect('/product/constant-create');
-
-});
 
 module.exports = router;

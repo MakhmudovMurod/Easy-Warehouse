@@ -101,7 +101,10 @@
                                                 <div class="form-group">
                                                     <div class="auto-container">
                                                         <label>Наименование продкции</label>
-                                                        <input type="text" name="product_name" id="product_name" class="form-control" autocomplete="off"  
+                                                        <br>
+                                                        <input
+                                                            id="nameAutoComplete" type="search" dir="ltr" spellcheck=false autocorrect="off" autocomplete="off" autocapitalize="off" 
+                                                            name="product_name" style="width:100%;"
                                                         {{#if req_values}}
                                                         value="{{req_values.product_name}}"
                                                         {{/if}}
@@ -115,7 +118,8 @@
                                             <div class="col-md-4">
                                                 <div class="form-group">
                                                     <label>Код</label>
-                                                    <input type="number" name="name_code" id="name_code" min="100" max="999" class="form-control" 
+                                                    <input id="nameCodeAutoComplete" type="search" dir="ltr" spellcheck=false autocorrect="off" autocomplete="off" autocapitalize="off" 
+                                                     name="name_code" min="100" max="999" style="width: 100%;" 
                                                     {{#if req_values}}
                                                         value="{{req_values.name_code}}"
                                                     {{/if}}
@@ -135,6 +139,7 @@
                                                     >
                                                     
                                                 </div>
+
                                             </div>
 
                                             <div class="col-md-4">
@@ -194,79 +199,6 @@
                                             </div>
                                 
                                 
-                                            {{!-- <div class="col-md-12">
-                                                <div class="form-group">
-                                                    <div class="row">
-                                                        <div class="col-md-3">
-                                                            <div class="custom-control custom-checkbox">
-                                                                <input class="custom-control-input" type="checkbox" id="customCheckbox2"
-                                                                    value="2" name="sort2">
-                                                                <label for="customCheckbox2" class="custom-control-label">Сорт 2</label>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-sm-3">
-                                                            <input type="number" class="form-control" placeholder="Цена" id="price_input2" disabled name="sort2_price" min="1">
-                                                        </div>
-
-                                                        <div class="col-3">
-                                                            <div class="custom-control custom-checkbox">
-                                                                <input class="custom-control-input" type="checkbox" id="serviceCheckbox2"
-                                                                    value="5" name="serviceCheckbox2" disabled>
-                                                                <label for="serviceCheckbox2" class="custom-control-label">Доп. услуга</label>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-3">
-                                                            <select name="add_service2" id="add_service2" class="form-control select2" disabled>
-                                                                <option disabled="disabled" selected="selected" style="display:none;" value="0">Выберите один из них</option>
-                                                                {{#each services}}
-                                                                <option value="{{id}}">{{name}}  - {{price}} (UZS)</option>
-                                                                {{/each}}
-                                                            </select>
-                                                        </div>
-                                                        
-
-                                                    </div>
-                                                </div>
-                                            </div> --}}
-                                
-                                
-                                            {{!-- <div class="col-md-12">
-                                                <div class="form-group">
-                                                    <div class="row">
-                                                        <div class="col-md-3">
-                                                            <div class="custom-control custom-checkbox">
-                                                                <input class="custom-control-input" type="checkbox" id="customCheckbox3"
-                                                                    value="3" name="sort3">
-                                                                <label for="customCheckbox3" class="custom-control-label">Сорт 3</label>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-sm-3">
-                                                            <input type="number" class="form-control" placeholder="Цена" id="price_input3" disabled name="sort3_price" min="1">
-                                                        </div>
-
-                                                        <div class="col-3">
-                                                            <div class="custom-control custom-checkbox">
-                                                                <input class="custom-control-input" type="checkbox" id="serviceCheckbox3"
-                                                                    value="6" name="serviceCheckbox3" disabled>
-                                                                <label for="serviceCheckbox3" class="custom-control-label">Доп. услуга</label>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-3">
-                                                            <select name="add_service3" id="add_service3" class="form-control select2" disabled>
-                                                                <option disabled="disabled" selected="selected" style="display:none;" value="0">Выберите один из них</option>
-                                                                {{#each services}}
-                                                                <option value="{{id}}">{{name}} - {{price}} (UZS)</option>
-                                                                {{/each}}
-                                                            </select>
-                                                        </div>
-
-                                                    </div>
-                                                </div>
-                                            </div> --}}
-
-
-
-                                            
                                 
                                             <div class="col-12">
                                                 <div class="form-group">
@@ -291,6 +223,73 @@
  
 
     <!-- REQUIRED SCRIPTS -->
+    
+    <script src="/dist/js/autocomplete/autoComplete.js"></script>
+    <script src="/dist/js/autocomplete/autoComplete.min.js"></script>
+    <script>
+
+        const getProducts = async searchProduct =>{
+            const response = await fetch('/product/product-search');
+            
+            products = await response.json();
+
+            let product_names = products.map(product => product.product_name);
+            let uniq_products = [...new Set(product_names)];
+
+            const autoCompleteJS = new autoComplete({
+                selector: "#nameAutoComplete",
+                data: {
+                    src: uniq_products,
+                    cache: true,
+                },
+                resultItem: {
+                    highlight: true
+                },
+                searchEngine: "loose",
+                events: {
+                    input: {
+                        selection: (event) => {
+                            const selection = event.detail.selection.value;
+                            autoCompleteJS.input.value = selection;
+                        }
+                    }
+                }
+            });      
+
+            let name_codes = products.map(product => product.name_code);
+            let uniq_name_codes = [...new Set(name_codes)];
+
+            const nameCodeAutoComplete = new autoComplete({
+                selector: "#nameCodeAutoComplete",
+                data: {
+                    src: uniq_name_codes,
+                    cache: true,
+                },
+                resultItem: {
+                    highlight: true,
+                },
+                searchEngine: "strict",
+                events: {
+                    input: {
+                        selection: (event) => {
+                            const selection = event.selection.value;
+                            nameCodeAutoComplete.input.value = selection;
+                        }
+                    }
+                }
+            });
+             
+        
+        }
+
+        getProducts();
+
+        
+
+    </script>
+    
+
+
     <script src="/dist/js/adminlte.min.js"></script>
 
     <!-- jQuery -->
