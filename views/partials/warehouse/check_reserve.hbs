@@ -16,57 +16,29 @@
       </div>
       <!-- /.content-header -->
 
-      <!-- Main content -->
+      
       <div class="content">
-        <div class="container-fluid">
-          <div class="row">
+        
+        <div class="row mb-4">
+          <div class="col-3">
+            <a href="/warehouse/warehouse-replenish" class="btn btn-success">Пополнить Резерв</a>
+            <a href="/warehouse/warehouse-supplement-story" class="btn btn-info">История Пополнений</a>
+          </div>
+          
+        </div>
+        <div class="row">
 
-            <!-- Tables -->
-            <div class="col-12">
-              <div class="card card-success">
-                  <div class="card-header">
-                      <h3 class="card-title">Товары в наличии на складе (Без дополнительной услуги) </h3>
-                  </div>
-                  <!-- /.card-header -->
-                  <div class="card-body">
-                      <table id="Table1" class="table table-bordered table-striped">
-                          <thead>
-                              <tr>
-                                  <th>№</th>
-                                  <th>Наименование Продкции</th>
-                                  <th>Рисунок</th>
-                                  <th>Сорт</th>
-                                  <th>Код продукта</th>
-                                  <th>Кол-во</th>
-                                  <th>Цена (UZS)</th>
-                                  <th>Общая Стоимость (UZS)</th>
-                              </tr>
-                          </thead>
-
-                          <tbody>
-                          
-                            {{#each available_products }}
-                              
-                              <tr>
-                                
-                                <td>{{id}}</td>
-                                <td>{{product_name}}</td>
-                                <td>{{drawing}}</td>
-                                <td>{{sort}}</td>
-                                <td>{{overall_code}}</td>
-                                <td class="text-success text-bold">{{currencyFormat available_quantity}}</td>
-                                {{#if price}}
-                                <td>{{currencyFormat price}}</td>
-                                <td class="text-info text-bold">{{currencyFormat (math  available_quantity "*" price)}}</td>
-                                {{/if}}
-                              
-                              </tr>
-                            
-                            {{/each}} 
-
-                          </tbody>
-                          <tfoot>
-                              <tr>
+          <!-- Tables -->
+          {{!-- <div class="col-12">
+            <div class="card card-success">
+                <div class="card-header">
+                    <h3 class="card-title">Товары в наличии на складе (Без дополнительной услуги) </h3>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
+                    <table id="Table1" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
                                 <th>№</th>
                                 <th>Наименование Продкции</th>
                                 <th>Рисунок</th>
@@ -75,59 +47,59 @@
                                 <th>Кол-во</th>
                                 <th>Цена (UZS)</th>
                                 <th>Общая Стоимость (UZS)</th>
-                              </tr>
-                          </tfoot>
-                      </table>
-                  </div>
-                  <!-- /.card-body -->
-              </div>
-            </div>
+                            </tr>
+                        </thead>
 
-            <div class="col-12">
-              <div class="card card-danger">
-                  <div class="card-header">
-                      <h3 class="card-title">Товаров нет в наличии на складе (без дополнительной услуги)</h3>
-                  </div>
-                  <!-- /.card-header -->
-                  <div class="card-body">
-                      <table id="Table2" class="table table-bordered table-striped">
-                          <thead>
-                              <tr>
-                                  <th>№</th>
-                                  <th>Наименование Продкции</th>
-                                  <th>Рисунок</th>
-                                  <th>Сорт</th>
-                                  <th>Код продукта</th>
-                                  <th>Кол-во</th>
-                                  <th>Цена (UZS)</th>
-                                  <th>Общая Стоимость (UZS)</th>
-                              </tr>
-                          </thead>
-
-                          <tbody>
-                          
-                            {{#each not_available_products }}
-                              
-                              <tr>
-                                
-                                <td>{{id}}</td>
-                                <td>{{product_name}}</td>
-                                <td>{{drawing}}</td>
-                                <td>{{sort}}</td>
-                                <td>{{overall_code}}</td>
-                                <td class="text-success text-bold">{{currencyFormat available_quantity}}</td>
-                                {{#if price}}
-                                <td>{{currencyFormat price}}</td>
-                                <td class="text-info text-bold">{{currencyFormat (math  available_quantity "*" price)}}</td>
-                                {{/if}}
-                              
-                              </tr>
+                        <tbody>
+                        
+                          {{#each available_products }}
                             
-                            {{/each}} 
+                            <tr>
+                              
+                              <td>{{id}}</td>
+                              <td>{{product_name}}</td>
+                              <td>{{drawing}}</td>
+                              <td>{{sort}}</td>
+                              <td>{{overall_code}}</td>
+                              <td class="text-success text-bold">{{currencyFormat available_quantity}}</td>
+                              {{#if price}}
+                              <td>{{currencyFormat price}}</td>
+                              <td class="text-info text-bold">{{currencyFormat (math  available_quantity "*" price)}}</td>
+                              {{/if}}
+                            
+                            </tr>
+                          
+                          {{/each}} 
 
-                          </tbody>
-                          <tfoot>
-                              <tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                              <th>№</th>
+                              <th>Наименование Продкции</th>
+                              <th>Рисунок</th>
+                              <th>Сорт</th>
+                              <th>Код продукта</th>
+                              <th>Кол-во</th>
+                              <th>Цена (UZS)</th>
+                              <th>Общая Стоимость (UZS)</th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                <!-- /.card-body -->
+            </div>
+          </div> --}}
+
+          <div class="col-12">
+            <div class="card card-danger">
+                <div class="card-header">
+                    <h3 class="card-title">Товаров нет в наличии на складе (без дополнительной услуги)</h3>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
+                    <table id="Table2" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
                                 <th>№</th>
                                 <th>Наименование Продкции</th>
                                 <th>Рисунок</th>
@@ -136,67 +108,59 @@
                                 <th>Кол-во</th>
                                 <th>Цена (UZS)</th>
                                 <th>Общая Стоимость (UZS)</th>
-                              </tr>
-                          </tfoot>
-                      </table>
-                  </div>
-                  <!-- /.card-body -->
-              </div>
-            </div>
+                            </tr>
+                        </thead>
 
-            <div class="col-12">
-              <div class="card card-info">
-                  <div class="card-header">
-                      <h3 class="card-title">Товары с дополнительными услугами</h3>
-                  </div>
-                  <!-- /.card-header -->
-                  <div class="card-body">
-                      <table id="Table3" class="table table-bordered table-striped">
-                          <thead>
-                              <tr>
-                                  <th>№</th>
-                                  <th>Наименование Продкции</th>
-                                  <th>Рисунок</th>
-                                  <th>Сорт</th>
-                                  <th>Доп. услуга</th>
-                                  <th>Код продукта</th>
-                                  <th>Кол-во</th>
-                                  <th>Цена (UZS)</th>
-                                  <th>Цена с доп. услугой(UZS)</th>
-                                  <th>Общая Стоимость (UZS)</th>
-                              </tr>
-                          </thead>
-
-                          <tbody>
-                          
-                            {{#each add_service_products }}
-                              
-                              <tr>
-                                
-                                <td>{{id}}</td>
-                                <td>{{product_name}}</td>
-                                <td>{{drawing}}</td>
-                                <td>{{sort}}</td>
-                                <td class="text-bold">{{Additional_Service.name}}</td>
-                                <td>{{overall_code}}</td>
-                                <td class="text-success text-bold">{{currencyFormat available_quantity}}</td>
-                                {{#if price}}
-                                <td>{{currencyFormat price}}</td>
-                                {{/if}}
-                                <td class="text-bold">{{currencyFormat (math price "+" Additional_Service.price)}}</td>
-                                {{#if price}}
-                                <td class="text-info text-bold">
-                                  {{currencyFormat (math  available_quantity "*" (math price "+" Additional_Service.price))}}
-                                </td>
-                                {{/if}}
-                              
-                              </tr>
+                        <tbody>
+                        
+                          {{#each not_available_products }}
                             
-                            {{/each}} 
+                            <tr>
+                              
+                              <td>{{id}}</td>
+                              <td>{{product_name}}</td>
+                              <td>{{drawing}}</td>
+                              <td>{{sort}}</td>
+                              <td>{{overall_code}}</td>
+                              <td class="text-success text-bold">{{currencyFormat available_quantity}}</td>
+                              {{#if price}}
+                              <td>{{currencyFormat price}}</td>
+                              <td class="text-info text-bold">{{currencyFormat (math  available_quantity "*" price)}}</td>
+                              {{/if}}
+                            
+                            </tr>
+                          
+                          {{/each}} 
 
-                          </tbody>
-                          <tfoot>
-                              <tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                              <th>№</th>
+                              <th>Наименование Продкции</th>
+                              <th>Рисунок</th>
+                              <th>Сорт</th>
+                              <th>Код продукта</th>
+                              <th>Кол-во</th>
+                              <th>Цена (UZS)</th>
+                              <th>Общая Стоимость (UZS)</th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                <!-- /.card-body -->
+            </div>
+          </div>
+
+          {{!-- <div class="col-12">
+            <div class="card card-info">
+                <div class="card-header">
+                    <h3 class="card-title">Товары с дополнительными услугами</h3>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
+                    <table id="Table3" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
                                 <th>№</th>
                                 <th>Наименование Продкции</th>
                                 <th>Рисунок</th>
@@ -207,19 +171,59 @@
                                 <th>Цена (UZS)</th>
                                 <th>Цена с доп. услугой(UZS)</th>
                                 <th>Общая Стоимость (UZS)</th>
-                              </tr>
-                          </tfoot>
-                      </table>
-                  </div>
-                  <!-- /.card-body -->
-              </div>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                        
+                          {{#each add_service_products }}
+                            
+                            <tr>
+                              
+                              <td>{{id}}</td>
+                              <td>{{product_name}}</td>
+                              <td>{{drawing}}</td>
+                              <td>{{sort}}</td>
+                              <td class="text-bold">{{Additional_Service.name}}</td>
+                              <td>{{overall_code}}</td>
+                              <td class="text-success text-bold">{{currencyFormat available_quantity}}</td>
+                              {{#if price}}
+                              <td>{{currencyFormat price}}</td>
+                              {{/if}}
+                              <td class="text-bold">{{currencyFormat (math price "+" Additional_Service.price)}}</td>
+                              {{#if price}}
+                              <td class="text-info text-bold">
+                                {{currencyFormat (math  available_quantity "*" (math price "+" Additional_Service.price))}}
+                              </td>
+                              {{/if}}
+                            
+                            </tr>
+                          
+                          {{/each}} 
+
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                              <th>№</th>
+                              <th>Наименование Продкции</th>
+                              <th>Рисунок</th>
+                              <th>Сорт</th>
+                              <th>Доп. услуга</th>
+                              <th>Код продукта</th>
+                              <th>Кол-во</th>
+                              <th>Цена (UZS)</th>
+                              <th>Цена с доп. услугой(UZS)</th>
+                              <th>Общая Стоимость (UZS)</th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                <!-- /.card-body -->
             </div>
+          </div> --}}
 
-            
-            
-
-
-
+          
+          
 
 
 
@@ -231,17 +235,19 @@
 
 
 
-          </div>
-          <!-- /.row -->
-        </div><!-- /.container-fluid -->
+
+
+
+        </div>
+          
       </div>
-      <!-- /.content -->
+      
     </div>
-    <!-- /.content-wrapper -->
+    
   
  
   </div>
-  <!-- ./wrapper -->
+  
 
    
   <!-- REQUIRED SCRIPTS -->
