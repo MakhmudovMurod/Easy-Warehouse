@@ -80,21 +80,29 @@ router.post('/product-create',
 [
     check('product_name')
         .isLength({ min: 10 })
-        .withMessage('Название продукта должно состоять не менее чем из 10 символов.')
+        .withMessage('Название продукта должно состоять не менее чем из 10 символов!')
         .trim()
         .not()
         .isEmpty()
         .withMessage('Название продукта не может быть пустым!'),
     check('name_code')
+        .isNumeric()
+        .withMessage('Код названия продукта должен быть только числовым значением!')
+        .isLength({ min: 3,max:3 })
+        .withMessage('Код названия продукта должен состоять из 3-х значных цифр!')
         .not()
         .isEmpty()
-        .withMessage('Код продукта не может быть пустым!'),
+        .withMessage('Код названия продукта не может быть пустым!'),
     check('drawing')
         .trim()
         .not()
         .isEmpty()
         .withMessage('Рисунок товара не может быть пустым!'),
     check('drawing_code')
+        .isNumeric()
+        .withMessage('Рисунок код должен быть только числовым значением!')
+        .isLength({ min:1,max:1 })
+        .withMessage('Длина кода рисунка должна быть однозначным числом!')
         .not()
         .isEmpty()
         .withMessage('Код рисунка не может быть пустым!'),

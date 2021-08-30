@@ -132,7 +132,8 @@
                                             <div class="col-md-8">
                                                 <div class="form-group">
                                                     <label>Рисунок</label>
-                                                    <input type="text" name="drawing" id="drawing" class="form-control" autocomplete="off" 
+                                                    <input id="drawingAutoComplete" type="search" dir="ltr" spellcheck=false autocorrect="off" autocomplete="off" autocapitalize="off" 
+                                                    name="drawing" style="width:100%;"
                                                     {{#if req_values}}
                                                         value="{{req_values.drawing}}"
                                                     {{/if}}
@@ -145,7 +146,8 @@
                                             <div class="col-md-4">
                                                 <div class="form-group">
                                                     <label>Код</label>
-                                                    <input type="number" name="drawing_code" id="drawing_code" class="form-control" 
+                                                    <input id="drawingCodeAutoComplete" type="search" dir="ltr" spellcheck=false autocorrect="off" autocomplete="off" autocapitalize="off" 
+                                                    name="drawing_code" style="width:100%;" 
                                                     {{#if req_values}}
                                                         value="{{req_values.drawing_code}}"
                                                     {{/if}}
@@ -230,7 +232,6 @@
 
         const getProducts = async searchProduct =>{
             const response = await fetch('/product/product-search');
-            
             products = await response.json();
 
             let product_names = products.map(product => product.product_name);
@@ -251,10 +252,21 @@
                         selection: (event) => {
                             const selection = event.detail.selection.value;
                             autoCompleteJS.input.value = selection;
+                            
+                            products.map(product =>{
+                                
+                                if(selection == product.product_name)
+                                {
+                                    document.getElementById('nameCodeAutoComplete').value = product.name_code;
+                                }
+                                
+                            })
                         }
                     }
                 }
             });      
+
+            
 
             let name_codes = products.map(product => product.name_code);
             let uniq_name_codes = [...new Set(name_codes)];
@@ -272,14 +284,86 @@
                 events: {
                     input: {
                         selection: (event) => {
-                            const selection = event.selection.value;
+                            const selection = event.detail.selection.value;
                             nameCodeAutoComplete.input.value = selection;
+
+                            products.map(product =>{
+                                
+                                if(selection == product.name_code)
+                                {
+                                    document.getElementById('nameAutoComplete').value = product.product_name;
+                                }
+                                
+                            })
                         }
                     }
                 }
             });
-             
-        
+
+            let drawings = products.map(product => product.drawing);
+            let uniq_drawings = [...new Set(drawings)];
+
+            const drawingAutoComplete = new autoComplete({
+                selector: "#drawingAutoComplete",
+                data: {
+                    src: uniq_drawings,
+                    cache: true,
+                },
+                resultItem: {
+                    highlight: true,
+                },
+                searchEngine: "loose",
+                events: {
+                    input: {
+                        selection: (event) => {
+                            const selection = event.detail.selection.value;
+                            drawingAutoComplete.input.value = selection;
+
+                            products.map(product =>{
+                                
+                                if(selection == product.drawing)
+                                {
+                                    document.getElementById('drawingCodeAutoComplete').value = product.drawing_code;
+                                }
+                                
+                            })
+                        }
+                    }
+                }
+            });
+
+            let drawing_codes = products.map(product => product.drawing_code);
+            let uniq_drawing_codes = [...new Set(drawing_codes)];
+
+            const drawingCodeAutoComplete = new autoComplete({
+                selector: "#drawingCodeAutoComplete",
+                data: {
+                    src: uniq_drawing_codes,
+                    cache: true,
+                },
+                resultItem: {
+                    highlight: true,
+                },
+                searchEngine: "strict",
+                events: {
+                    input: {
+                        selection: (event) => {
+                            const selection = event.detail.selection.value;
+                            drawingCodeAutoComplete.input.value = selection;
+
+                            products.map(product =>{
+                                
+                                if(selection == product.drawing_code)
+                                {
+                                    document.getElementById('drawingAutoComplete').value = product.drawing;
+                                }
+                                
+                            })
+                        }
+                    }
+                }
+            }); 
+                          
         }
 
         getProducts();
