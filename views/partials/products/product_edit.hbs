@@ -1,233 +1,393 @@
+<div class="content-wrapper">
     
-    <div class="content-wrapper">
-        <div class="content-header">
-            <div class="container-fluid">
-                <div class="row mb-2">
-                    <div class="col-sm">
-                        <ol class="breadcrumb float-sm-left">
-                        <li class="breadcrumb-item active">Прайслист</li>
-                        </ol>
-                    </div> 
-                </div> 
-            </div> 
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-12">
+                    <ol class="breadcrumb float-sm-left">
+                        <li class="breadcrumb-item active">Редактировать Продукт</li>
+                    </ol>
+                </div>
+            </div>
         </div>
-
-
-        <!-- Main content -->
-        <section class="content">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="card card-primary">
-                            <div class="card-header">
-                                <h3 class="card-title"> Обновить продукт </h3>
-                            </div>
-                            <!-- /.card-header -->
+    </div>
+    
+    <div class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card card-info">
+                        <div class="card-header">
+                            <h3 class="card-title">Обновить Продукт</h3>
+                        </div>
+                        {{#each product as |product| }}
+                        <form action="/product/product-edit/{{id}}" method="POST">
                             <div class="card-body">
-                                
-                                <div class="row" class="align-items:center">
-                                    
-                                    <div class="col-12">
-                                        {{#each product}}
-                                        <form action="/product/product-edit/{{id}}" method="POST">
-                                        
+                                <div class="row">
+                                    <div class="col-6">
                                         <h2>Изменение текущих значений продукта</h2>
-                                        
-                                        <div class="row">
-                                            <div class="col-8">
-                                                <div class="form-group">
-                                                    <label>Название продукта</label>
-                                                    <input type="text" name="update_name" id="product_name" placeholder="{{product_name}}"  class="form-control" >
-                                                </div>
-                                            </div>
-                                            <div class="col-4">
-                                                <div class="form-group">
-                                                    <label>Код</label>
-                                                    <input type="number" name="update_name_code" id="name_code" placeholder="{{name_code}}" style="font-weight:bold"  class="form-control" >
-                                                </div>
-                                            </div>
-                                        </div>
-                                        
-                                        {{/each}}
-                                        <div class="row">
-                                            <div class="col-md-8 mb-3">
-                                                <div class="form-group">
-                                                    <label>Рисунок</label>
-                                                    <select class="form-control select2" name="update_drawing" id="drawing">
-                                                        <option disabled="disabled" selected="selected" style="display:none;" value="{{current_drawing}}">{{current_drawing}}</option>
-                                                        {{#each product_image}}
-                                                        <option value="{{name}}">{{name}}</option>
-                                                        {{/each}}
-                                                    </select>
-                                                    {{!-- <span class="text-danger" id="">Product picture validation message here</span> --}}
-                                                </div>
-                                            </div>
-                                            
-                                            <div class="col-md-4">
-                                                <div class="form-group">
-                                                    <label>Код</label>
-                                                    <input type="number" name="update_drawing_code" id="drawing_code" class="form-control select2" style="font-weight:bold" required  readonly value="{{current_drawing_code}}">
-                                                    {{!-- <span class="text-danger" id="">Product code validation message here</span> --}}
-                                                </div>
-                                            </div>
-                                        </div>
-                                        {{#each product}}
-                                        
-                                        
-                                        <div class="row mb-4">
-                                            <div class="col-4">
-                                                <label>Сорт</label>
-                                                <select name="update_sort" id="" class="form-control">
-                                                    <option disabled="disabled" selected="selected" style="display:none;" value="{{sort}}">{{sort}}</option>
-                                                    <option value="1">1</option>
-                                                    <option value="2">2</option>
-                                                    <option value="3">3</option>
-                                                </select>
-                                            </div>
-                                            <div class="col-4" style="margin-top:36px;">
-                                                <div class="custom-control custom-checkbox" style="padding-left:18rem;">
-                                                    
-                                                    <!-- WITH ADDITIONAL SERVICE -->
-                                                    {{#if AdditionalServiceId}}
-                                                    <input class="custom-control-input" type="checkbox" id="serviceCheckbox2"  name="serviceCheckbox2" checked>
-                                                    {{else}}
-                                                    <!-- NO ADDITIONAL SERVICE -->
-                                                    <input class="custom-control-input" type="checkbox" id="serviceCheckbox2"  name="serviceCheckbox2">
-                                                    {{/if}}
-                                                    <label for="serviceCheckbox2" class="custom-control-label">Дополнительная услуга</label>
-                                                </div>
-                                                    
-                                            </div>
-                                        
-
-                                            <div class="col-4"  style="margin-top:30px">
-                                                
-                                                <select name="update_service" id="update_service" class="form-control select2" 
-                                                {{#if AdditionalServiceId}}
-                                                {{else}} 
-                                                    disabled
-                                                {{/if}}
-                                                >
-                                                <!-- IF ADDITIONAL SERVICE NOT EXIST SELECT DROPDOWN WILL BE DISABLED -->
-                                                
-                                                    <!-- ADDITIONAL SERVICE EXIST - CURRENT VALUE DISPLAYED-->
-                                                    {{#if AdditionalServiceId}}
-                                                    <option disabled="disabled" selected="selected" style="display:none;" value="{{Additional_Service.id}}">{{Additional_Service.name}}</option>
-                                                    {{else}}
-                                                    <!-- ADDITIONAL SERVICE NOT EXIST - VALUE IS NULL -->
-                                                    <option disabled="disabled" selected="selected" style="display:none;" value="">Выберите один</option>
-                                                    {{/if}}
-                                        {{/each}}
-                                                    {{#each services}}
-                                                    <option value="{{id}}">{{name}}</option>
-                                                    {{/each}}
-                                                </select>
-                                            
-                                            </div>
-                                        </div>
-                                        
-                                        {{#each product}}
-
-                                        <div class="form-group">
-                                            <label>Цена (UZS)</label>
-                                            <input type="number" name="update_price" placeholder="{{price}}"  class="form-control"  min="0">
-                                        </div>
-
-                                        {{/each}}
-
-                                        <div class="form-group">
-                                            <input type="submit" class="btn btn-primary" value="Изменить">
-                                            
-                                        </div>
-                                    
-                                        </form>
                                     </div>
                                 </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        
+                                        {{#if success}}
+                                            <div class="alert alert-success alert-dismissible fade show">
+                                                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                                <span>{{success}}</span>
+                                            </div>
+                                        {{/if}} 
+                                        {{#if warning}}
+                                            <div class="alert alert-warning alert-dismissible fade show">
+                                                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                                <span>
+                                                    {{#each warning}}
+                                                        <span>- {{msg}}</span><br>
+                                                    {{/each}}
+                                                </span>
+                                                <table class="table table-bordered mt-2">
+                                                    <thead>
+                                                        <tr>
+                                                            {{#each existed_product}}
+                                                            <td style="border:1px solid black">Название продкта - {{product_name}} <span class="font-weight-bold">[{{name_code}}]</span></td>
+                                                            <td style="border:1px solid black">Рисунок - {{drawing}} <span class="font-weight-bold">[{{drawing_code}}]</span></td>
+                                                            <td style="border:1px solid black">Сорт - <span class="font-weight-bold">{{sort}}</span></td>
+                                                            <td style="border:1px solid black">Цена - {{price}} (UZS)</td>
+                                                            <td style="border:1px solid black">Общий код - <span class="font-weight-bold">{{overall_code}}</span></td>
+                                                            {{#if AdditionalServiceId}}
+                                                            <td style="border:1px solid black">Доп. услуга - ЕСТЬ</td>
+                                                            {{else}}
+                                                            <td style="border:1px solid black">Доп. услуга - НЕТ</td>
+                                                            {{/if}}
+                                                            {{/each}}
+                                                        </tr>
+                                                    </thead>
+                                                </table>
+                                            </div>
+                                        {{/if}} 
+                                        {{#if code_error_message }}
+                                            <div class="alert alert-warning alert-dismissible fade show">
+                                            <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                            <span>
+                                                {{#each code_error_message}}
+                                                    <span>- {{msg}}</span><br>
+                                                {{/each}}
+                                            </span>
+                                        </div>
+                                        {{/if}}
+                                        {{#if alert}}
+                                            <div class="alert alert-danger alert-dismissible fade show">
+                                                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                                {{#each alert }}
+                                                    <span>- {{ msg }} </span><br>
+                                                {{/each}}
+                                            </div>
+                                        {{/if}}
+                                    </div>
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <div class="form-group">
+                                            <div class="auto-container">
+                                                <label>Наименование продкции</label>
+                                                <br>
+                                                <input
+                                                    id="nameAutoComplete" type="search" dir="ltr" spellcheck=false autocorrect="off" autocomplete="off" autocapitalize="off" 
+                                                    name="product_name" style="width:100%;" placeholder="{{product_name}}"
+                                                {{#if req_values}}
+                                                value="{{req_values.product_name}}"
+                                                {{/if}}
+                                                >
+                                                
+                                            </div>
 
+                                            
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Код</label>
+                                            <input id="nameCodeAutoComplete" type="search" dir="ltr" spellcheck=false autocorrect="off" autocomplete="off" autocapitalize="off" 
+                                                name="name_code" min="100" max="999" style="width: 100%;" placeholder="{{name_code}}"
+                                            {{#if req_values}}
+                                                value="{{req_values.name_code}}"
+                                            {{/if}}
+                                            >
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <div class="form-group">
+                                            <label>Рисунок</label>
+                                            <input id="drawingAutoComplete" type="search" dir="ltr" spellcheck=false autocorrect="off" autocomplete="off" autocapitalize="off" 
+                                            name="drawing" style="width:100%;" placeholder="{{drawing}}"
+                                            {{#if req_values}}
+                                                value="{{req_values.drawing}}"
+                                            {{/if}}
+                                            >
+                                            
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Код</label>
+                                            <input id="drawingCodeAutoComplete" type="search" dir="ltr" spellcheck=false autocorrect="off" autocomplete="off" autocapitalize="off" 
+                                            name="drawing_code" style="width:100%;" placeholder="{{drawing_code}}"
+                                            {{#if req_values}}
+                                                value="{{req_values.drawing_code}}"
+                                            {{/if}}
+                                            >
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                    <label for="">Сорт</label>
+                                                    <input type="number" name="sort1" class="form-control select2" style="font-weight:bold" min="1" max="5"
+                                                        placeholder="{{sort}}"
+                                                        {{#if req_values.sort1}}
+                                                            value="{{req_values.sort1}}"
+                                                        {{/if}}
+                                                    >
+                                                </div>
+                                                <div class="col-sm-3">
+                                                    <label for="">Цена</label>
+                                                    <input type="number" class="form-control" placeholder="{{price}}" id="price_input1"  name="sort1_price" min="1"
+                                                    {{#if req_values.sort1_price}}
+                                                    value="{{req_values.sort1_price}}"
+                                                    {{/if}}
+                                                    >
+                                                    
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="custom-control custom-checkbox float-right" style="margin-top:37px;">
+                                                        <input class="custom-control-input" type="checkbox" id="serviceCheckbox1"
+                                                            value="1" name="serviceCheckbox1"
+                                                        {{#if AdditionalServiceId}}
+                                                            checked
+                                                        {{/if}}
+                                                        >
+                                                        <label for="serviceCheckbox1" class="custom-control-label">Доп. услуга</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <select name="add_service1" id="add_service" class="form-control select2" style="margin-top: 34px;"
+                                                    {{#if AdditionalServiceId}}
+                                                    {{else}}
+                                                        disabled
+                                                    {{/if}}
+                                                    >
+                                                        {{#if AdditionalServiceId}}
+                                                            <option disabled="disabled" selected="selected" style="display:none;" value="{{AdditionalServiceId}}">{{Additional_Service.name}}  - {{Additional_Service.price}} (UZS)</option>
+                                                            <option disabled="disabled" style="display:none;" value="0">Выберите один из них</option>
+                                                            {{#each ../services as |service| }}
+                                                            <option value="{{id}}">{{name}}  - {{price}} (UZS)</option>
+                                                            {{/each}}
+                                                        {{else}}
+                                                            <option disabled="disabled" selected="selected" style="display:none;" value="0">Выберите один из них</option>
+                                                            {{#each ../services as |service| }}
+                                                            <option value="{{id}}">{{name}}  - {{price}} (UZS)</option>
+                                                            {{/each}}
+                                                        {{/if}}                                                   
+                                                        
+                                                    </select>
+                                                    
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                        
+                        
+                        
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <input type="submit" id="create-btn" value="Изменить" class="btn btn-info swalDefaultSuccess" name="submit">
+                                                
+                                        </div>
+                                    </div>
+                                </div>
+                                
                             </div>
-                        </div>
+                        </form>
+                        {{/each}}
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
     </div>
- 
-    
-    <script src="/plugins/jquery/jquery.min.js"></script>
-    <script src="/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="/plugins/select2/js/select2.full.min.js"></script>
-    <script src="/dist/js/adminlte.min.js"></script>
-    <script src="/dist/js/demo.js"></script>
+        
+</div>
 
-    <script>
-        $('#serviceCheckbox2').click(function(){
-     
-    if($(this).is(':checked')){
-         
-        $('#update_service').attr("disabled", false);
-        $('#update_service').attr("required", true);
+<script src="/dist/js/autocomplete/autoComplete.js"></script>
+<script src="/dist/js/autocomplete/autoComplete.min.js"></script>
+<script src="/dist/js/adminlte.min.js"></script>
+<script src="/plugins/jquery/jquery.min.js"></script>
+<script src="/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/dist/js/adminlte.js"></script>
+<script src="/dist/js/jquery-ui/jquery-ui.js"></script>
+<script src="/dist/js/jquery-ui/jquery-ui.min.js"></script>
+<script>
+    const getProducts = async searchProduct =>{
+        const response = await fetch('/product/product-search');
+        products = await response.json();
+
+        let product_names = products.map(product => product.product_name);
+        let uniq_products = [...new Set(product_names)];
+
+        const autoCompleteJS = new autoComplete({
+            selector: "#nameAutoComplete",
+            data: {
+                src: uniq_products,
+                cache: true,
+            },
+            resultItem: {
+                highlight: true
+            },
+            searchEngine: "loose",
+            events: {
+                input: {
+                    selection: (event) => {
+                        const selection = event.detail.selection.value;
+                        autoCompleteJS.input.value = selection;
+                        
+                        products.map(product =>{
+                            
+                            if(selection == product.product_name)
+                            {
+                                document.getElementById('nameCodeAutoComplete').value = product.name_code;
+                            }
+                            
+                        })
+                    }
+                }
+            }
+        });      
+
         
-    } else{
-        
-        $('#update_service').attr("disabled", true);
-    
+
+        let name_codes = products.map(product => product.name_code);
+        let uniq_name_codes = [...new Set(name_codes)];
+
+        const nameCodeAutoComplete = new autoComplete({
+            selector: "#nameCodeAutoComplete",
+            data: {
+                src: uniq_name_codes,
+                cache: true,
+            },
+            resultItem: {
+                highlight: true,
+            },
+            searchEngine: "strict",
+            events: {
+                input: {
+                    selection: (event) => {
+                        const selection = event.detail.selection.value;
+                        nameCodeAutoComplete.input.value = selection;
+
+                        products.map(product =>{
+                            
+                            if(selection == product.name_code)
+                            {
+                                document.getElementById('nameAutoComplete').value = product.product_name;
+                            }
+                            
+                        })
+                    }
+                }
+            }
+        });
+
+        let drawings = products.map(product => product.drawing);
+        let uniq_drawings = [...new Set(drawings)];
+
+        const drawingAutoComplete = new autoComplete({
+            selector: "#drawingAutoComplete",
+            data: {
+                src: uniq_drawings,
+                cache: true,
+            },
+            resultItem: {
+                highlight: true,
+            },
+            searchEngine: "loose",
+            events: {
+                input: {
+                    selection: (event) => {
+                        const selection = event.detail.selection.value;
+                        drawingAutoComplete.input.value = selection;
+
+                        products.map(product =>{
+                            
+                            if(selection == product.drawing)
+                            {
+                                document.getElementById('drawingCodeAutoComplete').value = product.drawing_code;
+                            }
+                            
+                        })
+                    }
+                }
+            }
+        });
+
+        let drawing_codes = products.map(product => product.drawing_code);
+        let uniq_drawing_codes = [...new Set(drawing_codes)];
+
+        const drawingCodeAutoComplete = new autoComplete({
+            selector: "#drawingCodeAutoComplete",
+            data: {
+                src: uniq_drawing_codes,
+                cache: true,
+            },
+            resultItem: {
+                highlight: true,
+            },
+            searchEngine: "strict",
+            events: {
+                input: {
+                    selection: (event) => {
+                        const selection = event.detail.selection.value;
+                        drawingCodeAutoComplete.input.value = selection;
+
+                        products.map(product =>{
+                            
+                            if(selection == product.drawing_code)
+                            {
+                                document.getElementById('drawingAutoComplete').value = product.drawing;
+                            }
+                            
+                        })
+                    }
+                }
+            }
+        }); 
+                        
     }
+    getProducts();
+</script>
+
+<script>
+    $('#serviceCheckbox1').click(function(){
+
+        if($(this).is(':checked')){
+            $('#add_service').attr("disabled", false);
+             $('#add_service').attr("required", true);
+        } else{
+            
+            $('#add_service').attr("disabled", true);
+            $("select#add_service").val("0");
+            $('#add_service').attr("required", false);
+        }
     });
-    </script>
+</script>
 
 
-    <script>
-        const search = document.getElementById('drawing');
-        const search_name = document.getElementById('product_name');
-        const name_code = document.getElementById('name_code');
-        const drawing_code = document.getElementById('drawing_code');
-        
-        const searchDrawings = async searchText => {
-            const res = await fetch('/product/product-constant');
-            const drawings = await res.json();
-            
-            
-            drawings.forEach(function (item) {
-
-                if(item.name === searchText)
-                {
-                    document.getElementById('drawing_code').value = item.code;
-                }    
-            });
-        };
-        
-        
-        const searchNames = async searchText => {
-            const res = await fetch('/product/product-search');
-            const products = await res.json();
-
-            let matches = products.filter( product => {
-                const regex = new RegExp(`${searchText}`, 'gi');
-
-                return product.product_name.match(regex);
-            });
-
-            if(searchText.length === 0) {
-                matches = [];
-            }
-
-            displayNameCode(matches);
-        }
-
-        const displayNameCode = matches => {
-            if(matches.length > 0) {
-                matches.map(match=>{
-                    document.getElementById('name_code').value = match.name_code;
-                })
-            }
-            else {
-                document.getElementById('name_code').value = null;
-            }
-        }
-        
-        search.addEventListener('change', () => searchDrawings(search.value));
-        search_name.addEventListener('input', () => searchNames(search_name.value));
-        name_code.addEventListener('input', () => searchByCode(name_code.value));
-        drawing_code.addEventListener('input', () => searchByDrawingCode(drawing_code.value));
-    </script>
 

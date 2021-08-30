@@ -43,9 +43,6 @@ router.get('/product-services', (req,res)=>{
     .catch(err=> console.log(error))
 });
 
-//------------------------------------------------------//
-
-//PRODUCTS CRUD
 
 //PRICE LIST PAGE
 router.get('/price-list', (req,res)=>{
@@ -59,23 +56,18 @@ router.get('/price-list', (req,res)=>{
 //CREATE PRODUCT PAGE
 router.get('/product-create',(req,res)=>{ 
     Promise.all([
-        Product_Constant.findAll(),
         Additional_service.findAll()
     ])
     .then(data => {
+        
+        var services = data[0];
 
-        var drawings = data[0];
-        var services = data[1];
-
-        res.render('partials/products/product_create', {drawings, services,
-            success:req.session.success,
-            errors:req.session.errors
-        });
-            // req.session.errors = null;
-            // req.session.success = null;
+        res.render('partials/products/product_create', {services});
+        
     })
     
 });
+
 router.post('/product-create',
 [
     check('product_name')
@@ -362,83 +354,23 @@ router.post('/product-create',
 router.get('/product-edit/:id',(req,res)=>{
     Promise.all([
         Product.findAll({include: {model:Additional_service, as:'Additional_Service'},limit:1,where:{id:req.params.id}}),
-        Product_Constant.findAll(),
-        Product.findOne({where:{id:req.params.id}}),
         Additional_service.findAll(),
     ])
-    
     .then(data=>{
+        const product = data[0];
+        const services = data[1]
 
-        var product = data[0];
-        var product_image = data[1];
-        var current_drawing = data[2].drawing;
-        var current_drawing_code = data[2].drawing_code;
-        var services = data[3];
-
-        res.render('partials/products/product_edit', 
-        {
-            product, product_image, current_drawing,  current_drawing_code, services
-        })
+        res.render('partials/products/product_edit',{product,services});
     })
-    .catch(err => console.log(err));
+    .catch(err=>console.log(err));
+
 });
+
 router.post('/product-edit/:id',(req,res)=>{
 
-    console.log(req.body);
-
-    Product.findOne({where:{id:req.params.id}})
-    .then(p=> {
-
-        
-        if(req.body.update_name_code)
-        {
-            if(req.body.serviceCheckbox2 === "on")
-            {}
-            var update_code = "" + req.body.update_name_code + p.drawing_code + p.sort;
-
-            Product.update({
-                name_code:req.body.update_name_code,
-                overall_code:update_code,
-            },{where:{id:req.params.id}})
-        }
-        if(req.body.update_name)
-        {   
-            Product.update({ 
-                product_name:req.body.update_name,
-            },{where:{id:req.params.id}})
-        }
-        if(req.body.update_drawing)
-        {
-            var update_code =  "" +  p.name_code + req.body.update_drawing_code + p.sort;
-            
-            Product.update({ 
-                drawing:req.body.update_drawing,
-                drawing_code:req.body.update_drawing_code,
-                overall_code:update_code,
-            },{where:{id:req.params.id}})
-        }
-        if(req.body.update_sort)
-        {
-            const update_code =  "" +  p.name_code + p.drawing_code + req.body.update_sort;
-
-            Product.update({ 
-                sort:req.body.update_sort,
-                overall_code:update_code,
-            },{where:{id:req.params.id}})
-        }
-        
-        if(req.body.update_price)
-        {
-            Product.update({ 
-                price:req.body.update_price,
-            },{where:{id:req.params.id}})
-        }
-    
-        res.redirect('/product/price-list')
-    })
-    .catch()
-
 });
+
+
 
 //DELETE PRODUCT ENDPOINT
 router.post('/product-delete/:id', (req,res)=>{
