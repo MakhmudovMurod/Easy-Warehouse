@@ -5,7 +5,8 @@
             <div class="row mb-2">
                 <div class="col-sm-12">
                     <ol class="breadcrumb float-sm-left">
-                        <li class="breadcrumb-item active">Редактировать Продукт</li>
+                        <li class="breadcrumb-item"><a href="/product/price-list">Список товаров</a></li>
+                        <li class="breadcrumb-item active font-weight-bold">Редактировать Продукт</li>
                     </ol>
                 </div>
             </div>
@@ -20,23 +21,15 @@
                         <div class="card-header">
                             <h3 class="card-title">Обновить Продукт</h3>
                         </div>
-                        {{#each product as |product| }}
-                        <form action="/product/product-edit/{{id}}" method="POST">
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-6">
-                                        <h2>Изменение текущих значений продукта</h2>
-                                    </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-6">
+                                    <h2>Изменение текущих значений продукта</h2>
                                 </div>
-                                <div class="row">
+                            </div>
+                            <div class="row">
                                     <div class="col-12">
                                         
-                                        {{#if success}}
-                                            <div class="alert alert-success alert-dismissible fade show">
-                                                <button type="button" class="close" data-dismiss="alert">&times;</button>
-                                                <span>{{success}}</span>
-                                            </div>
-                                        {{/if}} 
                                         {{#if warning}}
                                             <div class="alert alert-warning alert-dismissible fade show">
                                                 <button type="button" class="close" data-dismiss="alert">&times;</button>
@@ -65,7 +58,8 @@
                                                 </table>
                                             </div>
                                         {{/if}} 
-                                        {{#if code_error_message }}
+                                        
+                                        {{#if alerts }}
                                             <div class="alert alert-warning alert-dismissible fade show">
                                             <button type="button" class="close" data-dismiss="alert">&times;</button>
                                             <span>
@@ -75,17 +69,19 @@
                                             </span>
                                         </div>
                                         {{/if}}
-                                        {{#if alert}}
+                                        
+                                        {{#if error}}
                                             <div class="alert alert-danger alert-dismissible fade show">
                                                 <button type="button" class="close" data-dismiss="alert">&times;</button>
-                                                {{#each alert }}
-                                                    <span>- {{ msg }} </span><br>
-                                                {{/each}}
+                                                    {{#each error}}
+                                                    <span>- {{msg}}</span><br>
+                                                    {{/each}}
                                             </div>
                                         {{/if}}
                                     </div>
-                                </div>
-                                
+                            </div>
+                            {{#each product as |product| }}
+                            <form action="/product/product-edit/{{id}}" method="POST">
                                 <div class="row">
                                     <div class="col-md-8">
                                         <div class="form-group">
@@ -94,11 +90,14 @@
                                                 <br>
                                                 <input
                                                     id="nameAutoComplete" type="search" dir="ltr" spellcheck=false autocorrect="off" autocomplete="off" autocapitalize="off" 
-                                                    name="product_name" style="width:100%;" placeholder="{{product_name}}"
-                                                {{#if req_values}}
-                                                value="{{req_values.product_name}}"
+                                                    name="product_name"  style="width:100%;color:black"
+                                                {{#if ../req_values}}
+                                                    value="{{../req_values.product_name}}"
+                                                {{else}}
+                                                    value="{{product_name}}"
                                                 {{/if}}
                                                 >
+                                                
                                                 
                                             </div>
 
@@ -109,9 +108,11 @@
                                         <div class="form-group">
                                             <label>Код</label>
                                             <input id="nameCodeAutoComplete" type="search" dir="ltr" spellcheck=false autocorrect="off" autocomplete="off" autocapitalize="off" 
-                                                name="name_code" min="100" max="999" style="width: 100%;" placeholder="{{name_code}}"
-                                            {{#if req_values}}
-                                                value="{{req_values.name_code}}"
+                                                name="name_code" min="100" max="999" style="width: 100%;color:black" 
+                                            {{#if ../req_values}}
+                                                value="{{../req_values.name_code}}"
+                                            {{else}}
+                                                value="{{name_code}}"
                                             {{/if}}
                                             >
                                             
@@ -123,9 +124,11 @@
                                         <div class="form-group">
                                             <label>Рисунок</label>
                                             <input id="drawingAutoComplete" type="search" dir="ltr" spellcheck=false autocorrect="off" autocomplete="off" autocapitalize="off" 
-                                            name="drawing" style="width:100%;" placeholder="{{drawing}}"
-                                            {{#if req_values}}
-                                                value="{{req_values.drawing}}"
+                                            name="drawing" style="width:100%;color:black" 
+                                            {{#if ../req_values}}
+                                                value="{{../req_values.drawing}}"
+                                            {{else}}
+                                                value="{{drawing}}"
                                             {{/if}}
                                             >
                                             
@@ -137,9 +140,11 @@
                                         <div class="form-group">
                                             <label>Код</label>
                                             <input id="drawingCodeAutoComplete" type="search" dir="ltr" spellcheck=false autocorrect="off" autocomplete="off" autocapitalize="off" 
-                                            name="drawing_code" style="width:100%;" placeholder="{{drawing_code}}"
-                                            {{#if req_values}}
-                                                value="{{req_values.drawing_code}}"
+                                            name="drawing_code" style="width:100%;color:black" 
+                                            {{#if ../req_values}}
+                                                value="{{../req_values.drawing_code}}"
+                                            {{else}}
+                                                value="{{drawing_code}}"
                                             {{/if}}
                                             >
                                             
@@ -152,18 +157,23 @@
                                             <div class="row">
                                                 <div class="col-md-3">
                                                     <label for="">Сорт</label>
-                                                    <input type="number" name="sort1" class="form-control select2" style="font-weight:bold" min="1" max="5"
-                                                        placeholder="{{sort}}"
-                                                        {{#if req_values.sort1}}
-                                                            value="{{req_values.sort1}}"
+                                                    <input type="number" name="sort" class="form-control select2" style="color:black" min="1" max="5" autocomplete="off"
+                                                        
+                                                        {{#if ../req_values.sort}}
+                                                            value="{{../req_values.sort}}"
+                                                        {{else}}
+                                                            value="{{sort}}"
                                                         {{/if}}
                                                     >
                                                 </div>
                                                 <div class="col-sm-3">
                                                     <label for="">Цена</label>
-                                                    <input type="number" class="form-control" placeholder="{{price}}" id="price_input1"  name="sort1_price" min="1"
-                                                    {{#if req_values.sort1_price}}
-                                                    value="{{req_values.sort1_price}}"
+                                                    <input type="number" class="form-control"  id="price_input1"  name="price" min="1" autocomplete="off"
+                                                    style="color:black"
+                                                    {{#if ../req_values.price}}
+                                                        value="{{../req_values.price}}"
+                                                    {{else}}
+                                                        value="{{price}}"
                                                     {{/if}}
                                                     >
                                                     
@@ -180,7 +190,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="col-md-3">
-                                                    <select name="add_service1" id="add_service" class="form-control select2" style="margin-top: 34px;"
+                                                    <select name="service" id="add_service" class="form-control select2" style="margin-top:34px;color:black"
                                                     {{#if AdditionalServiceId}}
                                                     {{else}}
                                                         disabled
@@ -215,10 +225,9 @@
                                         </div>
                                     </div>
                                 </div>
-                                
-                            </div>
-                        </form>
-                        {{/each}}
+                            </form>
+                            {{/each}}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -379,7 +388,7 @@
 
         if($(this).is(':checked')){
             $('#add_service').attr("disabled", false);
-             $('#add_service').attr("required", true);
+            $('#add_service').attr("required", true);
         } else{
             
             $('#add_service').attr("disabled", true);

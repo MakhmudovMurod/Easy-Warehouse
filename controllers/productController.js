@@ -366,8 +366,135 @@ router.get('/product-edit/:id',(req,res)=>{
 
 });
 
-router.post('/product-edit/:id',(req,res)=>{
+router.post('/product-edit/:id',
+[
+    check('product_name')
+        .isLength({ min: 10 })
+        .withMessage('Название продукта должно состоять не менее чем из 10 символов!')
+        .trim()
+        .not()
+        .isEmpty()
+        .withMessage('Название продукта не может быть пустым!'),
+    check('name_code')
+        .isNumeric()
+        .withMessage('Код названия продукта должен быть только числовым значением!')
+        .isLength({ min: 3,max:3 })
+        .withMessage('Код названия продукта должен состоять из 3-х значных цифр!')
+        .not()
+        .isEmpty()
+        .withMessage('Код названия продукта не может быть пустым!'),
+    check('drawing')
+        .trim()
+        .not()
+        .isEmpty()
+        .withMessage('Рисунок товара не может быть пустым!'),
+    check('drawing_code')
+        .isNumeric()
+        .withMessage('Рисунок код должен быть только числовым значением!')
+        .isLength({ min:1,max:1 })
+        .withMessage('Длина кода рисунка должна быть однозначным числом!')
+        .not()
+        .isEmpty()
+        .withMessage('Код рисунка не может быть пустым!'),
+    check('sort')
+        .not()
+        .isEmpty()
+        .withMessage('Сорт продукта не может быть пустым!'),
+    check('price')
+        .not()
+        .isEmpty()
+        .withMessage('Цена продукта не может быть пустым!'),
+],(req,res)=>{
 
+    Promise.all([
+        Product.findAll({include: {model:Additional_service, as:'Additional_Service'},limit:1,where:{id:req.params.id}}),
+        Product.findAll(),
+        Additional_service.findAll(),
+    ])
+    .then(data => {
+
+        const product = data[0]; // editing product
+        const products = data[1];
+        const services = data[2];
+        const errors = validationResult(req);
+        
+        
+
+        // All requested values
+        const product_name = (req.body.product_name).toUpperCase();
+        const name_code = req.body.name_code;
+        const drawing = (req.body.drawing).toUpperCase();
+        const drawing_code = req.body.drawing_code;
+        const sort = req.body.sort;
+        const price = req.body.price
+        const code = req.body.service ? name_code + drawing_code + sort + req.body.service : name_code + drawing_code + sort + 0;
+        const service = req.body.service ? parseInt(req.body.service) : null;
+        //-----------------------------------------------------------------//
+        
+        if(!errors.isEmpty())
+        {
+            const error = errors.array();
+            const req_values = req.body;
+
+            console.log(req_values);
+            
+            return res.render('partials/products/product_edit', {error,services,req_values,product});
+        }
+        else
+        {
+            // Variables to check the input values are created before or not
+            let equality = 0;
+            var same_product;
+            var price_difference;
+            var name_code_difference;
+            var drawing_code_difference;
+
+            for(let i=0; i<products.length; i++)
+            {
+                if(product_name.localeCompare(products[i].product_name) == 0) 
+                {
+                    if(drawing.localeCompare(products[i].drawing) == 0) 
+                    { 
+                       if(sort == products[i].sort)
+                        {
+                            if(service == products[i].AdditionalServiceId)
+                            {
+                                ++equality;
+                                same_product = products[i].id;
+                                
+                                if(price != products[i].price)
+                                {
+                                    price_difference = true; 
+                                } 
+                                if(name_code != products[i].name_code)
+                                {
+                                    name_code_difference = true;
+                                }
+                                if(drawing_code != products[i].drawing_code)
+                                {
+                                    drawing_code_difference = true;
+                                }
+                            }
+                            
+                        }
+                        
+                    }          
+                      
+                }
+                
+            } // end of for
+
+        }// end else
+        
+
+
+
+        // return res.render('partials/products/product_edit',{error_messages,req_values,product,services});
+        
+        // return res.redirect('/product/price-list');
+        
+        
+    }) // !-promise then
 });
 
 
