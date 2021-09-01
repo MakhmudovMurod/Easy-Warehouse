@@ -321,7 +321,6 @@ router.post('/product-create',
                 ])  
                 .then(data=>{
                     let existed_product = data[0];
-                    console.log(existed_product);
                     const req_values = req.body;
                     let warning = [{msg:'Этот продукт уже создан!'}];
                     if(price_difference)
@@ -484,16 +483,168 @@ router.post('/product-edit/:id',
                 
             } // end of for
 
+            if(equality == 0)
+            {
+                var name_code_error_count = 0;
+                var drawing_code_error_count = 0;
+                var name_error_count = 0;
+                var drawing_error_count = 0;
+                var error_counter = 0;
+                let code_error_message = [];
+
+                for(let i=0; i<products.length; i++)
+                {
+                    if(name_code == products[i].name_code)
+                    {
+                        if(product_name != products[i].product_name)
+                        {
+                            ++name_code_error_count;
+                            ++error_counter;
+                        }
+                    }
+                    if(product_name == products[i].product_name)
+                    {
+                        if(name_code != products[i].name_code)
+                        {
+                            ++name_error_count;
+                            ++error_counter;
+                        }
+                    }
+                    if(drawing_code == products[i].drawing_code)
+                    {
+                        if(drawing != products[i].drawing)
+                        {
+                            ++drawing_code_error_count;
+                            ++error_counter;
+                        }
+                    }
+                    if(drawing == products[i].drawing)
+                    {
+                        if(drawing_code != products[i].drawing_code)
+                        {
+                            ++drawing_error_count;
+                            ++error_counter;
+                        }
+                    }
+                    
+                }
+
+                console.log("Error Counter value in udpate process: "+error_counter);
+
+                if(error_counter == 0)
+                {
+                    Product.update({
+                        product_name:product_name,
+                        name_code:name_code,
+                        drawing:drawing,
+                        drawing_code:drawing_code,
+                        sort:sort,
+                        overall_code:code,
+                        AdditionalServiceId:service,
+                    },{where:{id:req.params.id}})
+
+                    return res.redirect('/product/price-list');
+                }
+                if(error_counter > 0)
+                {
+                    if(name_code_error_count > 0)
+                    {
+                        
+                        Promise.all([
+                            Product.findAll({where:{name_code:parseInt(req.body.name_code)}}),
+                        ])  
+                        .then(data=>{
+                            let existed_product = data[0];
+                            
+                            let message = {msg:'Этот код названия ('+ existed_product[0].name_code +') раньше использовался для '+ existed_product[0].product_name +'. Вы не можете использовать этот код для других продуктов!'};
+                            
+                            code_error_message.push(message);
+                            
+                        })
+                    }
+                    if(name_error_count > 0)
+                    {
+                        Promise.all([
+                            Product.findAll({where:{product_name:product_name}}),
+                        ])  
+                        .then(data=>{
+                            let existed_product = data[0];
+                            
+                            let message = {msg:'Это имя ('+ existed_product[0].product_name +') использовалось ранее с кодом  '+ existed_product[0].name_code +'. Вы не можете использовать разные коды для одного название!'};
+                            
+                            code_error_message.push(message);
+                            
+                        })
+                    }
+                    if(drawing_error_count > 0)
+                    {
+                        Promise.all([
+                            Product.findAll({where:{drawing:drawing}}),
+                        ])  
+                        .then(data=>{
+                            let existed_product = data[0];
+                            
+                            let message = {msg:'Использован неправильный код рисунок для '+existed_product[0].drawing +'.  Должно быть - [' + existed_product[0].drawing_code + ']'};
+                            
+                            code_error_message.push(message);
+                            
+                        })
+                    }
+                    if(drawing_code_error_count > 0)
+                    {
+                        Promise.all([
+                            Product.findAll({where:{drawing_code:parseInt(req.body.drawing_code)}}),
+                        ])  
+                        .then(data=>{
+                            let existed_product = data[0];
+                            
+                            let message = {msg:'Этот код рисунок раньше использовался для '+ existed_product[0].drawing +'. Вы не можете использовать этот код для других рисунок!'};
+
+                            code_error_message.push(message);
+                            
+                        })
+
+                    }
+
+                }// end of if
+
+                const req_values = req.body;
+
+                return res.render('partials/products/product_edit', {code_error_message,services,req_values,product});
+            }
+            if(equality > 0)
+            {
+                Promise.all([
+                    Product.findAll({where:{id:same_product}}),
+                ])
+                .then(data=>{
+                    let existed_product = data[0];
+                    const req_values = req.body;
+                    let warning = [{msg:'Этот продукт уже создан!'}];
+
+                    if(price_difference)
+                    {
+                        warning.push({msg:'Этот товар создавался раньше по другой цене : ['+ existed_product[0].price + ' UZS]'});
+                    }
+                    if(name_code_difference)
+                    {
+                        warning.push({msg:'Использован неправильный код названия для '+existed_product[0].product_name+'.  Должно быть - [' + existed_product[0].name_code + ']'});
+                    }
+                    if(drawing_code_difference)
+                    {
+                        warning.push({msg:'Использован неправильный код рисунок для '+existed_product[0].drawing+'.  Должно быть - [' + existed_product[0].drawing_code + ']'});
+                    }
+
+                    return res.render('partials/products/product_edit', {warning,services,req_values,existed_product,product});
+
+
+                })
+                .catch(err=>console.log(err));
+            }// end of else
+
         }// end else
         
 
-
-
-        // return res.render('partials/products/product_edit',{error_messages,req_values,product,services});
-        
-        // return res.redirect('/product/price-list');
-        
-        
     }) // !-promise then
 });
 
