@@ -32,7 +32,8 @@ module.exports = (sequelize,DataTypes) => {
     },
 
     available_quantity:{
-        type:DataTypes.INTEGER
+        type:DataTypes.INTEGER,
+        allowNull: true,
     },
 
     createdAt:{
