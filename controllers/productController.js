@@ -71,8 +71,8 @@ router.get('/product-create',(req,res)=>{
 router.post('/product-create',
 [
     check('product_name')
-        .isLength({ min: 10 })
-        .withMessage('Название продукта должно состоять не менее чем из 10 символов!')
+        .isLength({ min: 5 })
+        .withMessage('Название продукта должно состоять не менее чем из 5 символов!')
         .trim()
         .not()
         .isEmpty()
@@ -368,8 +368,8 @@ router.get('/product-edit/:id',(req,res)=>{
 router.post('/product-edit/:id',
 [
     check('product_name')
-        .isLength({ min: 10 })
-        .withMessage('Название продукта должно состоять не менее чем из 10 символов!')
+        .isLength({ min: 5 })
+        .withMessage('Название продукта должно состоять не менее чем из 5 символов!')
         .trim()
         .not()
         .isEmpty()
