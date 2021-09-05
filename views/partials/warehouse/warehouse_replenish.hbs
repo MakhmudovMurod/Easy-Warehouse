@@ -1,209 +1,348 @@
-    <!-- Content Wrapper. Contains page content -->
-    <div class="content-wrapper">
-      <!-- Content Header (Page header) -->
-      <div class="content-header">
-        <div class="container-fluid">
-          <div class="row mb-2">
-            <div class="col-sm-12">
-              <ol class="breadcrumb float-sm-left">
-                <!-- <li class="breadcrumb-item"><a href="#">Главная</a></li> -->
-                <li class="breadcrumb-item active">Пополнять Резерв</li>
-              </ol>
-            </div><!-- /.col -->
-          </div><!-- /.row -->
-        </div><!-- /.container-fluid -->
-      </div>
-      <!-- /.content-header -->
-
-      <!-- Main content -->
-      <div class="content">
-        <div class="container-fluid">
-          
-          <div class="row">
-            <div class="col-md-12">
-              <div class="card card-primary">
-                  <div class="card-header">
-                      <h3 class="card-title">Пополнить Резерв</h3>
-                  </div>
-                  <form role="form" action="/warehouse/warehouse-replenish" method="POST" id="add_products">
-                      <div class="card-body">
-                          <div class="row">
-
-                              <div class="col-md-2">
-                                  <div class="form-group">
-                                      <label for="date">Дата</label>
-                                      <input type="date" name="added_date" id="date" class="form-control" placeholder="Дата">
-                                  </div>
-                              </div>
-
-                              <div class="col-md-2">
-                                  <div class="form-group">
-                                      <div class="ui-widget">
-                                          <label for="">Название продукта</label>
-                                          <input   type="text" name="product_name"  id="product_name" class="form-control" placeholder="" autocomplete="off" >
-                                          <div id="match-list"></div>
-                                      </div>
-                                  </div>
-                              </div>
-                              
-                              
-                              <div class="col-md-2">
-                                  <div class="form-group">
-                                      <label for="quantity">Рисунок</label>
-                                      <input type="text" name="drawing" id="drawing" class="form-control" placeholder="" min="1" readonly>
-                                  </div>
-                              </div>
-                              
-                              <div class="col-md-1">
-                                  <div class="form-group">
-                                      <label for="quantity">Сорт</label>
-                                      <input type="number" name="sort" id="sort" class="form-control" placeholder="" min="1" readonly>
-                                  </div>
-                              </div>
-
-                              <div class="col-md-1">
-                                  <div class="form-group">
-                                      <label for="product_id">Код </label>
-                                      <input   type="number" name="overall_code"  id="overall_code" class="form-control" placeholder="" readonly>
-                                  </div>
-                              </div> 
-
-                              <div class="col-md-1">
-                                  <div class="form-group">
-                                      <label for="quantity">Цена (UZS)</label>
-                                      <input type="number" name="price" id="price" class="form-control" placeholder="" min="1" readonly>
-                                  </div>
-                              </div>
-                              
-                              <div class="col-md-1">
-                                  <div class="form-group">
-                                      <label for="quantity">Кол-во</label>
-                                      <input type="number" name="added_quantity" id="added_quantity" class="form-control" placeholder="" min="1">
-                                  </div>
-                              </div>
-                              
-                              <div class="col-md-2">
-                                  <div class="form-group">
-                                      <label for="quantity">Итого</label>
-                                      <input type="number" name="overall_sum" id="overall_sum" class="form-control" placeholder="" min="1">
-                                  </div>
-                              </div>
-                              
-                              
-
-                              <div class="col-md-12">
-                                <div class="form-group">
-                                  <input type="submit" name="submit" class="btn btn-primary swalDefaultSuccess float-right" value="Добавить">
-                                    
-                                </div>
-                              </div>
-                          </div>
-                      </div>
-                  </form>
-
-
-              
-  
-
-
-
-
-
-
-
-
-
-
-              </div>
-            </div>
-          </div>
-          
+<div class="content-wrapper">
+  <div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-12">
+          <ol class="breadcrumb float-sm-left">
+            <li class="breadcrumb-item"><a href="/warehouse/warehouse-check-reserve">Резерв</a></li>
+            <li class="breadcrumb-item active font-weight-bold">Пополнять Резерв</li>
+          </ol>
         </div>
       </div>
     </div>
   </div>
   
-  <script src="/dist/js/adminlte.min.js"></script>
-  <script src="/plugins/jquery/jquery.min.js"></script>
-  <script src="/plugins/jquery-ui/jquery-ui.js"></script>
-  <script src="/plugins/jquery-ui/jquery-ui.min.js"></script>
-  <script src="/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="/dist/js/adminlte.js"></script>
-  <script src="/plugins/select2/js/select2.full.min.js"></script>
-  <script src="/plugins/datatables/jquery.dataTables.min.js"></script>
-  <script src="/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
-  <script src="/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
-  <script src="/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+  <div class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card card-success">
+            <div class="card-header">
+              <h3 class="card-title">Пополнить Резерв</h3>
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-12" id="error_message">
+                  
+                </div>  
+              </div>
+              <form role="form" action="/warehouse/warehouse-replenish" method="POST" id="add_products">
+                <div class="row">
 
-  <script>
-    $(function () {
-      $("#warehouseTable").DataTable({
-        "responsive": true,
-        "autoWidth": false,
-      });
-    });
-  </script>
+                  <div class="col-md-3">
+                      <div class="form-group">
+                        <label>Название продукта</label>
+                        <input  id="nameAutoComplete" type="search" dir="ltr" spellcheck=false autocorrect="off" autocomplete="off" autocapitalize="off"  
+                        name="product_name" class="form-control" style="color:black;" >
+                      </div>
+                  </div>
+                  
+                  <div class="col-md-3">
+                      <div class="form-group">
+                          <label>Рисунок</label>
+                          <input  id="drawingAutoComplete" type="search" dir="ltr" spellcheck=false autocorrect="off" autocomplete="off" autocapitalize="off"
+                          name="drawing" class="form-control" style="color:black;">
+                      </div>
+                  </div>
+                  
+                  <div class="col-md-1">
+                      <div class="form-group">
+                          <label for="quantity">Сорт</label>
+                          <input type="number" name="sort" id="sort" class="form-control" style="color:black;" min="1" max="5" autocomplete="off" >
+                      </div>
+                  </div>
 
-    <script src="/dist/js/jquery-ui/jquery-ui.js"></script>
-    <script src="/dist/js/jquery-ui/jquery-ui.min.js"></script>
-    <script>
-    $.getJSON("/product/product-search", function(data){
-        var products = $.map( data, function(item) {
-            return {
-              label: `${item.product_name} - ${item.overall_code}`,
-              value:item.product_name
-                
+                  <div class="col-md-2">
+                    <div class="form-group">
+                      <label for="">Доп. услуга</label>
+                      <select name="service" id="service" class="form-control select2" style="color:black;" >
+                        <option disabled="disabled" selected="selected" style="display:none;" >Выберите один из них</option>
+                        <option class="font-weight-bold">БЕЗ УСЛУГ</option>
+                        {{#each services}}
+                        <option value="{{id}}">{{name}}  - {{price}} (UZS)</option>
+                        {{/each}}
+                      </select>
+                    </div>  
+                  </div> 
+
+                  <div class="col-3">
+                    <div class="form-group">
+                      <label>Код </label>
+                      <input  id="codeAutoComplete" type="search" dir="ltr" spellcheck=false autocorrect="off" autocomplete="off" autocapitalize="off"
+                      name="overall_code" class="form-control" style="color:black;"  min="6" max="6">
+                    </div>
+                  </div>
+                  
+                </div>
+
+                <hr>
+
+                <div class="row">
+                  <div class="col-3">
+                    <div class="form-group">
+                      <label>Цена (UZS)</label>
+                      <input type="number" name="price" id="price" class="form-control" min="1" style="color:black;" autocomplete="off" readonly>
+                    </div>
+                  </div>
+                  <div class="col-3">
+                    <div class="form-group">
+                      <label>Кол-во</label>
+                      <input type="number" name="added_quantity" id="added_quantity" class="form-control" min="1" style="color:black;" autocomplete="off">
+                    </div>
+                  </div>
+                  <div class="col-3">
+                    <div class="form-group">
+                      <label for="quantity">Итого (UZS)</label>
+                      <input type="number" name="overall_sum" id="overall_sum" class="form-control" min="1" style="color:black;" autocomplete="off" readonly> 
+                    </div>
+                  </div>
+                  <div class="col-3">
+                    <div class="form-group">
+                      <label for="date">Дата</label>
+                      <input type="date"  name="added_date" id="date" class="form-control" placeholder="Дата" style="color:black;">
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-2">
+                    <div class="form-group">
+                      <input type="submit" name="submit" class="btn btn-success swalDefaultSuccess" value="Добавить">
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  
+<script src="/dist/js/adminlte.min.js"></script>
+<script src="/plugins/jquery/jquery.min.js"></script>
+<script src="/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/dist/js/adminlte.js"></script>
+<script src="/plugins/select2/js/select2.full.min.js"></script>
+<script src="/plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+<script src="/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+<script src="/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+<script src="/dist/js/autocomplete/autoComplete.js"></script>
+<script src="/dist/js/autocomplete/autoComplete.min.js"></script>
+
+<script>
+  const getProducts = async searchProduct =>
+  {
+    const response = await fetch('/product/product-search');
+    products = await response.json();
+    
+
+    let product_names = products.map(product => product.product_name);
+    let uniq_products = [...new Set(product_names)];
+
+    const autoCompleteJS = new autoComplete({
+        selector: "#nameAutoComplete",
+        data: {
+            src: uniq_products,
+            cache: true,
+        },
+        resultItem: {
+            highlight: true
+        },
+        resultsList: {
+          element: (list, data) => {
+            if (!data.results.length) {
+              const message = document.createElement("div");
+              message.setAttribute("class", "no_result");
+              message.innerHTML = `<span style="padding:10px;color:red">Не найдено результатов для "${data.query}"</span>`;
+              list.prepend(message);
             }
-        });
+          },
+          noResults: true,
+        },
+        searchEngine: "loose",
+        events: {
+            input: {
+                selection: (event) => {
+                  const selection = event.detail.selection.value;
+                  autoCompleteJS.input.value = selection;
 
-        $("#product_name").autocomplete({
-        minLength: 3,
-        source: products,
-        select: function (event,ui){
-          $("#product_name").val(ui.item.label);
+                    
+                }
+            }
         }
-        
-        })
+    });      
+
+    let drawings = products.map(product => product.drawing);
+    let uniq_drawings = [...new Set(drawings)];
+
+    const drawingAutoComplete = new autoComplete({
+      selector: "#drawingAutoComplete",
+      data: {
+        src: uniq_drawings,
+        cache: true,
+      },
+      resultItem: {
+        highlight: true,
+      },
+      resultsList: {
+        element: (list, data) => {
+          if (!data.results.length) {
+            const message = document.createElement("div");
+            message.setAttribute("class", "no_result");
+            message.innerHTML = `<span style="padding:10px;color:red">Не найдено результатов для "${data.query}"</span>`;
+            list.prepend(message);
+          }
+        },
+        noResults: true,
+      },
+      searchEngine: "loose",
+      events: {
+        input: {
+          selection: (event) => {
+            const selection = event.detail.selection.value;
+            drawingAutoComplete.input.value = selection;
+
+          }
+        }
+      }
     });
-    </script>
 
-    <script>
-      const product_name = document.getElementById('product_name');
+    let overall_codes = products.map(product=> product.overall_code);
 
+    const codeAutoComplete = new autoComplete({
+      selector: "#codeAutoComplete",
+      data: {
+        src: overall_codes,
+        cache: true,
+      },
+      resultItem: {
+        highlight: true,
+      },
+      resultsList: {
+        element: (list, data) => {
+            if (!data.results.length) {
+                const message = document.createElement("div");
+                message.setAttribute("class", "no_result");
+                message.innerHTML = `<span style="padding:10px;color:red">Не найдено результатов для "${data.query}"</span>`;
+                list.prepend(message);
+            }
+        },
+        noResults: true,
+      },
+      searchEngine: "strict",
+      events: {
+        input: {
+          selection: (event) => {
+            const selection = event.detail.selection.value;
+            codeAutoComplete.input.value = selection;
+
+            const selected_name = document.getElementById('nameAutoComplete').value;
+            const selected_drawing = document.getElementById('drawingAutoComplete').value;
+            const selected_sort = document.getElementById('sort').value;
+            const selected_service = document.getElementById('service').value;    
+    
+
+            products.map(product =>{
+
+              if( codeAutoComplete.input.value == product.overall_code)
+              {
+                document.getElementById('nameAutoComplete').value = product.product_name;
+                document.getElementById('drawingAutoComplete').value = product.drawing;
+                document.getElementById('sort').value = product.sort;
+                if(product.AdditionalServiceId == null)
+                {
+                  document.getElementById('service').value = 'БЕЗ УСЛУГ';
+                }
+                else
+                {
+                  document.getElementById('service').value = product.AdditionalServiceId;
+                }
+                
+                document.getElementById('price').value = product.price;
+              
+
+
+              
+              }
+
+            })
+
+
+          }
+        }
+      }
+      });
+
+  }
+
+  getProducts();
+</script>
+
+
+
+
+<script>
+
+  var selected_name = document.getElementById('nameAutoComplete');
+  var selected_drawing = document.getElementById('drawingAutoComplete');
+  var selected_sort = document.getElementById('sort');
+  var selected_service = document.getElementById('service');    
+  var quantity = document.getElementById('added_quantity');
+
+  
+  const getProduct = async searchProduct => 
+  {
+    const response = await fetch('/product/product-search');
+    products = await response.json();
+    let service = selected_service.value == 'БЕЗ УСЛУГ' ? null : selected_service.value;
+
+    products.map(product=>{
+      if(product.product_name == selected_name.value && product.drawing == selected_drawing.value && product.sort == selected_sort.value && product.AdditionalServiceId == service)
+      {
+        console.log('yess');
+        document.getElementById('codeAutoComplete').value = product.overall_code;
+        document.getElementById('price').value = product.price;
+        document.getElementById('overall_sum').value = product.price * quantity.value;
+        document.getElementById('error_message').innerHTML ='';
+      }
+      else if(product.product_name != selected_name.value && product.drawing != selected_drawing.value && product.sort != selected_sort.value && product.AdditionalServiceId != service)
+      {
+        console.log('no');
+        document.getElementById('codeAutoComplete').value = '';
+        document.getElementById('price').value = '';
+        document.getElementById('error_message').innerHTML = 
+        `
+        <div class="alert alert-danger alert-dismissible fade show">
+          <button type="button" class="close" data-dismiss="alert">&times;</button>
+          <span> Товар не найден, проверьте введенную информацию еще раз! </span>
+        </div>
+        `;
+      }
+    })
+
+  }
+  
+  selected_drawing.addEventListener('keydown', () => getProduct());
+  selected_sort.addEventListener('keydown', () => getProduct());
+  selected_service.addEventListener('change', () => getProduct());
+  quantity.addEventListener('keydown', () => getProduct());
+  selected_name.addEventListener('keydown', () => getProduct());
+  
+
+
+</script>
+
+
+
+<script>
+  $(function () {
+    $("#warehouseTable").DataTable({
+      "responsive": true,
+      "autoWidth": false,
+    });
+  });
+</script>
 
     
-      const getValues = async searchText => {
-        
-        const res = await fetch('/product/product-search');
-        const products = await res.json();
-
-        
-
-        products.forEach( function(item) {
-          
-          var search_value = parseInt(searchText);
-
-        
-          
-          if(item.overall_code == search_value)
-          {
-            document.getElementById('product_name').value = item.product_name;
-            document.getElementById('drawing').value = item.drawing;
-            document.getElementById('sort').value = item.sort;
-            document.getElementById('overall_code').value = item.overall_code;
-            document.getElementById('price').value = item.price;
-
-            var price = Number(document.getElementById('price').value);
-            var quant = Number(document.getElementById('added_quantity').value);
-
-            document.getElementById('overall_sum').value = price * quant;
-          }
-        });
-      };
-
-      
-
-      product_name.addEventListener('input', ()=>getValues(product_name.value));
-  
-    </script>
-

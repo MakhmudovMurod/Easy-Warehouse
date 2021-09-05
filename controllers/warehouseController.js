@@ -18,12 +18,18 @@ app.use(express.static(publicDirectoryPath));
 
 
 router.get('/warehouse-replenish', (req,res)=>{
+    Promise.all([
+        Product.findAll(),
+        Additional_service.findAll(),
+    ])
+    .then(data=>{
+        const products = data[0];
+        const services = data[1];
 
-    Product.findAll()
-    .then(data=>
-    res.render('partials/warehouse/warehouse_replenish', {data})
-    )
-    .catch(err=>console.log(err));
+        res.render('partials/warehouse/warehouse_replenish', {services})
+    })
+    .catch(err=>console.log(err))
+   
 });
 
 
