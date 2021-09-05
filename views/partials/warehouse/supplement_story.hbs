@@ -7,7 +7,7 @@
           <div class="row mb-2">
             <div class="col-sm-12">
               <ol class="breadcrumb float-sm-left">
-                <!-- <li class="breadcrumb-item"><a href="#">Главная</a></li> -->
+                <li class="breadcrumb-item"><a href="/warehouse/warehouse-check-reserve">Резерв</a></li>
                 <li class="breadcrumb-item active">История Пополненения Склада</li>
               </ol>
             </div><!-- /.col -->
@@ -34,9 +34,11 @@
                         <table id="supplementTable" class="table table-bordered table-striped">
                             <thead>
                                 <tr>
-                                    <th>ID Продукта</th>
-                                    <th>Клаcc</th>
-                                    <th>Кол-во</th>
+                                    <th>№</th>
+                                    <th>Продукт</th>
+                                    <th>Код продукта</th>
+                                    <th>Добавленное кол-во</th>
+                                    <th>Итоговая цена (UZS)</th>
                                     <th>Дата Пополненения</th>
                                 </tr>
                             </thead>
@@ -45,9 +47,11 @@
                                 
                                 {{#each data}}
                                 <tr>
+                                    <td>{{id}}</td>
                                     <td>{{ProductId}}</td>
-                                    <td>{{Product.product_class}}</td>
-                                    <td>{{currencyFormat added_quantity}}</td>
+                                    <td>{{product_code}}</td>
+                                    <td>{{added_quantity}}</td>
+                                    <td>{{currencyFormat overall_price}}</td>
                                     <td>{{formatTime added_date "YYYY-MM-DD"}}</td>
                                 </tr>
                               
@@ -58,10 +62,12 @@
 
                             <tfoot>
                                 <tr>
-                                    <th>ID Продукта</th>
-                                    <th>Клаcc</th>
-                                    <th>Кол-во</th>
-                                    <th>Дата Пополненения</th>
+                                  <th>№</th>
+                                  <th>Продукт</th>
+                                  <th>Код продукта</th>
+                                  <th>Добавленное кол-во</th>
+                                  <th>Итоговая цена (UZS)</th>
+                                  <th>Дата Пополненения</th>
                                 </tr>
                             </tfoot>
                         </table>

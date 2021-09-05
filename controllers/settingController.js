@@ -72,7 +72,7 @@ router.post('/service-create', (req,res)=>{
         price:req.body.service_price
     })
     .then(
-        res.redirect('/product/constant-create')
+        res.redirect('/settings/setting')
     )
     .catch( err => console.log(err));
 
