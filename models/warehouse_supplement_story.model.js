@@ -12,7 +12,12 @@ module.exports = (sequelize,DataTypes) => {
         type:DataTypes.INTEGER,
         defaultValue:0
     },
-
+    product_code:{
+        type:DataTypes.INTEGER,
+    },
+    overall_price:{
+        type:DataTypes.DECIMAL,
+    },
     createdAt:{
         type:DataTypes.DATE
     },

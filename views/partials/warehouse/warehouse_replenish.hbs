@@ -22,8 +22,32 @@
             </div>
             <div class="card-body">
               <div class="row">
+                  <div class="col-12">
+                    {{#if success}}
+                      <div class="alert alert-success alert-dismissible fade show">
+                      <button type="button" class="close" data-dismiss="alert">&times;</button>
+                        <span>{{success}}</span><br>
+                      </div>
+                    {{/if}}
+
+                    {{#if warning}}
+                      <div class="alert alert-warning alert-dismissible fade show">
+                      <button type="button" class="close" data-dismiss="alert">&times;</button>
+                        <span>{{warning}}</span><br>
+                      </div>
+                    {{/if}}
+
+                    {{#if error}}
+                      <div class="alert alert-danger alert-dismissible fade show">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                          {{#each error}}
+                            <span>- {{msg}}</span><br>
+                          {{/each}}
+                      </div>
+                    {{/if}}
+                  </div>
                 <div class="col-12" id="error_message">
-                  
+                    
                 </div>  
               </div>
               <form role="form" action="/warehouse/warehouse-replenish" method="POST" id="add_products">
@@ -33,7 +57,11 @@
                       <div class="form-group">
                         <label>Название продукта</label>
                         <input  id="nameAutoComplete" type="search" dir="ltr" spellcheck=false autocorrect="off" autocomplete="off" autocapitalize="off"  
-                        name="product_name" class="form-control" style="color:black;" >
+                        name="product_name" class="form-control" style="color:black;"  required
+                        {{#if req_values.product_name}}
+                          value="{{req_values.product_name}}"
+                        {{/if}}
+                        >
                       </div>
                   </div>
                   
@@ -41,23 +69,31 @@
                       <div class="form-group">
                           <label>Рисунок</label>
                           <input  id="drawingAutoComplete" type="search" dir="ltr" spellcheck=false autocorrect="off" autocomplete="off" autocapitalize="off"
-                          name="drawing" class="form-control" style="color:black;">
+                          name="drawing" class="form-control" style="color:black;" required
+                          {{#if req_values.drawing}}
+                            value="{{req_values.drawing}}"
+                          {{/if}}
+                          >
                       </div>
                   </div>
                   
                   <div class="col-md-1">
                       <div class="form-group">
                           <label for="quantity">Сорт</label>
-                          <input type="number" name="sort" id="sort" class="form-control" style="color:black;" min="1" max="5" autocomplete="off" >
+                          <input type="number" name="sort" id="sort" class="form-control" style="color:black;" min="1" max="5" autocomplete="off" required
+                          {{#if req_values.sort}}
+                            value="{{req_values.sort}}"
+                          {{/if}}
+                          >
                       </div>
                   </div>
 
                   <div class="col-md-2">
                     <div class="form-group">
                       <label for="">Доп. услуга</label>
-                      <select name="service" id="service" class="form-control select2" style="color:black;" >
+                      <select name="service" id="service" class="form-control select2" style="color:black;" required>
                         <option disabled="disabled" selected="selected" style="display:none;" >Выберите один из них</option>
-                        <option class="font-weight-bold">БЕЗ УСЛУГ</option>
+                        <option class="font-weight-bold" value="0">БЕЗ УСЛУГ</option>
                         {{#each services}}
                         <option value="{{id}}">{{name}}  - {{price}} (UZS)</option>
                         {{/each}}
@@ -69,7 +105,7 @@
                     <div class="form-group">
                       <label>Код </label>
                       <input  id="codeAutoComplete" type="search" dir="ltr" spellcheck=false autocorrect="off" autocomplete="off" autocapitalize="off"
-                      name="overall_code" class="form-control" style="color:black;"  min="6" max="6">
+                      name="overall_code" class="form-control" style="color:black;"  min="6" max="6" required>
                     </div>
                   </div>
                   
@@ -87,7 +123,7 @@
                   <div class="col-3">
                     <div class="form-group">
                       <label>Кол-во</label>
-                      <input type="number" name="added_quantity" id="added_quantity" class="form-control" min="1" style="color:black;" autocomplete="off">
+                      <input type="number" name="added_quantity" id="added_quantity" class="form-control" min="1" style="color:black;" autocomplete="off" required> 
                     </div>
                   </div>
                   <div class="col-3">
@@ -99,7 +135,7 @@
                   <div class="col-3">
                     <div class="form-group">
                       <label for="date">Дата</label>
-                      <input type="date"  name="added_date" id="date" class="form-control" placeholder="Дата" style="color:black;">
+                      <input type="date"  name="added_date" id="date" class="form-control" placeholder="Дата" style="color:black;" required>
                     </div>
                   </div>
                 </div>
@@ -296,7 +332,7 @@
   {
     const response = await fetch('/product/product-search');
     products = await response.json();
-    let service = selected_service.value == 'БЕЗ УСЛУГ' ? null : selected_service.value;
+    let service = selected_service.value == 0 ? null : selected_service.value;
 
     products.map(product=>{
       if(product.product_name == selected_name.value && product.drawing == selected_drawing.value && product.sort == selected_sort.value && product.AdditionalServiceId == service)
