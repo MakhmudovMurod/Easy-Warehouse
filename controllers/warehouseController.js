@@ -164,23 +164,22 @@ router.post('/warehouse-replenish',
 // WAREHOUSE RESERVE PAGE
 router.get('/warehouse-check-reserve', (req,res)=>{
     Promise.all([
-        Product.findAll({where:{available_quantity:{[Op.gt]: 0}}}),
+        Product.findAll({where:{available_quantity:{[Op.gt]: 0},AdditionalServiceId:null}}),
         Product.findAll({where:{available_quantity:0,AdditionalServiceId:null}}),
         Product.findAll({include: {model:Additional_service, as:'Additional_Service'},
         where:{
             available_quantity:{[Op.gt]: 0},
             AdditionalServiceId:{[Op.ne]: null}
         }}),
-        Product.findAll(),
+        
     ])
     .then(data=>{
         
-        const available_products = data[0];
-        const not_available_products = data[1];
-        const add_service_products = data[2];
-        const products = data[3];
+        const products = data[0];
+        const not_products = data[1];
+        const service_products = data[2];
 
-        res.render('partials/warehouse/check_reserve', {available_products,not_available_products,add_service_products,products})
+        return res.render('partials/warehouse/check_reserve', {products,not_products,service_products});
 
     })
     .catch(err => console.log(err));
@@ -200,6 +199,18 @@ router.get('/warehouse-supplement-story', (req,res)=>{
     
  
 
+});
+
+router.get('/single-supplement-story/:id',(req,res)=>{
+    Promise.all([
+        Warehouse_supplement_story.findAll({where:{ProductId:req.params.id}})
+    ])
+    .then(data=>{
+        const story = data[0];
+
+        res.render('partials/warehouse/single_story',{story});
+    })
+    .catch(err=>console.log(err));
 });
 
 
