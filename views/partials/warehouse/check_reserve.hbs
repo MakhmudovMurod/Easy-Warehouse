@@ -31,56 +31,198 @@
             </div>
           
             <div class="card-body">
-                <table id="Table2" class="table table-bordered table-striped">
-                    <thead>
-                        <tr>
-                            <th>№</th>
-                            <th>Наименование Продкции</th>
-                            <th>Рисунок</th>
-                            <th>Сорт</th>
-                            <th>Код продукта</th>
-                            <th>Кол-во</th>
-                            <th>Цена (UZS)</th>
-                            <th>Общая Стоимость (UZS)</th>
-                        </tr>
-                    </thead>
+              <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item">
+                  <a class="nav-link active" id="home-tab" data-toggle="tab" href="#available" role="tab" aria-controls="home" aria-selected="true">Доступные товары без доп. услуг</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" id="contact-tab" data-toggle="tab" href="#not_available" role="tab" aria-controls="contact" aria-selected="false">Недоступны товары без доп. услуг</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" id="profile-tab" data-toggle="tab" href="#with_service" role="tab" aria-controls="profile" aria-selected="false">Товары с доп. услугом</a>
+                </li>
+              </ul>
+              <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="available" role="tabpanel" aria-labelledby="available-tab">
+                  <div class="row mt-4">
+                    <div class="col-12">
+                      <table id="Table1" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>№</th>
+                                <th>Наименование Продкции</th>
+                                <th>Рисунок</th>
+                                <th>Сорт</th>
+                                <th>Код продукта</th>
+                                <th>Кол-во</th>
+                                <th>Цена (UZS)</th>
+                                <th>Общая Стоимость (UZS)</th>
+                            </tr>
+                        </thead>
 
-                    <tbody>
-                    
-                      {{#each products }}
+                        <tbody>
                         
-                        <tr>
-                          <td>{{id}}</td>
-                          <td>{{product_name}}</td>
-                          <td>{{drawing}}</td>
-                          <td>{{sort}}</td>
-                          <td>{{overall_code}}</td>
-                          <td class="text-success text-bold">{{currencyFormat available_quantity}}</td>
-                          {{#if price}}
-                          <td>{{currencyFormat price}}</td>
-                          <td class="text-info text-bold">{{currencyFormat (math  available_quantity "*" price)}}</td>
-                          {{/if}}
-                        
-                        </tr>
-                      
-                      {{/each}} 
+                          {{#each products }}
+                            
+                            <tr>
+                              <td>{{id}}</td>
+                              <td><a href="/warehouse/single-supplement-story/{{id}}" > {{product_name}}</a></td>
+                              <td>{{drawing}}</td>
+                              <td>{{sort}}</td>
+                              <td>{{overall_code}}</td>
+                              <td class="text-success text-bold">{{currencyFormat available_quantity}}</td>
+                              {{#if price}}
+                              <td>{{currencyFormat price}}</td>
+                              <td class="text-info text-bold">{{currencyFormat (math  available_quantity "*" price)}}</td>
+                              {{/if}}
+                            
+                            </tr>
+                          
+                          {{/each}} 
 
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                          <th>№</th>
-                          <th>Наименование Продкции</th>
-                          <th>Рисунок</th>
-                          <th>Сорт</th>
-                          <th>Код продукта</th>
-                          <th>Кол-во</th>
-                          <th>Цена (UZS)</th>
-                          <th>Общая Стоимость (UZS)</th>
-                        </tr>
-                    </tfoot>
-                </table>
+                        </tbody>
+                        {{!-- <tfoot>
+                            <tr>
+                              <th>№</th>
+                              <th>Наименование Продкции</th>
+                              <th>Рисунок</th>
+                              <th>Сорт</th>
+                              <th>Код продукта</th>
+                              <th>Кол-во</th>
+                              <th>Цена (UZS)</th>
+                              <th>Общая Стоимость (UZS)</th>
+                            </tr>
+                        </tfoot> --}}
+                      </table>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="tab-pane fade" id="not_available" role="tabpanel" aria-labelledby="not_available-tab">
+
+                  <div class="row mt-4">
+                    <div class="col-12">
+                      <table id="Table2" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>№</th>
+                                <th>Наименование Продкции</th>
+                                <th>Рисунок</th>
+                                <th>Сорт</th>
+                                <th>Код продукта</th>
+                                <th>Кол-во</th>
+                                <th>Цена (UZS)</th>
+                                <th>Общая Стоимость (UZS)</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                        
+                          {{#each not_products }}
+                            
+                            <tr>
+                              <td>{{id}}</td>
+                              <td><a href="/warehouse/single-supplement-story/{{id}}" > {{product_name}}</a></td>
+                              <td>{{drawing}}</td>
+                              <td>{{sort}}</td>
+                              <td>{{overall_code}}</td>
+                              <td class="text-success text-bold">{{currencyFormat available_quantity}}</td>
+                              {{#if price}}
+                              <td>{{currencyFormat price}}</td>
+                              <td class="text-info text-bold">{{currencyFormat (math  available_quantity "*" price)}}</td>
+                              {{/if}}
+                            
+                            </tr>
+                          
+                          {{/each}} 
+
+                        </tbody>
+                        {{!-- <tfoot>
+                            <tr>
+                              <th>№</th>
+                              <th>Наименование Продкции</th>
+                              <th>Рисунок</th>
+                              <th>Сорт</th>
+                              <th>Код продукта</th>
+                              <th>Кол-во</th>
+                              <th>Цена (UZS)</th>
+                              <th>Общая Стоимость (UZS)</th>
+                            </tr>
+                        </tfoot> --}}
+                      </table>
+                    </div>
+                  </div>
+
+                </div>
+                
+                <div class="tab-pane fade" id="with_service" role="tabpanel" aria-labelledby="with_service-tab">
+                  <div class="row mt-4">
+                    <div class="col-12">
+                      <table id="Table3" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                              <th>№</th>
+                              <th>Наименование Продкции</th>
+                              <th>Рисунок</th>
+                              <th>Сорт</th>
+                              <th>Доп. услуга</th>
+                              <th>Код продукта</th>
+                              <th>Кол-во</th>
+                              <th>Цена (UZS)</th>
+                              <th>Цена с доп. услугой(UZS)</th>
+                              <th>Общая Стоимость (UZS)</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                        
+                          {{#each service_products }}
+                            
+                            <tr>
+                              <td>{{id}}</td>
+                              <td><a href="/warehouse/single-supplement-story/{{id}}" > {{product_name}}</a></td>
+                              <td>{{drawing}}</td>
+                              <td>{{sort}}</td>
+                              <td class="text-bold">{{Additional_Service.name}}</td>
+                              <td>{{overall_code}}</td>
+                              <td class="text-success text-bold">{{currencyFormat available_quantity}}</td>
+                              {{#if price}}
+                                <td>{{currencyFormat price}}</td>
+                              {{/if}}
+                                <td class="text-bold">{{currencyFormat (math price "+" Additional_Service.price)}}</td>
+                              {{#if price}}
+                                <td class="text-info text-bold">
+                                  {{currencyFormat (math  available_quantity "*" (math price "+" Additional_Service.price))}}
+                                </td>
+                              {{/if}}
+                            </tr>
+                          
+                          {{/each}} 
+
+                        </tbody>
+                        {{!-- <tfoot>
+                            <tr>
+                              <th>№</th>
+                              <th>Наименование Продкции</th>
+                              <th>Рисунок</th>
+                              <th>Сорт</th>
+                              <th>Доп. услуга</th>
+                              <th>Код продукта</th>
+                              <th>Кол-во</th>
+                              <th>Цена (UZS)</th>
+                              <th>Цена с доп. услугой(UZS)</th>
+                              <th>Общая Стоимость (UZS)</th>
+                            </tr>
+                        </tfoot> --}}
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+                
+              
             </div>
-            <!-- /.card-body -->
+            
         </div>
       </div>
 
@@ -121,4 +263,11 @@
       "autoWidth": false,
     });
   });
+</script>
+
+<script>
+  $('#myTab a').on('click', function (e) {
+  e.preventDefault()
+  $(this).tab('show')
+})
 </script>
