@@ -27,6 +27,8 @@
                       <tr>
                           <th>№</th>
                           <th>Продукт</th>
+                          <th>Рисунок</th>
+                          <th>Сорт</th>
                           <th>Код продукта</th>
                           <th>Добавленное кол-во</th>
                           <th>Итоговая цена (UZS)</th>
@@ -39,10 +41,12 @@
                       {{#each data}}
                       <tr>
                           <td>{{id}}</td>
-                          <td>{{ProductId}}</td>
-                          <td>{{product_code}}</td>
-                          <td>{{added_quantity}}</td>
-                          <td>{{currencyFormat overall_price}}</td>
+                          <td>{{Product.product_name}}</td>
+                          <td>{{Product.drawing}}</td>
+                          <td>{{Product.sort}}</td>
+                          <td>{{Product.overall_code}}</td>
+                          <td class="font-weight-bold">{{currencyFormat added_quantity}}</td>
+                          <td class="font-weight-bold">{{currencyFormat overall_price}}</td>
                           <td>{{formatTime added_date "YYYY-MM-DD"}}</td>
                       </tr>
                     
@@ -50,17 +54,6 @@
                         
                   </tbody>
 
-
-                  <tfoot>
-                      <tr>
-                        <th>№</th>
-                        <th>Продукт</th>
-                        <th>Код продукта</th>
-                        <th>Добавленное кол-во</th>
-                        <th>Итоговая цена (UZS)</th>
-                        <th>Дата Пополненения</th>
-                      </tr>
-                  </tfoot>
                 </table>
               </div>
             </div>

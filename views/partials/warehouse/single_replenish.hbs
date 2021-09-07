@@ -1,0 +1,162 @@
+<div class="content-wrapper">
+  <div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-12">
+          <ol class="breadcrumb float-sm-left">
+            <li class="breadcrumb-item"><a href="/warehouse/warehouse-check-reserve">Резерв</a></li>
+            <li class="breadcrumb-item active font-weight-bold">Пополнять Резерв</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card card-success">
+            <div class="card-header">
+              <h3 class="card-title">Пополнить Резерв</h3>
+            </div>
+            <div class="card-body">
+              <div class="row">
+                  <div class="col-12">
+                    {{#if success}}
+                      <div class="alert alert-success alert-dismissible fade show">
+                      <button type="button" class="close" data-dismiss="alert">&times;</button>
+                        <span>{{success}}</span><br>
+                      </div>
+                    {{/if}}
+
+                    {{#if error}}
+                      <div class="alert alert-danger alert-dismissible fade show">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                          {{#each error}}
+                            <span>- {{msg}}</span><br>
+                          {{/each}}
+                      </div>
+                    {{/if}}
+                  </div>
+                <div class="col-12" id="error_message">
+                    
+                </div>  
+              </div>
+              {{#each product}}
+              <form role="form" action="/warehouse/single-replenish/{{id}}" method="POST" id="add_products">
+                
+                <div class="row">
+                
+                  <div class="col-md-3">
+                      <div class="form-group">
+                        <label>Название продукта</label>
+                        <input  id="nameAutoComplete" type="search" dir="ltr" spellcheck=false autocorrect="off" autocomplete="off" autocapitalize="off"  
+                        name="product_name" class="form-control" style="color:black;"  value="{{product_name}}" readonly>
+                      </div>
+                  </div>
+                  
+                  <div class="col-md-3">
+                      <div class="form-group">
+                          <label>Рисунок</label>
+                          <input  id="drawingAutoComplete" type="search" dir="ltr" spellcheck=false autocorrect="off" autocomplete="off" autocapitalize="off"
+                          name="drawing" class="form-control" style="color:black;" value="{{drawing}}" readonly>
+                      </div>
+                  </div>
+                  
+                  <div class="col-md-1">
+                      <div class="form-group">
+                          <label for="quantity">Сорт</label>
+                          <input type="number" name="sort" id="sort" class="form-control" style="color:black;" min="1" max="5" autocomplete="off" value="{{sort}}" readonly>
+                      </div>
+                  </div>
+
+                  <div class="col-md-2">
+                    <div class="form-group">
+                      <label for="">Доп. услуга</label>
+                      <input type="text" name="service" id="service" class="form-control select2" style="color:black;" value="БЕЗ УСЛУГ" readonly>
+                        
+                    </div>  
+                  </div> 
+
+                  <div class="col-3">
+                    <div class="form-group">
+                      <label>Код </label>
+                      <input  id="codeAutoComplete" type="search" dir="ltr" spellcheck=false autocorrect="off" autocomplete="off" autocapitalize="off"
+                      name="overall_code" class="form-control" style="color:black;"  min="6" max="6" value="{{overall_code}}" readonly>
+                    </div>
+                  </div>
+                  
+                </div>
+                <hr>
+                <div class="row">
+                  <div class="col-3">
+                    <div class="form-group">
+                      <label>Цена (UZS)</label>
+                      <input type="number" name="price" id="price" class="form-control" min="1" style="color:black;" autocomplete="off" value="{{price}}" readonly>
+                    </div>
+                  </div>
+                  <div class="col-3">
+                    <div class="form-group">
+                      <label>Кол-во</label>
+                      <input type="number" name="added_quantity" id="added_quantity" class="form-control" min="1" style="color:black;" autocomplete="off" required> 
+                    </div>
+                  </div>
+                  <div class="col-3">
+                    <div class="form-group">
+                      <label for="quantity">Итого (UZS)</label>
+                      <input type="number" name="overall_sum" id="overall_sum" class="form-control" min="1" style="color:black;" autocomplete="off" readonly required> 
+                    </div>
+                  </div>
+                  <div class="col-3">
+                    <div class="form-group">
+                      <label for="date">Дата</label>
+                      <input type="date"  name="added_date" id="date" class="form-control" placeholder="Дата" style="color:black;" required>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-2">
+                    <div class="form-group">
+                      <input type="submit" name="submit" class="btn btn-success swalDefaultSuccess" value="Добавить">
+                    </div>
+                  </div>
+                </div>
+              </form>
+              {{/each}}
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  
+<script src="/dist/js/adminlte.min.js"></script>
+<script src="/plugins/jquery/jquery.min.js"></script>
+<script src="/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/dist/js/adminlte.js"></script>
+<script src="/plugins/select2/js/select2.full.min.js"></script>
+
+
+<script>
+    const price = document.getElementById('price');
+    const quantity = document.getElementById('added_quantity');
+    const overall = document.getElementById('overall_sum');
+
+    quantity.addEventListener('input', function(){
+        overall.value = price.value * quantity.value;
+    })
+</script>
+
+
+<script>
+  $(function () {
+    $("#warehouseTable").DataTable({
+      "responsive": true,
+      "autoWidth": false,
+    });
+  });
+</script>
+
+    

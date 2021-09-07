@@ -289,7 +289,7 @@
                 document.getElementById('sort').value = product.sort;
                 if(product.AdditionalServiceId == null)
                 {
-                  document.getElementById('service').value = 'БЕЗ УСЛУГ';
+                  document.getElementById('service').value = '0';
                 }
                 else
                 {
@@ -318,58 +318,81 @@
 
 
 
-
 <script>
-
   var selected_name = document.getElementById('nameAutoComplete');
   var selected_drawing = document.getElementById('drawingAutoComplete');
   var selected_sort = document.getElementById('sort');
   var selected_service = document.getElementById('service');    
   var quantity = document.getElementById('added_quantity');
 
-  
-  const getProduct = async searchProduct => 
-  {
+  const getProduct = async () => {
     const response = await fetch('/product/product-search');
     products = await response.json();
     let service = selected_service.value == 0 ? null : selected_service.value;
+    var find = false;
+    var searching_product_id;
+    var searching_product_price;
+    var searching_product_code;
 
-    products.map(product=>{
-      if(product.product_name == selected_name.value && product.drawing == selected_drawing.value && product.sort == selected_sort.value && product.AdditionalServiceId == service)
+  
+    for(let i=0; i<products.length; i++)
+    {
+      if(selected_name.value == products[i].product_name) 
       {
-        console.log('yess');
-        document.getElementById('codeAutoComplete').value = product.overall_code;
-        document.getElementById('price').value = product.price;
-        document.getElementById('overall_sum').value = product.price * quantity.value;
-        document.getElementById('error_message').innerHTML ='';
+        if(selected_drawing.value == products[i].drawing) 
+        { 
+          if(selected_sort.value == products[i].sort)
+          {
+            if(service == products[i].AdditionalServiceId)
+            {
+              find = true;
+              searching_product_id = products[i].id;
+              searching_product_price = products[i].price;
+              searching_product_code = products[i].overall_code;
+
+            }
+          }
+        }          
       }
-      else if(product.product_name != selected_name.value && product.drawing != selected_drawing.value && product.sort != selected_sort.value && product.AdditionalServiceId != service)
-      {
-        console.log('no');
-        document.getElementById('codeAutoComplete').value = '';
-        document.getElementById('price').value = '';
-        document.getElementById('error_message').innerHTML = 
-        `
-        <div class="alert alert-danger alert-dismissible fade show">
-          <button type="button" class="close" data-dismiss="alert">&times;</button>
-          <span> Товар не найден, проверьте введенную информацию еще раз! </span>
-        </div>
-        `;
-      }
-    })
+    }
+  
+    if(find)
+    {
+      console.log('Yes you found it!');
+      document.getElementById('codeAutoComplete').value = searching_product_code;
+      document.getElementById('price').value = searching_product_price;
+      document.getElementById('overall_sum').value = searching_product_price * quantity.value;
+      document.getElementById('error_message').innerHTML ='';
+    }
+    else
+    {
+      console.log('No you dont found');
+      document.getElementById('codeAutoComplete').value = '';
+      document.getElementById('price').value = '';
+      document.getElementById('error_message').innerHTML = 
+      `
+      <div class="alert alert-danger alert-dismissible fade show">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <span> Товар не найден, проверьте введенную информацию еще раз! </span>
+      </div>
+      `;
+    }
+
+    
 
   }
+
   
-  selected_drawing.addEventListener('keydown', () => getProduct());
-  selected_sort.addEventListener('keydown', () => getProduct());
+
+  selected_drawing.addEventListener('input', () => getProduct());
+  selected_sort.addEventListener('input', () => getProduct());
   selected_service.addEventListener('change', () => getProduct());
-  quantity.addEventListener('keydown', () => getProduct());
-  selected_name.addEventListener('keydown', () => getProduct());
-  
+  quantity.addEventListener('input', () => getProduct());
+  selected_name.addEventListener('input', () => getProduct());
+
 
 
 </script>
-
 
 
 <script>
