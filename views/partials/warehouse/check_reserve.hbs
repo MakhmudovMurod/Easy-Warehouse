@@ -33,13 +33,13 @@
             <div class="card-body">
               <ul class="nav nav-tabs" id="myTab" role="tablist">
                 <li class="nav-item">
-                  <a class="nav-link active" id="home-tab" data-toggle="tab" href="#available" role="tab" aria-controls="home" aria-selected="true">Доступные товары без доп. услуг</a>
+                  <a class="nav-link active" id="home-tab" data-toggle="tab" href="#available" role="tab" aria-controls="home" aria-selected="true">Доступные <!--товары без доп. услуг--></a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" id="contact-tab" data-toggle="tab" href="#not_available" role="tab" aria-controls="contact" aria-selected="false">Недоступны товары без доп. услуг</a>
+                  <a class="nav-link" id="contact-tab" data-toggle="tab" href="#not_available" role="tab" aria-controls="contact" aria-selected="false">Недоступны <!--товары без доп. услуг--></a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" id="profile-tab" data-toggle="tab" href="#with_service" role="tab" aria-controls="profile" aria-selected="false">Товары с доп. услугом</a>
+                  <a class="nav-link" id="profile-tab" data-toggle="tab" href="#with_service" role="tab" aria-controls="profile" aria-selected="false"><!--Товары с --> Доп. услугом</a>
                 </li>
               </ul>
               <div class="tab-content" id="myTabContent">
@@ -112,7 +112,8 @@
                                 <th>Код продукта</th>
                                 <th>Кол-во</th>
                                 <th>Цена (UZS)</th>
-                                <th>Общая Стоимость (UZS)</th>
+                                {{!-- <th>Общая Стоимость (UZS)</th> --}}
+                                <th>Пополнить</th>
                             </tr>
                         </thead>
 
@@ -129,8 +130,11 @@
                               <td class="text-success text-bold">{{currencyFormat available_quantity}}</td>
                               {{#if price}}
                               <td>{{currencyFormat price}}</td>
-                              <td class="text-info text-bold">{{currencyFormat (math  available_quantity "*" price)}}</td>
+                              {{!-- <td class="text-info text-bold">{{currencyFormat (math  available_quantity "*" price)}}</td> --}}
                               {{/if}}
+                              <td>
+                                <a href="/warehouse/single-replenish/{{id}}" class="btn btn-block btn-success"><i class="fa fa-plus"></i></a>  
+                              </td>
                             
                             </tr>
                           
@@ -147,6 +151,7 @@
                               <th>Кол-во</th>
                               <th>Цена (UZS)</th>
                               <th>Общая Стоимость (UZS)</th>
+                              <th>Пополнить</th>
                             </tr>
                         </tfoot> --}}
                       </table>

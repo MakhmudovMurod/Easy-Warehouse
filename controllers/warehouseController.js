@@ -161,6 +161,76 @@ router.post('/warehouse-replenish',
 
 })
 
+// WAREHOUSE SINGLE REPLENISH PAGE
+router.get('/single-replenish/:id',(req,res)=>{
+    Promise.all([
+        Product.findAll({where:{id:req.params.id}}),
+    ])
+    .then(data=>{
+        const product = data[0];
+
+        return res.render('partials/warehouse/single_replenish',{product});
+    })
+    .catch(err=>console.log(err));
+});
+router.post('/single-replenish/:id',
+[
+    check('added_quantity')
+        .not()
+        .isEmpty()
+        .withMessage('Количество продукта не может быть пустым!'),
+    check('overall_sum')
+        .not()
+        .isEmpty()
+        .withMessage('Итоговая цена не может быть пустым!'),
+    check('added_date')
+        .not()
+        .isEmpty()
+        .withMessage('Дата пополненения не может быть пустым!'),
+],(req,res)=>{
+    Promise.all([
+        Product.findAll({where:{id:req.params.id}}),
+    ])
+    .then(data=>{
+        const product = data[0];
+        const errors = validationResult(req);
+
+        if(!errors.isEmpty())
+        {
+            const error = errors.array();
+        
+            return res.render('partials/warehouse/single_replenish', {error});
+        }
+        else
+        {
+            const overall_code = parseInt(req.body.overall_code);         
+            const quantity = req.body.added_quantity;
+            const overall_price = req.body.overall_sum;
+            const date = req.body.added_date;
+
+            Product.increment({
+                available_quantity:quantity
+            }, {where:{overall_code:overall_code}})
+
+            Warehouse_supplement_story.create({
+                ProductId:req.params.id,
+                product_code:overall_code,
+                added_quantity:quantity,
+                overall_price:overall_price,
+                added_date:date,
+            })
+            
+            
+            const success = 'Товар успешно пополнен!';
+
+            return res.render('partials/warehouse/single_replenish', {product,success});
+        }
+
+    })
+    .catch(err => console.log(err));    
+
+});
+
 // WAREHOUSE RESERVE PAGE
 router.get('/warehouse-check-reserve', (req,res)=>{
     Promise.all([
@@ -203,7 +273,7 @@ router.get('/warehouse-supplement-story', (req,res)=>{
 
 router.get('/single-supplement-story/:id',(req,res)=>{
     Promise.all([
-        Warehouse_supplement_story.findAll({where:{ProductId:req.params.id}})
+        Warehouse_supplement_story.findAll({include:{model:Product, as:'Product'},where:{ProductId:req.params.id}})
     ])
     .then(data=>{
         const story = data[0];

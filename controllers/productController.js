@@ -648,8 +648,6 @@ router.post('/product-edit/:id',
     }) // !-promise then
 });
 
-
-
 //DELETE PRODUCT ENDPOINT
 router.post('/product-delete/:id', (req,res)=>{
     Product.destroy({where:{id:req.params.id}});

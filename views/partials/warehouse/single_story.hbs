@@ -19,7 +19,7 @@
         <div class="col-12">
             <div class="card card-info">
               <div class="card-header">
-                <h3 class="card-title">История пополнения чойнака</h3>
+                <h3 class="card-title">История пополнения</h3>
               </div>
               <div class="card-body">
                 <table id="supplementTable" class="table table-bordered table-striped">
@@ -27,6 +27,8 @@
                       <tr>
                           <th>№</th>
                           <th>Продукт</th>
+                          <th>Рисунок</th>
+                          <th>Сорт</th>
                           <th>Код продукта</th>
                           <th>Добавленное кол-во</th>
                           <th>Итоговая цена (UZS)</th>
@@ -39,10 +41,12 @@
                       {{#each story}}
                       <tr>
                           <td>{{id}}</td>
-                          <td>{{ProductId}}</td>
-                          <td>{{product_code}}</td>
-                          <td>{{added_quantity}}</td>
-                          <td>{{currencyFormat overall_price}}</td>
+                          <td>{{Product.product_name}}</td>
+                          <td>{{Product.drawing}}</td>
+                          <td>{{Product.sort}}</td>
+                          <td>{{Product.overall_code}}</td>
+                          <td class="font-weight-bold">{{currencyFormat added_quantity}}</td>
+                          <td class="font-weight-bold">{{currencyFormat overall_price}}</td>
                           <td>{{formatTime added_date "YYYY-MM-DD"}}</td>
                       </tr>
                     
@@ -51,7 +55,7 @@
                   </tbody>
 
 
-                  <tfoot>
+                  {{!-- <tfoot>
                       <tr>
                         <th>№</th>
                         <th>Продукт</th>
@@ -60,7 +64,7 @@
                         <th>Итоговая цена (UZS)</th>
                         <th>Дата Пополненения</th>
                       </tr>
-                  </tfoot>
+                  </tfoot> --}}
                 </table>
               </div>
             </div>
