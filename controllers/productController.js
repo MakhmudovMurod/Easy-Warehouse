@@ -428,6 +428,8 @@ router.post('/product-edit/:id',
         const price = req.body.price
         const code = req.body.service ? name_code + drawing_code + sort + req.body.service : name_code + drawing_code + sort + 0;
         const service = req.body.service ? parseInt(req.body.service) : null;
+
+        console.log('FIiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii  ' + service);
         //-----------------------------------------------------------------//
         
         if(!errors.isEmpty())
@@ -533,6 +535,7 @@ router.post('/product-edit/:id',
 
                 if(error_counter == 0)
                 {
+                    console.log('BBBBBBBBBBBBBBBBBBBBBBBBB ' + service);
                     Product.update({
                         product_name:product_name,
                         name_code:name_code,
@@ -614,32 +617,50 @@ router.post('/product-edit/:id',
             }
             if(equality > 0)
             {
-                Promise.all([
-                    Product.findAll({where:{id:same_product}}),
-                ])
-                .then(data=>{
-                    let existed_product = data[0];
-                    const req_values = req.body;
-                    let warning = [{msg:'Этот продукт уже создан!'}];
+                if(same_product != req.params.id)
+                {
+                    Promise.all([
+                        Product.findAll({where:{id:same_product}}),
+                    ])
+                    .then(data=>{
+                        let existed_product = data[0];
+                        const req_values = req.body;
+                        let warning = [{msg:'Этот продукт уже создан!'}];
+    
+                        if(price_difference)
+                        {
+                            warning.push({msg:'Этот товар создавался раньше по другой цене : ['+ existed_product[0].price + ' UZS]'});
+                        }
+                        if(name_code_difference)
+                        {
+                            warning.push({msg:'Использован неправильный код названия для '+existed_product[0].product_name+'.  Должно быть - [' + existed_product[0].name_code + ']'});
+                        }
+                        if(drawing_code_difference)
+                        {
+                            warning.push({msg:'Использован неправильный код рисунок для '+existed_product[0].drawing+'.  Должно быть - [' + existed_product[0].drawing_code + ']'});
+                        }
+    
+                        return res.render('partials/products/product_edit', {warning,services,req_values,existed_product,product});
+    
+    
+                    })
+                    .catch(err=>console.log(err));
+                }
+                else
+                {
+                    Product.update({
+                        product_name:product_name,
+                        name_code:name_code,
+                        drawing:drawing,
+                        drawing_code:drawing_code,
+                        sort:sort,
+                        overall_code:code,
+                        AdditionalServiceId:service,
+                    },{where:{id:req.params.id}})
 
-                    if(price_difference)
-                    {
-                        warning.push({msg:'Этот товар создавался раньше по другой цене : ['+ existed_product[0].price + ' UZS]'});
-                    }
-                    if(name_code_difference)
-                    {
-                        warning.push({msg:'Использован неправильный код названия для '+existed_product[0].product_name+'.  Должно быть - [' + existed_product[0].name_code + ']'});
-                    }
-                    if(drawing_code_difference)
-                    {
-                        warning.push({msg:'Использован неправильный код рисунок для '+existed_product[0].drawing+'.  Должно быть - [' + existed_product[0].drawing_code + ']'});
-                    }
-
-                    return res.render('partials/products/product_edit', {warning,services,req_values,existed_product,product});
-
-
-                })
-                .catch(err=>console.log(err));
+                    return res.redirect('/product/price-list');   
+                }
+                
             }// end of else
 
         }// end else
