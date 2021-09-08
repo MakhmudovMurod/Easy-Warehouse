@@ -1,135 +1,76 @@
-
-
-    <!-- Content Wrapper. Contains page content -->
-    <div class="content-wrapper">
-      <!-- Content Header (Page header) -->
-      <div class="content-header">
-        <div class="container-fluid">
-          <div class="row mb-2">
-            <div class="col-sm-12">
-              <ol class="breadcrumb float-sm-left">
-                <!-- <li class="breadcrumb-item"><a href="#">Главная</a></li> -->
-                <li class="breadcrumb-item active">Клиенты</li>
-              </ol>
-            </div><!-- /.col -->
-          </div><!-- /.row -->
-        </div><!-- /.container-fluid -->
+<div class="content-wrapper">
+  <div class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-12">
+        <ol class="breadcrumb float-sm-left">
+          <li class="breadcrumb-item active">Клиенты</li>
+        </ol>
       </div>
-      <!-- /.content-header -->
+    </div>
+  </div>
+  </div>
 
-      <!-- Main content -->
-      <div class="content">
-
-        <div class="row mb-4">
-          <div class="col-2">
-            <a href="/client/client-create" class="btn btn-success"><i class="fa fa-user-plus"></i> Добавить</a>
+  <div class="content">
+    <div class="row mb-4">
+      <div class="col-2">
+        <a href="/client/client-create" class="btn btn-success"><i class="fa fa-user-plus"></i> Добавить</a>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Список текущих клиентов</h3>
+          </div>
+          <div class="card-body">
+            <table id="clientsTable" class="table table-bordered table-striped">
+              <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Имя</th>
+                    <th>Компания</th>
+                    <th>Телефонный номер</th>
+                    <th>Баланс</th>
+                    <th>Создано на</th>
+                    <th>Просмотреть профиль</th>
+                  </tr>
+              </thead>
+              <tbody>
+                {{#each clients }}
+                  <tr>
+                    <td>{{id}}</td>
+                    <td>{{first_name}}</td>
+                    <td>{{company}}</td>
+                    <td>{{phone_number}}</td>
+                    <td>{{balance}}</td>
+                    <td>{{createdAt}}</td>
+                    <td><a href="/client/client-profile/{{id}}" class="btn btn-block btn-info btn-sm">Подробнее</a></td>
+                  </tr>
+                {{/each}} 
+              </tbody>
+            </table>
           </div>
         </div>
-        
-        <div class="row">
-          <div class="col-12">
-                <!-- 1 sort -->
-                <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title">Список текущих клиентов</h3>
-                    </div>
-                    <!-- /.card-header -->
-                    <div class="card-body">
-                        <table id="warehouseTable" class="table table-bordered table-striped">
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Имя</th>
-                                    <th>Компания</th>
-                                    <th>Телефонный номер</th>
-                                    <th>Баланс</th>
-                                    <th>Создано на</th>
-                                    <th>Просмотреть профиль</th>
-                                </tr>
-                            </thead>
-
-                            <tbody>
-                            
-                             {{#each clients }}
-                                
-                                <tr>
-                                  
-                                  <td>{{id}}</td>
-                                  <td>{{first_name}}</td>
-                                  <td>{{company}}</td>
-                                  <td>{{phone_number}}</td>
-                                  <td>{{balance}}</td>
-                                  <td>{{createdAt}}</td>
-                                  <td><a href="/client/client-profile/{{id}}" class="btn btn-block btn-info btn-sm">Подробнее</a></td>
-                                
-                                </tr>
-                              
-                              {{/each}} 
-
-                            </tbody>
-                            <tfoot>
-                                <tr>
-                                    
-                                  <th>ID</th>
-                                  <th>Имя</th>
-                                  <th>Компания</th>
-                                  <th>Телефонный номер</th>
-                                  <th>Баланс</th>
-                                  <th>Создано на</th>
-                                  <th>Просмотреть профиль</th>
-
-                                </tr>
-                            </tfoot>
-                        </table>
-                    </div>
-                    <!-- /.card-body -->
-                </div>
-                <!-- /.card -->
-          </div>
-        </div>         
-            
-            
- 
-
       </div>
-      <!-- /.content -->
-    </div>
-    <!-- /.content-wrapper -->
-    <!-- /.content-wrapper -->
- 
-
-
-    <!-- Control Sidebar -->
-    <aside class="control-sidebar control-sidebar-dark">
-      <!-- Control sidebar content goes here -->
-    </aside>
-    <!-- /.control-sidebar -->
+    </div>         
   </div>
-  <!-- ./wrapper -->
+</div>
 
-
-<!-- jQuery -->
 <script src="/plugins/jquery/jquery.min.js"></script>
-<!-- Bootstrap 4 -->
 <script src="/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<!-- AdminLTE App -->
 <script src="/dist/js/adminlte.min.js"></script>
-<!-- AdminLTE for demo purposes -->
 <script src="/dist/js/demo.js"></script>
+<script src="/plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+<script src="/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+<script src="/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
 
-  <script src="/plugins/datatables/jquery.dataTables.min.js"></script>
-  <script src="/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
-  <script src="/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
-  <script src="/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
-
-  <script>
-    $(function () {
-      $("#warehouseTable").DataTable({
-        "responsive": true,
-        "autoWidth": false,
-      });
+<script>
+  $(function () {
+    $("#clientsTable").DataTable({
+      "responsive": true,
+      "autoWidth": false,
     });
-  </script>
-</body>
-
-</html>
+  });
+</script>
