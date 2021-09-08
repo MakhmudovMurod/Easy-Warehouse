@@ -1,143 +1,90 @@
-    <!-- Content Wrapper. Contains page content -->
-    <div class="content-wrapper">
-      <!-- Content Header (Page header) -->
-      <div class="content-header">
-        <div class="container-fluid">
-          <div class="row mb-2">
-            <div class="col-sm-12">
-              <ol class="breadcrumb float-sm-left">
-                <!-- <li class="breadcrumb-item"><a href="#">Главная</a></li> -->
-                <li class="breadcrumb-item active">История Всех Сделок</li>
-              </ol>
-            </div><!-- /.col -->
-          </div><!-- /.row -->
-        </div><!-- /.container-fluid -->
-      </div>
-      <!-- /.content-header -->
-
-      <!-- Main content -->
-      <div class="content">
-        <div class="container-fluid">
-          <div class="row">
-
-                      <!-- Tables -->
-          <div class="col-12">
-            <!-- 1 sort -->
-            <div class="card card-info">
-              <div class="card-header">
-                <h3 class="card-title">Список Удачных Сделок</h3>
-              </div>
-              <!-- /.card-header -->
-              <div class="card-body">
-                <table id="suc_deals" class="table table-bordered table-striped">
-                    <thead>
-                        <tr>
-                            <th>Дата</th>
-                            <th>Клиент</th>
-                            <th>Цена Сделки (UZS)</th>
-                            <th>Скидка (UZS)</th>
-                            <th>Итоговая Цена (UZS)</th>
-                            <th>Подробнее</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {{#each deals}}
-                         
-                        <tr>
-                            <td>{{Client.first_name}}</td>
-                            
-                            {{#if fixed_price}}
-                              <td>{{currencyFormat fixed_price}}</td>
-                            {{else}}
-                              <td>0</td>
-                            {{/if}}
-                            
-                            {{#if cash_discount}}
-                              <td>{{currencyFormat cash_discount}}</td>
-                            {{else}}
-                              <td>0</td>
-                            {{/if}}
-                            
-                            {{#if final_price}}
-                              <td>{{currencyFormat final_price}}</td>
-                            {{else}}
-                              <td>0</td>
-                            {{/if}}
-                            
-                            <td>{{formatTime deal_date "YYYY-MM-DD"}}</td>
-                            <td><a href="/client/client-profile/{{ClientId}}" class="btn btn-block btn-info btn-sm">Подробнее</a></td>
-                        </tr>
-                        
-                        {{/each}}
-                        
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <th>Дата</th>
-                            <th>Клиент</th>
-                            <th>Цена Сделки (UZS)</th>
-                            <th>Скидка (UZS)</th>
-                            <th>Итоговая Цена (UZS)</th>
-                            <th>Подробнее</th>
-                        </tr>
-                    </tfoot>
-                </table>
-              </div>
-              <!-- /.card-body -->
-            </div>
-            <!-- /.card -->
-          </div>
-          <!-- /.col -->
-
-            
-          </div>
-          <!-- /.row -->
-        </div><!-- /.container-fluid -->
-      </div>
-      <!-- /.content -->
-    </div>
-    <!-- /.content-wrapper -->
-    <!-- /.content-wrapper -->
- 
-
- 
+<div class="content-wrapper">
+  <div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-12">
+          <ol class="breadcrumb float-sm-left">
+            <!-- <li class="breadcrumb-item"><a href="#">Главная</a></li> -->
+            <li class="breadcrumb-item active">История Всех Сделок</li>
+          </ol>
+        </div><!-- /.col -->
+      </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
   </div>
-  <!-- ./wrapper -->
+  
+  <div class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12">
+          <div class="card card-info">
+            <div class="card-header">
+              <h3 class="card-title">Список Удачных Сделок</h3>
+            </div>
+            <div class="card-body">
+              <table id="suc_deals" class="table table-bordered table-striped">
+                <thead>
+                  <tr>
+                    <th>Дата</th>
+                    <th>Клиент</th>
+                    <th>Цена Сделки (UZS)</th>
+                    <th>Скидка (UZS)</th>
+                    <th>Итоговая Цена (UZS)</th>
+                    <th>Подробнее</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {{#each deals}}
+                    <tr>
+                      <td>{{Client.first_name}}</td>
+                      {{#if fixed_price}}
+                        <td>{{currencyFormat fixed_price}}</td>
+                      {{else}}
+                        <td>0</td>
+                      {{/if}}
+                      {{#if cash_discount}}
+                        <td>{{currencyFormat cash_discount}}</td>
+                      {{else}}
+                        <td>0</td>
+                      {{/if}}
+                      {{#if final_price}}
+                        <td>{{currencyFormat final_price}}</td>
+                      {{else}}
+                        <td>0</td>
+                      {{/if}}
+                      <td>{{formatTime deal_date "YYYY-MM-DD"}}</td>
+                      <td><a href="/client/client-profile/{{ClientId}}" class="btn btn-block btn-info btn-sm">Подробнее</a></td>
+                    </tr>
+                  {{/each}}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 
-  <!-- REQUIRED SCRIPTS -->
-  <script src="/dist/js/adminlte.min.js"></script>
-
-  <!-- jQuery -->
-  <script src="/plugins/jquery/jquery.min.js"></script>
-  <!-- Bootstrap -->
-  <script src="/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <!-- AdminLTE -->
-  <script src="/dist/js/adminlte.js"></script>
-
+<script src="/dist/js/adminlte.min.js"></script>
+<script src="/plugins/jquery/jquery.min.js"></script>
+<script src="/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/dist/js/adminlte.js"></script>
+<script src="/plugins/chart.js/Chart.min.js"></script>
+<script src="/dist/js/pages/dashboard3.js"></script>
+<script src="/plugins/select2/js/select2.full.min.js"></script>
+<script src="/plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+<script src="/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+<script src="/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+<script>
+  $(function () {
+    $("#suc_deals").DataTable({
+      "responsive": true,
+      "autoWidth": false,
+    });
+  });
+</script>
   
 
-  <!-- OPTIONAL SCRIPTS -->
-  <script src="/plugins/chart.js/Chart.min.js"></script>
-  <script src="/dist/js/pages/dashboard3.js"></script>
-
-  <!-- Select2 -->
-  <script src="/plugins/select2/js/select2.full.min.js"></script>
-  <!-- DataTables -->
-  <script src="/plugins/datatables/jquery.dataTables.min.js"></script>
-  <script src="/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
-  <script src="/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
-  <script src="/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
-
-  <script>
-    $(function () {
-      $("#suc_deals").DataTable({
-        "responsive": true,
-        "autoWidth": false,
-      });
-    });
-  </script>
-   
-
-  </script>
   

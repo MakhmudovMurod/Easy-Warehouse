@@ -10,6 +10,7 @@ const { body, check, validationResult } = require('express-validator');
 const Product = db.products;
 const Product_Constant = db.product_constants;
 const Additional_service = db.additional_service;
+const Warehouse_supplement_story = db.warehouse_supplement_story;
  
 const publicDirectoryPath = path.join(__dirname, '../public');
 app.use(express.static(publicDirectoryPath));
@@ -672,7 +673,7 @@ router.post('/product-edit/:id',
 //DELETE PRODUCT ENDPOINT
 router.post('/product-delete/:id', (req,res)=>{
     Product.destroy({where:{id:req.params.id}});
-
+    
     res.redirect('/product/price-list');
 });
 

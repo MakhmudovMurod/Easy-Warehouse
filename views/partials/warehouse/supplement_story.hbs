@@ -41,7 +41,11 @@
                       {{#each data}}
                       <tr>
                           <td>{{id}}</td>
-                          <td>{{Product.product_name}}</td>
+                          {{#if Product.AdditionalServiceId}}
+                          <td class="text-success">{{Product.product_name}}</td>
+                          {{else}} 
+                          <td>{{Product.product_name}}</td>   
+                          {{/if}}
                           <td>{{Product.drawing}}</td>
                           <td>{{Product.sort}}</td>
                           <td>{{Product.overall_code}}</td>

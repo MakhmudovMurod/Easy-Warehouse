@@ -65,8 +65,12 @@ db.sold_products.belongsTo(db.products,{
 
  
 //Products --> Warehouse_supplement_story
-db.products.hasMany(db.warehouse_supplement_story, { as: "Warehouse_supplement_story"});
+db.products.hasMany(db.warehouse_supplement_story, { 
+  onDelete: 'cascade',
+  as: "Warehouse_supplement_story"});
 db.warehouse_supplement_story.belongsTo(db.products,{
+  onDelete: 'cascade', 
+  foreignKey: { allowNull: false },
   as:"Product"
 });
 
