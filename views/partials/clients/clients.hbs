@@ -4,7 +4,7 @@
     <div class="row mb-2">
       <div class="col-sm-12">
         <ol class="breadcrumb float-sm-left">
-          <li class="breadcrumb-item active">Клиенты</li>
+          <li class="breadcrumb-item active font-weight-bold">Клиенты</li>
         </ol>
       </div>
     </div>
@@ -31,9 +31,9 @@
                     <th>Имя</th>
                     <th>Компания</th>
                     <th>Телефонный номер</th>
-                    <th>Баланс</th>
-                    <th>Создано на</th>
-                    <th>Просмотреть профиль</th>
+                    {{!-- <th>Баланс</th> --}}
+                    <th>Создано в</th>
+                    <th>Профиль</th>
                   </tr>
               </thead>
               <tbody>
@@ -43,7 +43,7 @@
                     <td>{{full_name}}</td>
                     <td>{{company}}</td>
                     <td>{{phone_number}}</td>
-                    <td>{{balance}}</td>
+                    {{!-- <td>{{balance}}</td> --}}
                     <td>{{createdAt}}</td>
                     <td><a href="/client/client-profile/{{id}}" class="btn btn-block btn-info btn-sm">Подробнее</a></td>
                   </tr>
