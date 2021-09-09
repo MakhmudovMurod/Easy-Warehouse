@@ -10,6 +10,7 @@ const Product = db.products;
 const Sold_product = db.sold_products;
 const Balance_story = db.balance_story;
 const Problematic_sold_product = db.problematic_sold_products;
+const { body, check, validationResult } = require('express-validator');
 
  
 
@@ -17,40 +18,120 @@ const publicDirectoryPath = path.join(__dirname, '../public');
 app.use(express.static(publicDirectoryPath));
 
 
-/*---------------------------------------------------------------------------------------------------DISPLAYING LIST OF ALL CLIENTS */
-
+//CLIENTS LIST PAGE
 router.get('/client-list',(req,res)=>{
 
     Client.findAll()
     .then(clients=>
         res.render('partials/clients/clients', {clients})
     )
-    
     .catch(err => console.log(err));
 }
 );
 
-
-/*---------------------------------------------------------------------------------------------------CREATING A NEW CLIENT */
-
+// CREATE CLIENT PAGE
 router.get('/client-create',(req,res)=>{
     res.render('partials/clients/create_client', {layout:'main'});
 });
-router.post('/client-create',(req,res)=>{
+router.post('/client-create',
+[
+    check('full_name')
+        .isLength({ min: 5 })
+        .withMessage('Фамилия и имя должны содержать более 5 символов!')
+        .trim()
+        .not()
+        .isEmpty()
+        .withMessage('Фамилия и Имя не могут быть пустыми!'),
+    check('phone_number')
+        .isNumeric()
+        .withMessage('Номер телефона должен быть только числовым значением!')
+        .not()
+        .isEmpty()
+        .withMessage('Номер телефона не может быть пустым!'),
+    check('company_name')
+        .trim()
+        .not()
+        .isEmpty()
+        .withMessage('Название компании не может быть пустым!'),
+],(req,res)=>{
+    Promise.all([
+        Client.findAll(),
+    ])
+    .then(data=>{
+        const clients = data[0];
+        const req_values = req.body;
+        const errors = validationResult(req);
+        const error = errors.array();
+        
 
-    Client.create({
-        first_name:req.body.client_name,
-        company:req.body.client_company,
-        phone_number:req.body.client_phone_number,
-        balance:0,
+        if(!errors.isEmpty())
+        {
+            return res.render('partials/clients/create_client',{error,req_values});
+        }
+        else
+        {
+            // All requested data
+            const fullName = (req.body.full_name).toUpperCase();
+            const company = (req.body.company_name).toUpperCase();
+            const phoneNumber = req.body.phone_number;
+            let equality = false;
+            let phone_equality = false;
+
+            for(let i=0; i<clients.length; i++)
+            {
+                if(fullName == clients[i].full_name)
+                {
+                    if(phoneNumber == clients[i].phone_number)
+                    {
+                        if(company == clients[i].company)
+                        {
+                            equality = true;
+                        }
+                    }
+                }
+                if(phoneNumber == clients[i].phone_number)
+                {
+                    phone_equality = true;
+                }
+            }
+
             
-     })
-    .then(
-        res.redirect('/client/client-list')
-        )
-     
+            
+            const warning = [];
+
+            if(equality)
+            {   
+                warning.push({msg:'Этот клиент создавался раньше!'});    
+
+                return res.render('partials/clients/create_client',{warning,req_values});
+            }
+            else if(phone_equality)
+            {
+                warning.push({msg:'Этот номер телефона уже создан!'});
+
+                return res.render('partials/clients/create_client',{warning,req_values});
+            }
+            else
+            {   
+                Client.create({
+                    full_name:fullName,
+                    company:company,
+                    phone_number:phoneNumber,
+                    balance:0
+                })
+
+                const success = 'Клиент успешно создан!';
+            
+                return res.render('partials/clients/create_client',{success});
+            }
+
+
+            
+        }
+
+
+    })
     .catch(err=>console.log(err));
-    
 });
 
 

@@ -1,7 +1,7 @@
 module.exports = (sequelize,DataTypes) => {
 
 const Client = sequelize.define('Client', {
-    first_name:{
+    full_name:{
         type:DataTypes.STRING
     },
 
@@ -10,7 +10,8 @@ const Client = sequelize.define('Client', {
     },
 
     phone_number:{
-        type:DataTypes.STRING
+        type:DataTypes.STRING,
+        unique:true
     },
 
     balance:{

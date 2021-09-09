@@ -1,98 +1,106 @@
-        <!-- Content Wrapper. Contains page content -->
-        <div class="content-wrapper">
-            <!-- Content Header (Page header) -->
-            <div class="content-header">
-                <div class="container-fluid">
-                    <div class="row mb-2">
-                        <div class="col-sm-12">
-                            <ol class="breadcrumb float-sm-left">
-                                <!-- <li class="breadcrumb-item"><a href="#">Главная</a></li> -->
-                                <li class="breadcrumb-item active">Добавить Клиента</li>
-                            </ol>
-                        </div><!-- /.col -->
-                    </div><!-- /.row -->
-                </div><!-- /.container-fluid -->
-            </div>
-            <!-- /.content-header -->
-
-            <!-- Main content -->
-            <div class="content">
-                <div class="container-fluid">
-                    <div class="row">
-
-                        <!-- Forms -->
-                        <div class="col-12">
-                            <div class="row">
-                                <div class="col-md-10">
-                                    <div class="card card-success">
-                                        <div class="card-header">
-                                            <h3 class="card-title">Новый Клиент</h3>
-                                        </div>
-                                        <!-- /.card-header -->
-                                        <form action="/client/client-create" method="POST">
-                                            <div class="card-body">
-                                                <div class="row">
-                                                    <div class="col-md-12">
-                                                        <div class="form-group">
-                                                            <label>Фамилия Имя</label>
-                                                            <input type="text" class="form-control" placeholder="Фамилия Имя" name="client_name">
-                                                        </div>
-                                                    </div>
-                                        
-                                                    <div class="col-md-12">
-                                                        <div class="form-group">
-                                                            <label>Номер Телефона</label>
-                                                            <input type="text" class="form-control" placeholder="Номер Телефона" name="client_phone_number">
-                                                        </div>
-                                                    </div>
-                                                    
-                                                    <div class="col-md-12">
-                                                        <div class="form-group">
-                                                            <label>Компания</label>
-                                                            <input type="text" class="form-control" placeholder="Компания" name="client_company">
-                                                        </div>
-                                                    </div>
-
-                                                    
-                                                    <div class="col-md-12">
-                                                        <div class="form-group">
-                                                            <input type="submit" value="Добавить" class="btn btn-success swalDefaultSuccess" name="submit">
-                                                             
-                                                        </div>
-                                                    </div>
-                                                
-                                        
-                                                </div>
-                                            </div>
-                                        </form>
-                                        <!-- /.card-body -->
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                    <!-- /.row -->
+<div class="content-wrapper">
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-12">
+                    <ol class="breadcrumb float-sm-left">
+                        <li class="breadcrumb-item"><a href="/client/client-list">Список клиентов</a></li>
+                        <li class="breadcrumb-item active font-weight-bold">Добавить Клиента</li>
+                    </ol>
                 </div>
-                <!-- /.container-fluid -->
             </div>
-            <!-- /.content -->
         </div>
     </div>
-    <!-- /.content-wrapper -->
- 
 
-    <!-- REQUIRED SCRIPTS -->
-    <script src="/dist/js/adminlte.min.js"></script>
+    <div class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card card-success">
+                        <div class="card-header">
+                            <h3 class="card-title">Новый Клиент</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-12">
+                                    
+                                    {{#if success}}
+                                    <div class="alert alert-success alert-dismissible fade show">
+                                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                        <span>{{success}}</span>
+                                    </div>
+                                    {{/if}}
+                                    
+                                    {{#if warning}}
+                                    <div class="alert alert-warning alert-dismissible fade show">
+                                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                        {{#each warning}}
+                                        <span>- {{msg}}</span><br>
+                                        {{/each}}
+                                    </div>
+                                    {{/if}}
+                                    
+                                    {{#if error}}
+                                    <div class="alert alert-danger alert-dismissible fade show">
+                                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                        {{#each error}}
+                                        <span>- {{msg}}</span><br>
+                                        {{/each}}
+                                    </div>
+                                    {{/if}}
+                                </div>
+                            </div>
+                            <form action="/client/client-create" method="POST">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Фамилия Имя</label>
+                                            <input type="text" class="form-control" placeholder="Фамилия Имя" name="full_name" autocomplete="off" style="color:black"
+                                            {{#if req_values.full_name}}
+                                                value="{{req_values.full_name}}"
+                                            {{/if}}>
+                                        </div>
+                                    </div>
+                        
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Номер Телефона</label>
+                                            <input type="tel" class="form-control" placeholder="Номер Телефона" name="phone_number" autocomplete="off" style="color:black"
+                                            {{#if req_values.phone_number}}
+                                                value="{{req_values.phone_number}}"
+                                            {{/if}}
+                                            >
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Компания</label>
+                                            <input type="text" class="form-control" placeholder="Компания" name="company_name" autocomplete="off" style="color:black"
+                                            {{#if req_values.company_name}}
+                                                value="{{req_values.company_name}}"
+                                            {{/if}}
+                                            >
+                                        </div>
+                                    </div>
 
-    <!-- jQuery -->
-    <script src="/plugins/jquery/jquery.min.js"></script>
-    <!-- Bootstrap -->
-    <script src="/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <!-- AdminLTE -->
-    <script src="/dist/js/adminlte.js"></script>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <input type="submit" value="Добавить" class="btn btn-success" name="submit">
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/dist/js/adminlte.min.js"></script>
+<script src="/plugins/jquery/jquery.min.js"></script>
+<script src="/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/dist/js/adminlte.js"></script>
     
-
-    <!-- OPTIONAL SCRIPTS -->
-    <script src="/plugins/chart.js/Chart.min.js"></script>
-    <script src="/dist/js/pages/dashboard3.js"></script>
