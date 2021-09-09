@@ -6,7 +6,7 @@
                     <nav aria-label="breadcrumb float-sm-left">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="/client/client-list">Список клиентов</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Профиль клиента</li>
+                            <li class="breadcrumb-item active font-weight-bold" >Профиль клиента</li>
                         </ol>
                     </nav>
                 </div>
@@ -17,11 +17,7 @@
     <div class="content">
         <div class="container-fluid">
             <div class="row">
-                {{!-- Left Side | Client Information | col-3  --}}
                 <div class="col-md-3">
-
-                    {{!---------PROFILE INFORMATION-----------------------}}
-                    
                     <div class="card">
                         <div class="card-body box-profile">
                             <div class="text-center">
@@ -78,10 +74,7 @@
                                             <input type="number" class="form-control" name="balance_add_amount" min="1">
                                             <button type="submit" class="btn btn-success"><i class="fas fa-plus"></i></button>
                                         </div>
-                                        {{!-- <div class="form-group mt-2">
-                                            <label for="">Описание платежа:</label>
-                                            <textarea class="form-control"></textarea>
-                                        </div> --}}
+                                        
                                     </form>    
                                 </div>
                             </div>
@@ -91,10 +84,6 @@
                         </div>
                         
                     </div>
-
-                    {{!---------------------------------------------GENERAL INFORMATION ABOUT USER---------------------------------------------------------}}
-
-                    
                     <div class="card card-default">
                         <div class="card-header">
                             <h3 class="card-title">Общая Информация</h3>
@@ -133,25 +122,13 @@
                         </div>
                         <!-- /.card-body -->
                     </div>
-                    
-
-                
-                {{!-- End of Left Side |Client Information |  col-3  --}}
-
                 </div>    
-                    
-                    
-                
-
-                
-                {{!-----------------------------------------------------RIGHT SIDE  -------------------------------------------------------------------------------------}}
-                
-                
                 
                 <div class="col-md-9">
                     <div class="card">
                         <div class="card-header">
-                            <ul class="nav nav-pills">
+                            <h3 class="card-title">Сделки</h3>
+                            {{!-- <ul class="nav nav-pills">
                                 <li class="nav-item">
                                     <a class="nav-link active" href="#deals" data-toggle="tab">История Сделок</a>
                                 </li>
@@ -169,19 +146,15 @@
                                 </li>
                                 
                                 
-                            </ul>
+                            </ul> --}}
                         </div>
                         <div class="card-body">
-                            
                             <div class="tab-content">
-                                
                                 <div class="tab-pane active" id="deals">
-                                    
                                     <div class="table-responsive">
                                         <table id="dealsTable"  class="table table-bordered table-striped">
                                             <thead>
                                                 <tr>
-                                                    <th>ID сделки</th>
                                                     <th>Дата</th>
                                                     <th>Общая Цена</th>
                                                     <th>Скидка</th>
@@ -191,85 +164,57 @@
                                                     <th>Подробнее</th>
                                                 </tr>
                                             </thead>
-                                                <tbody>
-                                                    {{#each client_deals}}
-                                                    <tr>
-                                                        <td>{{id}}</td>
-                                                        <td>{{formatTime deal_date "YYYY-MM-DD"}}</td>
-                                                        
-                                                        {{#if fixed_price}}
-                                                            <td>{{currencyFormat fixed_price}}</td>
-                                                        {{else}}
-                                                            <td>0</td>
-                                                        {{/if}}
-
-                                                        {{#if cash_discount}}
-                                                            <td>{{currencyFormat cash_discount}}</td>
-                                                        {{else}}
-                                                            <td>0</td>
-                                                        {{/if}}
-                                                        
-                                                        {{#if final_price}}
-                                                            <td>{{currencyFormat final_price}}</td>
-                                                        {{else}}
-                                                            <td>0</td>
-                                                        {{/if}}
-
-                                                        {{#if paid_cash}}
-                                                        <td class="text-success text-bold">{{currencyFormat paid_cash}}</td>
-                                                        {{else}}
-                                                        <td>0</td>
-                                                        {{/if}}
-
-                                                        {{#if final_price}}
-                                                        <td class="text-danger text-bold">{{currencyFormat (math  final_price "-" paid_cash)}}</td>
-                                                        {{else}}
-                                                        <td>0</td>
-                                                        {{/if}}
-                                                        
-                                                        <td>
-                                                            <a href="/client/client-deal-detail/{{id}}"  class="btn btn-primary">Подробнее</a>
-                                                        </td>
-                                                    </tr>
-                                                    {{/each }}
-                                                </tbody>
-                                                <tfoot>
+                                            <tbody>
+                                                {{#each client_deals}}
+                                                <tr>
+                                                    <td>{{formatTime deal_date "YYYY-MM-DD"}}</td>
                                                     
-                                                    <tr>
-                                                        <th>ID сделки</th>
-                                                        <th>Дата</th>
-                                                        <th>Общая Цена</th>
-                                                        <th>Скидка</th>
-                                                        <th>К Оплате</th>
-                                                        <th>Оплачено</th>
-                                                        <th>Долг</th>
-                                                        <th>Подробнее</th>
-                                                    </tr>
+                                                    {{#if fixed_price}}
+                                                        <td>{{currencyFormat fixed_price}}</td>
+                                                    {{else}}
+                                                        <td>0</td>
+                                                    {{/if}}
+
+                                                    {{#if cash_discount}}
+                                                        <td>{{currencyFormat cash_discount}}</td>
+                                                    {{else}}
+                                                        <td>0</td>
+                                                    {{/if}}
                                                     
-                                                </tfoot>
+                                                    {{#if final_price}}
+                                                        <td>{{currencyFormat final_price}}</td>
+                                                    {{else}}
+                                                        <td>0</td>
+                                                    {{/if}}
+
+                                                    {{#if paid_cash}}
+                                                    <td class="text-success text-bold">{{currencyFormat paid_cash}}</td>
+                                                    {{else}}
+                                                    <td>0</td>
+                                                    {{/if}}
+
+                                                    {{#if final_price}}
+                                                    <td class="text-danger text-bold">{{currencyFormat (math  final_price "-" paid_cash)}}</td>
+                                                    {{else}}
+                                                    <td>0</td>
+                                                    {{/if}}
+                                                    
+                                                    <td>
+                                                        <a href="/client/client-deal-detail/{{id}}"  class="btn btn-primary">Подробнее</a>
+                                                    </td>
+                                                </tr>
+                                                {{/each }}
+                                            </tbody>
                                         </table>
                                     </div>
-
                                 </div>
-
-                            
                             </div>
-
                         </div>
                     </div>
                 </div>
-
             </div>
-
-            
-                
-            
-            <!-- /.row -->
-        
         </div>
-        <!-- /.container-fluid -->
     </div>
-    
 </div>
         
 <script src="/dist/js/adminlte.min.js"></script>
@@ -287,11 +232,6 @@
         $("#dealsTable").DataTable({
             "responsive": true,
             "autoWidth": false,
-        });
-        $("#problemTable").DataTable({
-            "responsive": true,
-            "autoWidth": false,
-            
         });
     });
 </script>
