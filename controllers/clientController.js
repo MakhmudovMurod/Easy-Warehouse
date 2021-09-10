@@ -12,11 +12,8 @@ const Balance_story = db.balance_story;
 const Problematic_sold_product = db.problematic_sold_products;
 const { body, check, validationResult } = require('express-validator');
 
- 
-
 const publicDirectoryPath = path.join(__dirname, '../public');
 app.use(express.static(publicDirectoryPath));
-
 
 //CLIENTS LIST PAGE
 router.get('/client-list',(req,res)=>{
@@ -94,11 +91,7 @@ router.post('/client-create',
                     phone_equality = true;
                 }
             }
-
-            
-            
             const warning = [];
-
             if(equality)
             {   
                 warning.push({msg:'Этот клиент создавался раньше!'});    
@@ -124,19 +117,150 @@ router.post('/client-create',
             
                 return res.render('partials/clients/create_client',{success});
             }
-
-
-            
         }
+    })
+    .catch(err=>console.log(err));
+});
 
+// CLIENT EDIT PAGE
+router.get('/client-edit/:id',(req,res)=>{
+    Promise.all([
+        Client.findAll({limit:1,where:{id:req.params.id}}),
+    ])
+    .then(data=>{
+        const client = data[0][0];
+        
+        return res.render('partials/clients/client_edit', {client})
+    })
+    .catch(err=>console.log(err));
+});
+router.post('/client-edit/:id',
+[
+    check('full_name')
+        .isLength({ min: 5 })
+        .withMessage('Фамилия и имя должны содержать более 5 символов!')
+        .trim()
+        .not()
+        .isEmpty()
+        .withMessage('Фамилия и Имя не могут быть пустыми!'),
+    check('phone_number')
+        .isNumeric()
+        .withMessage('Номер телефона должен быть только числовым значением!')
+        .not()
+        .isEmpty()
+        .withMessage('Номер телефона не может быть пустым!'),
+    check('company_name')
+        .trim()
+        .not()
+        .isEmpty()
+        .withMessage('Название компании не может быть пустым!'),
+]
+,(req,res)=>{
+    Promise.all([
+        Client.findAll(),
+        Client.findAll({limit:1,where:{id:req.params.id}}),
+        
+    ])
+    .then(data=>{
+        const clients = data[0];
+        const client = data[0][0];
+        const req_values = req.body;
+        const errors = validationResult(req);
+        const error = errors.array();
 
+        if(!errors.isEmpty())
+        {
+            return res.render('partials/clients/client_edit',{error,req_values});
+        }
+        else
+        {
+            // All requested data
+            const fullName = (req.body.full_name).toUpperCase();
+            const company = (req.body.company_name).toUpperCase();
+            const phoneNumber = req.body.phone_number;
+            let equality = false;
+            let phone_equality = false;
+            let same_client_id;
+
+            for(let i=0; i<clients.length; i++)
+            {
+                if(fullName == clients[i].full_name)
+                {
+                    if(phoneNumber == clients[i].phone_number)
+                    {
+                        if(company == clients[i].company)
+                        {
+                            equality = true;
+                            same_client_id = clients[i].id;
+                        }
+                    }
+                }
+                if(phoneNumber == clients[i].phone_number)
+                {
+                    phone_equality = true;
+                    same_client_id = clients[i].id;
+                }
+            }
+
+            const warning = [];
+            
+            if(equality)
+            {   
+                if(same_client_id != req.params.id)
+                {
+                    warning.push({msg:'Этот клиент создавался раньше!'});    
+
+                    return res.render('partials/clients/client_edit',{warning,req_values,client});
+                }
+                else
+                {
+                    Client.update({
+                        full_name:fullName,
+                        company:company,
+                        phone_number:phoneNumber,
+                    },{where:{id:req.params.id}})
+    
+                    return res.redirect('/client/client-profile/'+ req.params.id);
+                }
+            
+            }
+            if(phone_equality)
+            {
+                if(same_client_id != req.params.id)
+                {
+                    warning.push({msg:'Этот номер телефона уже создан!'});
+
+                    return res.render('partials/clients/client_edit',{warning,req_values,client});
+                }
+                else
+                {
+                    Client.update({
+                        full_name:fullName,
+                        company:company,
+                        phone_number:phoneNumber,
+                    },{where:{id:req.params.id}})
+    
+                    return res.redirect('/client/client-profile/'+ req.params.id);
+                }
+            }
+            else
+            {   
+                Client.update({
+                    full_name:fullName,
+                    company:company,
+                    phone_number:phoneNumber,
+                },{where:{id:req.params.id}})
+
+                return res.redirect('/client/client-profile/'+ req.params.id);
+            }
+        }
+        
     })
     .catch(err=>console.log(err));
 });
 
 
-/*-------------------------------------------------------------------------------------------------- DISPLAYING A CLIENT PROFILE PAGE AND INFOS*/
-
+// CLIENT PROFILE PAGE
 router.get('/client-profile/:id', (req,res)=>{
 
     /* Note: in here [req.params.id] is the CLIENT ID */
@@ -199,8 +323,7 @@ router.get('/client-profile/:id', (req,res)=>{
     .catch(err => console.log(err));
 });
 
-/* ---------------------------------------------------------------------------------------------- 5.CREATING A NEW DEAL FOR CLIENT */
-
+// CREATE NEW DEAL PAGE
 router.get('/client-deal/:id',(req,res)=>{
     
     /* Note: in here [req.params.id] is the CLIENT ID */
@@ -292,7 +415,6 @@ router.get('/client-deal/:id',(req,res)=>{
     })
     .catch(err=>console.log(err));
 });
-
 router.post('/client-deal/:id',(req,res)=>{
 
     /* Note: in here [req.params.id] is the Deal ID */
@@ -378,43 +500,7 @@ router.post('/client-deal/:id',(req,res)=>{
 
 })
 
-/*------------------------------------------------------------------------------------------------------PROBLEMATIC DEALS  */
-
-router.get('/client-problem-deal/:id',(req,res)=>{
-
-    /* NOTE: in here [req.params.id] is SOLD PRODUCT ID */
-    // Promise.all
-    // ([
-    //     Problematic_sold_product.create({                                                            
-                     
-    //     }),                                                                                      
-    //     Sold_product.findAll({limit:1,where:{}}),                                                     
-    //     Product.findAll({limit:1,where:{}}),                                                        
-    // ])                                                                                               
-    // .then(data=>{
-    //     res.render('partials/clients/problem_deal');
-    // })
-    // .catch(err=>console.log(err));
-    
-});
-
-/*------------------------------------------------------------------------------------------------------ DISPLAY SOLUTIONS OF PROBLEMATIC DEALS  */
-router.get('/problem-solutions/:id',(req,res)=>{
-
-    /* NOTE: in here [req.params.id] is SOLD CLIENT ID */
-    
-    Problematic_sold_product.findAll({where:{ClientId:req.params.id}})
-    .then(problems=>{
-
-        res.render('partials/clients/problem_products',{problem});
-    })
-    .catch(err=>console.log(err));
-
-})
-
-
-/*------------------------------------------------------------------------------------------------------DEAL DETAILS OF CLIENT */
-
+// DEAL DETAIL PAGE
 router.get('/client-deal-detail/:id',(req,res)=>{
 
     /* NOTE: In here  [req.params.id] is DEAL ID */
@@ -435,47 +521,40 @@ router.get('/client-deal-detail/:id',(req,res)=>{
     .catch(err=>console.log(err));
 });
 
-/*-----------------------------------------------------------------------------------------------------UPDATE/EDIT CLIENT INFORMATION */
 
-router.get('/client-edit/:id',(req,res)=>{
+/* THESE LOGICS WILL BE CHANGE AFTER DISCUSSION WITH CLIENT */
+// PROBLEMATIC DEALS
+router.get('/client-problem-deal/:id',(req,res)=>{
 
-    /* NOTE: in here [req.params.id] is CLIENT ID */
-
-    Client.findAll({limit:1,where:{id:req.params.id}})
-    .then(client=>
+    /* NOTE: in here [req.params.id] is SOLD PRODUCT ID */
+    // Promise.all
+    // ([
+    //     Problematic_sold_product.create({                                                            
+                     
+    //     }),                                                                                      
+    //     Sold_product.findAll({limit:1,where:{}}),                                                     
+    //     Product.findAll({limit:1,where:{}}),                                                        
+    // ])                                                                                               
+    // .then(data=>{
+    //     res.render('partials/clients/problem_deal');
+    // })
+    // .catch(err=>console.log(err));
     
-        res.render('partials/clients/client_edit', {client})
-    )
-    
-    .catch(err => console.log(err));
-     
 });
-router.post('/client-edit/:id',(req,res)=>{
+// SOLUTIONS FOR PROBLEMATIC DEALS
+router.get('/problem-solutions/:id',(req,res)=>{
 
-    if(req.body.update_name)
-    {
-        Client.update({ 
-            first_name:req.body.update_name,
-        },{where:{id:req.params.id}})
-    }
-    if(req.body.update_phone_number)
-    {
-        Client.update({ 
-            phone_number:req.body.update_phone_number,
-        },{where:{id:req.params.id}})
-    }
-    if(req.body.update_company)
-    {
-        Client.update({ 
-            company:req.body.update_company,
-        },{where:{id:req.params.id}})
-    }
+    /* NOTE: in here [req.params.id] is SOLD CLIENT ID */
     
-    res.redirect('/client/client-profile/'+ req.params.id)
-});
+    Problematic_sold_product.findAll({where:{ClientId:req.params.id}})
+    .then(problems=>{
 
-/*------------------------------------------------------------------------------------------------BALANCE HISTORY OF CLIENT */
+        res.render('partials/clients/problem_products',{problem});
+    })
+    .catch(err=>console.log(err));
 
+})
+// BALANCE HISTORY PAGE
 router.get('/client-balance/:id',(req,res)=>{
 
     /* NOTE: in here [req.params.id] is CLIENT ID */
@@ -519,9 +598,7 @@ router.get('/client-balance/:id',(req,res)=>{
     
     .catch(err => console.log(err));
 });
-
-/*------------------------------------------------------------------------------------------------UPDATE (REPLENISH) BLANCE OF CLIENT */
-
+// REPLENISH BALANCE 
 router.post('/client-balance-update/:id',(req,res)=>{
     
     /* NOTE: in here [req.params.id] is CLIENT ID */
@@ -561,6 +638,8 @@ router.post('/client-balance-update/:id',(req,res)=>{
     )
     .catch(err=>console.log(err));
 });
+/* ---------------------------------------------------------- */
+
 
 
 

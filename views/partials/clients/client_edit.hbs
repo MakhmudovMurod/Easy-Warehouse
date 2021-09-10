@@ -2,82 +2,111 @@
     <div class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
-                <div class="col-sm">
-                    <nav aria-label="breadcrumb float-sm-left">
-                        <ol class="breadcrumb">
-                            {{#each client}}
-                            <li class="breadcrumb-item"><a href="/client/client-profile/{{id}}">Профиль клиента</a></li>
-                            {{/each}}
-                            <li class="breadcrumb-item active" aria-current="page">Обновить данные</li>
-                        </ol>
-                    </nav>
-                </div> 
-            </div> 
-        </div> 
+                <div class="col-sm-12">
+                    <ol class="breadcrumb float-sm-left">
+                        <li class="breadcrumb-item"><a href="/client/client-profile/{{client.id}}">Профиль клиента</a></li>
+                        <li class="breadcrumb-item active font-weight-bold">Редактировать клиента</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
     </div>
-    
-    <section class="content">
-        <div class="row">
-            <div class="col-12">
-                <div class="row">
-                    <div class="col-12">
-                        <div class="row">
-                            <div class="col-md-10">
-                                <div class="card card-primary">
-                                    <div class="card-header">
-                                        <h3 class="card-title"> Обновить / изменить информацию о клиенте </h3>
+
+    <div class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card card-info">
+                        <div class="card-header">
+                            <h3 class="card-title">Редактировать информацию о клиенте</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-12">
+                                    
+                                    {{#if success}}
+                                    <div class="alert alert-success alert-dismissible fade show">
+                                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                        <span>{{success}}</span>
                                     </div>
-                                    <div class="card-body">
-                                        <div class="row" class="align-items:center">
-                                            <div class="col-sm-8">
-                                                {{#each client}}
-                                                <form action="/client/client-edit/{{id}}" method="POST">
-                                                
-                                                <h2>Изменение информации о текущем клиенте</h2>
-                                                
+                                    {{/if}}
+                                    
+                                    {{#if warning}}
+                                    <div class="alert alert-warning alert-dismissible fade show">
+                                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                        {{#each warning}}
+                                        <span>- {{msg}}</span><br>
+                                        {{/each}}
+                                    </div>
+                                    {{/if}}
+                                    
+                                    {{#if error}}
+                                    <div class="alert alert-danger alert-dismissible fade show">
+                                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                        {{#each error}}
+                                        <span>- {{msg}}</span><br>
+                                        {{/each}}
+                                    </div>
+                                    {{/if}}
+                                </div>
+                            </div>
+                            <form action="/client/client-edit/{{client.id}}" method="POST">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Фамилия Имя</label>
+                                            <input type="text" class="form-control" placeholder="Фамилия Имя" name="full_name" autocomplete="off" style="color:black"
+                                            {{#if req_values.full_name}}
+                                                value="{{req_values.full_name}}"
+                                            {{else}}
+                                                value="{{client.full_name}}"
+                                            {{/if}}>
+                                        </div>
+                                    </div>
+                        
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Номер Телефона</label>
+                                            <input type="tel" class="form-control" placeholder="Номер Телефона" name="phone_number" autocomplete="off" style="color:black"
+                                            {{#if req_values.phone_number}}
+                                                value="{{req_values.phone_number}}"
+                                            {{else}}
+                                                value="{{client.phone_number}}"
+                                            {{/if}}
+                                            >
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Компания</label>
+                                            <input type="text" class="form-control" placeholder="Компания" name="company_name" autocomplete="off" style="color:black"
+                                            {{#if req_values.company_name}}
+                                                value="{{req_values.company_name}}"
+                                            {{else}}
+                                                value="{{client.company}}"
+                                            {{/if}}
+                                            >
+                                        </div>
+                                    </div>
 
-                                                <div class="form-group">
-                                                    <label>Имя и фамилия</label>
-                                                    <input type="text" placeholder="{{first_name}}"  class="form-control" name="update_name">
-                                                </div>
-
-                                                <div class="form-group">
-                                                    <label>Телефонный номер</label>
-                                                    <input type="text" placeholder="{{phone_number}}"  class="form-control" name="update_phone_number">
-                                                </div>
-
-                                                <div class="form-group">
-                                                    <label>Название компании</label>
-                                                    <input type="text" placeholder="{{company}}"  class="form-control" name="update_company">
-                                                </div>
-                                                
-                                                    
-                                                {{/each}}
-
-                                                <div class="form-group">
-                                                    <input type="submit" class="btn btn-primary" value="Изменить">
-                                                        
-                                                </div>
-                                                
-                                                </form>
-                                            </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <input type="submit" value="Изменить" class="btn btn-info" name="submit">
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </form>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
-     
+    </div>
 </div>
-   
+
+<script src="/dist/js/adminlte.min.js"></script>
 <script src="/plugins/jquery/jquery.min.js"></script>
 <script src="/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script src="/plugins/select2/js/select2.full.min.js"></script>
-<script src="/dist/js/adminlte.min.js"></script>
-<script src="/dist/js/demo.js"></script>
-
-
+<script src="/dist/js/adminlte.js"></script>
+    
