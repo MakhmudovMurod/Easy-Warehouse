@@ -5,8 +5,6 @@ const app = express();
 const db  = require('../models/db');
 const { body, check, validationResult } = require('express-validator');
 
-
-
 const Product = db.products;
 const Product_Constant = db.product_constants;
 const Additional_service = db.additional_service;
