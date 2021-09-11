@@ -1,311 +1,233 @@
-
-    <!-- Content Wrapper. Contains page content -->
-    <div class="content-wrapper">
-      <!-- Content Header (Page header) -->
-      <div class="content-header">
-        <div class="container-fluid">
-          <div class="row mb-2">
-            <div class="col-sm-12">
-              <ol class="breadcrumb float-sm-left">
-                <!-- <li class="breadcrumb-item"><a href="#">Главная</a></li> -->
-                <li class="breadcrumb-item active">Статистика</li>
-              </ol>
-            </div><!-- /.col -->
-          </div><!-- /.row -->
-        </div><!-- /.container-fluid -->
+<div class="content-wrapper">
+  <div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-12">
+          <ol class="breadcrumb float-sm-left">
+            <li class="breadcrumb-item active">Статистика</li>
+          </ol>
+        </div>
       </div>
-      <!-- /.content-header -->
-
-      <!-- Main content -->
-      <div class="content">
-        <div class="container-fluid">
-          <div class="row">
-            <div class="col-md-12">
-                <h5 class="mb-2">Статус Склада</h5>
-                <div class="row">
-                    <!-- /.col -->
-                    <div class="col-md-4 col-sm-6 col-12">
-                        <div class="info-box">
-                            <span class="info-box-icon bg-info"><i class="fa fa-cubes"></i></span>
-
-                            <div class="info-box-content">
-                                <span class="info-box-text">Общее кол-во товаров</span>
-                                <span class="info-box-number">
-                                  {{#if product_quantity }}
-                                  {{currencyFormat product_quantity}}
-                                  {{else}}
-                                  0
-                                  {{/if}}
-                                </span>
-                            </div>
-                            <!-- /.info-box-content -->
-                        </div>
-                        <!-- /.info-box -->
-                    </div>
-                    <!-- /.col -->
-                    <div class="col-md-4 col-sm-6 col-12">
-                        <div class="info-box">
-                            <span class="info-box-icon bg-danger"><i class="far fa-star"></i></span>
-
-                            <div class="info-box-content">
-                                <span class="info-box-text">Товары 1-го сорта</span>
-                                <span class="info-box-number">
-                                  {{#if sort1_quantity}}
-                                  {{currencyFormat sort1_quantity}}
-                                  {{else}}
-                                  0
-                                  {{/if}}
-                                  </span>
-                            </div>
-                            <!-- /.info-box-content -->
-                        </div>
-                        <!-- /.info-box -->
-                    </div>
-                    <!-- /.col -->
-                    <div class="col-md-4 col-sm-12 col-12">
-                        <div class="info-box">
-                            <span class="info-box-icon bg-success"><i class="far fa-clock"></i></span>
-
-                            <div class="info-box-content">
-                                <span class="info-box-text">Последнее обновление</span>
-                                 
-                                <span class="info-box-number">{{formatTime update_date "YYYY-MM-DD"}}</span>
-                                 
-                            </div>
-                            <!-- /.info-box-content -->
-                        </div>
-                        <!-- /.info-box -->
-                    </div>
-                    <!-- /.col -->
-                </div>
-                <!-- /.row -->
-
-            </div>
-            <div class="col-lg-6">
-
-              <!-- Покупатели -->
-              <div class="card">
-                <div class="card-header border-0">
-                  <div class="d-flex justify-content-between">
-                    <h3 class="card-title">Покупатели</h3>
-                    
-                  </div>
-                </div>
-                <div class="card-body">
-                  <div class="d-flex">
-                    <p class="d-flex flex-column">
-                      <span class="text-bold text-lg">{{client_number}}</span>
-                      <span>Количество текущих покупателей</span>
-                    </p>
-                    
-                  </div>
-                  <!-- /.d-flex -->
-
-                  <div class="position-relative mb-4">
-                  
-                    <canvas id="myChart" height="200"></canvas>
-                  </div>
-
-              
-                </div>
-              </div>
-              <!-- /.card -->
-
-            <!-- Latest Orders Card -->
-            <div class="card card-info">
-              <div class="card-header">
-                <h3 class="card-title">Последние Сделки</h3>
-              </div>
-              <div class="card-body">
-                {{!-codes should place here-  --}}
-                <table class="table table-hover">
-                  <thead>
-                    <tr>
-                      <th>Дата сделки</th>
-                      <th>Клиенты</th>
-                      <th>Цена сделки(UZS)</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {{#each latest_deals}}
-                    <tr>
-                      <td>{{formatTime deal_date "YYYY-MM-DD"}}</td>
-                      <td>{{Client.first_name}}</td>
-                      {{#if final_price}}
-                      <td>{{currencyFormat final_price}}</td>
-                      {{else}}
-                      <td>0</td>
-                      {{/if}}
-                    </tr>
-                    {{/each }}
-                  </tbody>
-                </table>
-              <a href="/deals/deals-history" class="btn btn-info mt-3">Посмотреть больше</a>
-              </div>
-              <!-- /.card-body -->
-            </div>
-            <!-- /.card -->
-
-
-
-
-            </div>
-
-            <!-- /.col-md-6 -->
-            <div class="col-lg-6">
-
-
-              <!-- Продажи -->
-              <div class="card">
-                <div class="card-header border-0">
-                  <div class="d-flex justify-content-between">
-                    <h3 class="card-title">Продажи</h3>
-                     
-                  </div>
-                </div>
-                <div class="card-body">
-                  <div class="d-flex">
-                    <p class="d-flex flex-column">
-                      <span class="text-bold text-lg">
-                        {{#if deal_cost}}
-                        {{currencyFormat deal_cost}} 
-                        {{else}}
-                        0
-                        {{/if}} UZS</span>
-                      <span>Продажи за промежуток времени</span>
-                    </p>
-                   
-                  </div>
-                  <!-- /.d-flex -->
-
-                {{!-- Starting of chart --}}
-
-                  <div class="position-relative mb-4">
-                    <canvas id="myBar" height="200"></canvas>
-                  </div>
-
- 
-                </div>
-              </div>
-              <!-- /.card -->
-
-
-            <!-- Latest Added Products -->
-            <div class="card card-info">
-              <div class="card-header">
-                <h3 class="card-title">Последние добавленные продукты</h3>
-              </div>
-              <div class="card-body">
-                {{!-codes should place here-  --}}
-                <table class="table table-hover">
-                  <thead>
-                    <tr>
-                      <th>№</th>
-                      <th>Наименование Продкции</th>
-                      <th>Код продукта</th>
-                      <th>Рисунок</th>
-                      <th>Сорт</th>
-                      <th>Цена (UZS)</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {{#each latest_products}}
-                    <tr>
-                      <td>{{id}}</td>
-                      <td>{{product_name}}</td>
-                      <td>{{overall_code}}</td>
-                      <td>{{drawing}}</td>
-                      <td>{{sort}}</td>
-                      {{#if price}}
-                      <td>{{currencyFormat price}}</td>
-                      {{else}}
-                      <td>0</td>
-                      {{/if}}
-                    </tr>
-                    {{/each}}
-                    
-                  </tbody>
-                </table>
-              <a href="/product/price-list" class="btn btn-info mt-3">Посмотреть больше</a>  
-              </div>
-              <!-- /.card-body -->
-            </div>
-            <!-- /.card -->
-
-
-            </div>
-            <!-- /.col-md-6 -->
-
-          </div>
-          <!-- /.row -->
-        </div><!-- /.container-fluid -->
-      </div>
-      <!-- /.content -->
     </div>
-    <!-- /.content-wrapper -->
-
- 
-
- 
   </div>
-  <!-- ./wrapper -->
+
+  <div class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12">
+          <h5 class="mb-2">Статус Склада</h5>
+          <div class="row">
+            <div class="col-md-4 col-sm-6 col-12">
+              <div class="info-box">
+                <span class="info-box-icon bg-info"><i class="fa fa-cubes"></i></span>
+                <div class="info-box-content">
+                  <span class="info-box-text">Общее кол-во товаров</span>
+                  <span class="info-box-number">
+                    {{#if product_quantity }}
+                    {{currencyFormat product_quantity}}
+                    {{else}}
+                    0
+                    {{/if}}
+                  </span>
+                </div>
+                  
+              </div>
+            </div>
+            <div class="col-md-4 col-sm-6 col-12">
+              <div class="info-box">
+                <span class="info-box-icon bg-danger"><i class="far fa-star"></i></span>
+                <div class="info-box-content">
+                  <span class="info-box-text">Товары 1-го сорта</span>
+                  <span class="info-box-number">
+                    {{#if sort1_quantity}}
+                    {{currencyFormat sort1_quantity}}
+                    {{else}}
+                    0
+                    {{/if}}
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4 col-sm-12 col-12">
+              <div class="info-box">
+                <span class="info-box-icon bg-success"><i class="far fa-clock"></i></span>
+                <div class="info-box-content">
+                  <span class="info-box-text">Последнее обновление</span>
+                  <span class="info-box-number">{{formatTime update_date "YYYY-MM-DD"}}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row"> 
+        <div class="col-6">
+          <div class="card">
+            <div class="card-header border-0">
+              <div class="d-flex justify-content-between">
+                <h3 class="card-title">Покупатели</h3>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="d-flex">
+                <p class="d-flex flex-column">
+                  <span class="text-bold text-lg">{{client_number}}</span>
+                  <span>Количество текущих покупателей</span>
+                </p>
+              </div>
+              <div class="position-relative mb-4">
+                <canvas id="myChart" height="200"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="card">
+            <div class="card-header border-0">
+              <div class="d-flex justify-content-between">
+                <h3 class="card-title">Продажи</h3>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="d-flex">
+                <p class="d-flex flex-column">
+                  <span class="text-bold text-lg">
+                    {{#if deal_cost}}
+                    {{currencyFormat deal_cost}} 
+                    {{else}}
+                    0
+                    {{/if}} UZS</span>
+                  <span>Продажи за промежуток времени</span>
+                </p>
+              </div>
+              <div class="position-relative mb-4">
+                <canvas id="myBar" height="200"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6">
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Последние Сделки</h3>
+            </div>
+            <div class="card-body">
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th>Дата сделки</th>
+                    <th>Клиенты</th>
+                    <th>Цена сделки(UZS)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {{#each latest_deals}}
+                  <tr>
+                    <td>{{formatTime deal_date "YYYY-MM-DD"}}</td>
+                    <td>{{Client.first_name}}</td>
+                    {{#if final_price}}
+                    <td>{{currencyFormat final_price}}</td>
+                    {{else}}
+                    <td>0</td>
+                    {{/if}}
+                  </tr>
+                  {{/each }}
+                </tbody>
+              </table>
+            <a href="/deals/deals-history" class="btn btn-info float-right btn-sm mt-2"><i class="fa fa-list "></i></a>  
+            </div>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Последние добавленные продукты</h3>
+          </div>
+          <div class="card-body">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th>№</th>
+                  <th>Наименование</th>
+                  <th>Код</th>
+                  <th>Рисунок</th>
+                  <th>Сорт</th>
+                  <th>Цена (UZS)</th>
+                </tr>
+              </thead>
+              <tbody>
+                {{#each latest_products}}
+                <tr>
+                  <td>{{id}}</td>
+                  <td>{{product_name}}</td>
+                  <td>{{overall_code}}</td>
+                  <td>{{drawing}}</td>
+                  <td>{{sort}}</td>
+                  {{#if price}}
+                  <td>{{currencyFormat price}}</td>
+                  {{else}}
+                  <td>0</td>
+                  {{/if}}
+                </tr>
+                {{/each}}
+                
+              </tbody>
+            </table>
+            <a href="/product/price-list" class="btn btn-info float-right btn-sm mt-2"><i class="fa fa-list "></i></a>  
+          </div>
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="/dist/js/adminlte.min.js"></script>
+<script src="/plugins/jquery/jquery.min.js"></script>
+<script src="/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/dist/js/adminlte.js"></script>
+<script src="/plugins/chart.js/charts.js"></script>
+<script >
   
-  <!-- REQUIRED SCRIPTS -->
-  <script src="/dist/js/adminlte.min.js"></script>
+  var d = new Date();
+  var curr_month = d.getMonth()+1;
 
-  <!-- jQuery -->
-  <script src="/plugins/jquery/jquery.min.js"></script>
-  <!-- Bootstrap -->
-  <script src="/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
- 
-  <!-- AdminLTE -->
-  <script src="/dist/js/adminlte.js"></script>
-  
+  var months = ['Январь','Февраль','Mарт','Aпрель','Mай','Июнь','Июль','Aвгуст','Сентябрь','Oктября','Ноябрь','Декабрь'] 
+  var ctx = document.getElementById('myChart').getContext('2d');
+  var chart = new Chart(ctx, {
+  // The type of chart we want to create
+  type: 'line',
 
-  <!-- OPTIONAL SCRIPTS -->
-  <script src="/plugins/chart.js/charts.js"></script>
-
-  <script >
-    
-    var d = new Date();
-    var curr_month = d.getMonth()+1;
-
-    var months = ['Январь','Февраль','Mарт','Aпрель','Mай','Июнь','Июль','Aвгуст','Сентябрь','Oктября','Ноябрь','Декабрь'] 
-    var ctx = document.getElementById('myChart').getContext('2d');
-    var chart = new Chart(ctx, {
-    // The type of chart we want to create
-    type: 'line',
-
-    // The data for our dataset
-    data: {
-    labels: months,
-    datasets: [{
-        label: 'Количество клиентов в месяц',
-        borderColor: '#007bff',
-        data: 
-        [
-            {{client_jan}},
-            {{client_feb}},
-            {{client_mar}},
-            {{client_apr}},
-            {{client_may}},
-            {{client_jun}},
-            {{client_jul}},
-            {{client_aug}},
-            {{client_sep}},
-            {{client_oct}},
-            {{client_nov}},
-            {{client_dec}},
-        ]
-    }]
+  // The data for our dataset
+  data: {
+  labels: months,
+  datasets: [{
+      label: 'Количество клиентов в месяц',
+      borderColor: '#007bff',
+      data: 
+      [
+          {{client_jan}},
+          {{client_feb}},
+          {{client_mar}},
+          {{client_apr}},
+          {{client_may}},
+          {{client_jun}},
+          {{client_jul}},
+          {{client_aug}},
+          {{client_sep}},
+          {{client_oct}},
+          {{client_nov}},
+          {{client_dec}},
+      ]
+  }]
 },
 
-    // Configuration options go here
-    options: {}
-    });
-  </script>
-
- 
+  // Configuration options go here
+  options: {}
+  });
+</script>
 <script>
 function numberWithCommas(x) {
            return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");

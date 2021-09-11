@@ -48,7 +48,7 @@ router.get('', (req,res)=>{
     /* [27] */    Deals.sum('final_price',{where:{'deal_date':{[Op.substring]:'-11-'}}}),
     /* [28] */    Deals.sum('final_price',{where:{'deal_date':{[Op.substring]:'-12-'}}}),
     /* [29] */    Product.findAll(),
-    /* [30] */    Deals.findAll({include:{model:Client, as:'Client'},limit:5,order: [['deal_date', 'DESC']],where:{status:1} }),
+    /* [30] */    Deals.findAll({include:{model:Client, as:'Client'},limit:5,order: [['deal_date', 'DESC']]}),
     /* [31] */    Product.findAll({limit:5,order: [['createdAt', 'DESC']]}),
     // /* [32] */    Product.count(),
     
