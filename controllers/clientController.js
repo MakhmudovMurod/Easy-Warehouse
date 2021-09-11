@@ -10,6 +10,8 @@ const Product = db.products;
 const Sold_product = db.sold_products;
 const Balance_story = db.balance_story;
 const Problematic_sold_product = db.problematic_sold_products;
+const Additional_service = db.additional_service;
+
 const { body, check, validationResult } = require('express-validator');
 
 const publicDirectoryPath = path.join(__dirname, '../public');
@@ -275,8 +277,6 @@ router.get('/client-profile/:id', (req,res)=>{
         // const last_deal_at = data[4][0].deal_date == null ? 'пока нет сделок' : data[4][0].deal_date;
         const last_deal_at ='пока нет сделок';
 
-        
-
         return res.render('partials/clients/client_profile',{client,deals,deals_number,overall_deals_price,last_deal_at});
     })
     .catch(error=>console.log(error));
@@ -285,10 +285,12 @@ router.get('/client-profile/:id', (req,res)=>{
 // CREATE NEW DEAL PAGE
 router.get('/create-deal/:id',(req,res)=>{
     Promise.all([
-        
+        Additional_service.findAll(),        
     ])
     .then(data=>{
-        return res.render('partials/clients/create_deal')
+        const services = data[0];
+
+        return res.render('partials/clients/create_deal',{services});
     })
     .catch(error=>console.log(error));
 });

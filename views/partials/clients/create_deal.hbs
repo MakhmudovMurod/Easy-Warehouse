@@ -1,340 +1,433 @@
-    <!-- Content Wrapper. Contains page content -->
-        <div class="content-wrapper">
-            <!-- Content Header (Page header) -->
-            <div class="content-header">
-                <div class="container-fluid">
-                    <div class="row mb-2">
-                        <div class="col-sm">
-                            <nav aria-label="breadcrumb float-sm-left">
-                                <ol class="breadcrumb">
-                                    <li class="breadcrumb-item"><a href="#">Профиль клиента</a></li>
-                                    <li class="breadcrumb-item active" aria-current="page">Новая сделка</li>
-                                </ol>
-                            </nav>
-                        </div> 
-                    </div> 
-                </div> 
+<div class="content-wrapper">
+  <div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-12">
+          <ol class="breadcrumb float-sm-left">
+            <li class="breadcrumb-item"><a href="#">Профиль клиента</a></li>
+            <li class="breadcrumb-item active font-weight-bold">Новая Сделка</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card card-success">
+            <div class="card-header">
+              <h3 class="card-title">Создание новой сделки</h3>
             </div>
-            <!-- /.content-header -->
+            <div class="card-body">
+              <div class="row">
+                  <div class="col-12">
+                    {{#if success}}
+                      <div class="alert alert-success alert-dismissible fade show">
+                      <button type="button" class="close" data-dismiss="alert">&times;</button>
+                        <span>{{success}}</span><br>
+                      </div>
+                    {{/if}}
 
-            <!-- Main content -->
-            <section class="content">
-                <div class="row">
+                    {{#if warning}}
+                      <div class="alert alert-warning alert-dismissible fade show">
+                      <button type="button" class="close" data-dismiss="alert">&times;</button>
+                        <span>{{warning}}</span><br>
+                      </div>
+                    {{/if}}
+
+                    {{#if error}}
+                      <div class="alert alert-danger alert-dismissible fade show">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                          {{#each error}}
+                            <span>- {{msg}}</span><br>
+                          {{/each}}
+                      </div>
+                    {{/if}}
+                  </div>
+                <div class="col-12" id="error_message">
                     
-                    <div class="col-md-12 ">
-                        <div class="card card-primary">
-                            
-                            <div class="card-header">
-                                <h3 class="card-title"> Создание новой сделки </h3>
-                            </div>
-                                
-                            <div class="card-body">
-                                
-                                <form action="/client/client-deal/{{deal_id}}" method="POST">
-                                
-                                    <div class="row" class="align-items:center">
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <div class="row">
-                                                    <div class="col-md-8">
-                                                        <label for="date">Дата Сделки</label>
-                                                        <div id="date" class="input-group">
-                                                            <div class="input-group-prepend">
-                                                                <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
-                                                            </div>
-                                                            
-                                                            {{!---------------------------------DEAL DATE-----------------------------------------------------------------------}}
-                                                            <input id="date" autocomplete="off" type="date" class="form-control" placeholder="Дата Сделки" name="create_deal_date">
+                </div>  
+              </div>
+              <form role="form" action="/warehouse/warehouse-replenish" method="POST" id="add_products">
+                <div class="row">
 
-                                                        </div>
-                                                    </div>
+                  <div class="col-md-3">
+                      <div class="form-group">
+                        <label>Название продукта</label>
+                        <input  id="nameAutoComplete" type="search" dir="ltr" spellcheck=false autocorrect="off" autocomplete="off" autocapitalize="off"  
+                        name="product_name" class="form-control" style="color:black;"  required
+                        {{#if req_values.product_name}}
+                          value="{{req_values.product_name}}"
+                        {{/if}}
+                        >
+                      </div>
+                  </div>
+                  
+                  <div class="col-md-3">
+                      <div class="form-group">
+                          <label>Рисунок</label>
+                          <input  id="drawingAutoComplete" type="search" dir="ltr" spellcheck=false autocorrect="off" autocomplete="off" autocapitalize="off"
+                          name="drawing" class="form-control" style="color:black;" required
+                          {{#if req_values.drawing}}
+                            value="{{req_values.drawing}}"
+                          {{/if}}
+                          >
+                      </div>
+                  </div>
+                  
+                  <div class="col-md-1">
+                      <div class="form-group">
+                          <label for="quantity">Сорт</label>
+                          <input type="number" name="sort" id="sort" class="form-control" style="color:black;" min="1" max="5" autocomplete="off" required
+                          {{#if req_values.sort}}
+                            value="{{req_values.sort}}"
+                          {{/if}}
+                          >
+                      </div>
+                  </div>
 
-                                                    <div class="col-md-4">
-                                                        <label for="addButton">Добавить Продукт</label>
-                                                        <button  type="button" id="addButton" onclick="addRow();" class="btn btn-block btn-primary" disabled>
-                                                            <i class="fas fa-plus"></i>
-                                                        </button>
-                                                    </div>
+                  <div class="col-md-2">
+                    <div class="form-group">
+                      <label for="">Доп. услуга</label>
+                      <select name="service" id="service" class="form-control select2" style="color:black;" required>
+                        <option disabled="disabled" selected="selected" style="display:none;" >Выберите один из них</option>
+                        <option class="font-weight-bold" value="0">БЕЗ УСЛУГ</option>
+                        {{#each services}}
+                        <option value="{{id}}">{{name}}  - {{price}} (UZS)</option>
+                        {{/each}}
+                      </select>
+                    </div>  
+                  </div> 
 
-                                                </div>
-                                            </div>
-                                        </div>
+                  <div class="col-2">
+                    <div class="form-group">
+                      <label>Код </label>
+                      <input  id="codeAutoComplete" type="search" dir="ltr" spellcheck=false autocorrect="off" autocomplete="off" autocapitalize="off"
+                      name="overall_code" class="form-control" style="color:black;"  min="6" max="6" required>
+                    </div>
+                  </div>
 
-                                        <div id="cartRow" class="col-md-12">
-                                            <div class="form-group">
-                                                <div class="row">
-                                                    
-                                                    <div class="col-md-2">
-                                                        <label>ID</label>
-                                                        <input autocomplete="off" type="text" class="form-control" placeholder="ID" min="1" value="ID" disabled >
-                                                       
-                                                    </div>
+                  <div class="col-1" style="margin-top:32px">
+                    <div class="form-group">
+                      <button class="btn btn-success btn-block float-right" type="button" id="add_product"><i class="fa fa-plus"></i></button>
+                    </div>
+                  </div>
+                  
+                </div>
 
-                                                    <div class="col-md-2">
-                                                        <label>Класс</label>
-                                                        <input autocomplete="off" type="text" class="form-control" placeholder="class" value="Класс" disabled>
-                                                    </div>
-
-                                                    {{!-- 
-                                                    <div class="col-md-2">
-                                                        <label>Подкласс</label>
-                                                        <input autocomplete="off" type="text" class="form-control" placeholder="subclass" value="Подкласс" disabled>
-                                                    </div>
-
-                                                    <div class="col-md-2">
-                                                        <label>Рисунок</label>
-                                                        <input autocomplete="off" type="text" class="form-control" placeholder="Рисунок" value="Рисунок" disabled>
-                                                    </div>
-                                                    --}}
-                                                    <div class="col-md-1">
-                                                        <label>Сорт</label>
-                                                        <input autocomplete="off" type="text" class="form-control" value="Сорт"  disabled>
-                                                    </div> 
-
-                                                    <div class="col-md-2">
-                                                        <label>Цена</label>
-                                                        <input autocomplete="off" type="text" class="form-control" placeholder="Цена" disabled value="Цена" name="sold_product_price">
-                                                    </div>
-
-                                                    <div class="col-md-2">
-                                                        <label>Кол-во</label>
-                                                        <input autocomplete="off" type="text" class="form-control" value="Кол-во" disabled name="sold_quantity">
-                                                    </div>
-
-                                                    <div class="col-md-3">
-                                                        <div class="row">
-                                                            <div class="col-md-9">
-                                                                <label>Сумма</label>
-                                                                <input autocomplete="off" type="text" class="form-control" placeholder="Сумма" value="Сумма" disabled name="overall_sold_cost">
-                                                            </div>
-                                                            <div class="col-md-2">
-                                                                <label>Del</label>
-                                                                <div class="del-btn">
-                                                                    <button type="button" class="btn btn-danger" disabled>
-                                                                        <i class="fas fa-trash"></i>
-                                                                    </button>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div id="rows" class="col-md-12">
-                                                                        
-                                        </div>
-
-                                    </div>
-                                                        
-                                    <div class="form-group row">
-                                            <label for="result_price" class="offset-sm-6 col-sm-2 col-form-label">Общая Цена</label>
-                                            <div class="col-sm-4">
-
-                                                {{!----------------------------FIXED PRICE OF DEAL (WITHOUT DISCOUNTS)-----------------------}}
-                                                <input autocomplete="off" type="text" class="form-control" id="result_price" placeholder="Общая Цена" disabled name="deal_fixed_price">
-                                           
-                                            </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="discount" class="offset-sm-6 col-sm-2 col-form-label">Скидка</label>
-                                        <div class="col-sm-4">
-                                            
-                                            {{!------------------------------------------------CASH DISCOUNT--------------------------------------------------------------}}
-                                            <input autocomplete="off" type="text" class="form-control" id="discount" placeholder="Скидка" disabled name="deal_cash_discount">
-
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="final_price" class="offset-sm-6 col-sm-2 col-form-label">К Оплате</label>
-                                        <div class="col-sm-4">
-
-                                            {{!---------------------------------------FINAL PRICE OF DEAL--------------------------------------------------------------------}}
-                                            <input autocomplete="off" type="text" class="form-control" id="final_price" placeholder="К Оплате" disabled name="deal_final_price"> 
-
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="paid_cash" class="offset-sm-6 col-sm-2 col-form-label">Оплачено</label>
-                                        <div class="col-sm-4">
-                                            
-                                            {{!------------------------------------------- PAID CASH AMOUNT -------------------------------------------------}}
-                                            <input autocomplete="off" type="text" class="form-control" id="paid_cash" placeholder="Оплачено" disabled name="deal_paid_cash">
-
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <div class="offset-sm-10 col-sm-2">
-                                            <button type="submit" onclick="confirm()" class="btn btn-primary float-right" id="confirmButton" disabled> Подтвердить</button>
-                                        </div>
-                                    </div>
-
-                                </form>
-                                
-                            </div>
-
+                <hr class="mt-3">
+                    <div class="table-responsive mt-5">
+                        <table class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Название продукта</th>
+                                    <th>Рисунок</th>
+                                    <th>Сорт</th>
+                                    <th>Доп. услуга</th>
+                                    <th>Цена</th>
+                                    <th>Кол-во</th>
+                                    <th>Скидка</th>
+                                    <th>Общая сумма</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>CHOYNAK GUL (1,1 L)</td>
+                                    <td>PAXTA</td>
+                                    <td>1</td>
+                                    <td class="text-danger">БЕЗ УСЛУГ</td>
+                                    <th>14,000</th>
+                                    <form action="" method="POST">
+                                        <td>
+                                            <input type="number" name="" id="" class="form-control">
+                                        </td>
+                                        <td>
+                                            <input type="number" name="" id="" class="form-control">
+                                        </td>
+                                        <td>
+                                            <input type="number" name="" id="" class="form-control" readonly>
+                                        </td>
+                                    </form>
+                                    <td><button class="btn btn-danger btn-sm" type="button"><i class="fa fa-minus"></i></button></td>
+                                    
+                                    
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                <hr class="mt-3">
+                <div class="row">
+                    <div class="col-4">
+                        <div class="form-group">
+                            <label for="">Общая Цена</label>
+                            <input type="number" class="form-control">
                         </div>
                     </div>
-                    
-                   
-
                 </div>
-      
-            </section>
-     
+                <div class="row">
+                    <div class="col-4">
+                        <div class="form-group">
+                            <label for="">Общая Скидка</label>
+                            <input type="number" class="form-control">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-4">
+                        <div class="form-group">
+                            <label for="">К Оплате</label>
+                            <input type="number" class="form-control">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-4">
+                        <div class="form-group">
+                            <label for="">Оплачено</label>
+                            <input type="number" class="form-control">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-4">
+                        <div class="form-group">
+                            <label for="">Дата сделки</label>
+                            <input type="date" class="form-control">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                  <div class="col-2">
+                    <div class="form-group">
+                      <input type="submit" name="submit" class="btn btn-success" value="Подвердить">
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
         </div>
- 
+      </div>
+    </div>
+  </div>
+</div>
+  
+  
+<script src="/dist/js/adminlte.min.js"></script>
+<script src="/plugins/jquery/jquery.min.js"></script>
+<script src="/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/dist/js/adminlte.js"></script>
+<script src="/plugins/select2/js/select2.full.min.js"></script>
+<script src="/dist/js/autocomplete/autoComplete.js"></script>
+<script src="/dist/js/autocomplete/autoComplete.min.js"></script>
 
-
+<script>
+  const getProducts = async searchProduct =>
+  {
+    const response = await fetch('/product/product-search');
+    products = await response.json();
     
 
+    let product_names = products.map(product => product.product_name);
+    let uniq_products = [...new Set(product_names)];
 
-    <script src="/plugins/create_deal.js"></script>
-    <script>
-        
-    
+    const autoCompleteJS = new autoComplete({
+        selector: "#nameAutoComplete",
+        data: {
+            src: uniq_products,
+            cache: true,
+        },
+        resultItem: {
+            highlight: true
+        },
+        resultsList: {
+          element: (list, data) => {
+            if (!data.results.length) {
+              const message = document.createElement("div");
+              message.setAttribute("class", "no_result");
+              message.innerHTML = `<span style="padding:10px;color:red">Не найдено результатов для "${data.query}"</span>`;
+              list.prepend(message);
+            }
+          },
+          noResults: true,
+        },
+        searchEngine: "loose",
+        events: {
+            input: {
+                selection: (event) => {
+                  const selection = event.detail.selection.value;
+                  autoCompleteJS.input.value = selection;
 
-    
+                    
+                }
+            }
+        }
+    });      
 
-      const arr = [
-    { 
-        id: 1, 
-        class: "Ford", 
-        subclass: "Mustang", 
-        drawing: "Mauv", 
-        sort: 3, 
-        price: 5100, 
-        quantity: 45 
-    },
-    { id: 2, class: "Toyota", subclass: "Xtra", drawing: "Teal", sort: 1, price: 3200, quantity: 45 },
-    { id: 3, class: "Chrysler", subclass: "Sebring", drawing: "Yellow", sort: 3, price: 9100, quantity: 45 },
-    { id: 4, class: "Dodge", subclass: "Ramcharger", drawing: "Maroon", sort: 2, price: 3000, quantity: 45 },
-    { id: 5, class: "Dodge", subclass: "D150 Club", drawing: "Orange", sort: 1, price: 3200, quantity: 45 },
-    { id: 6, class: "Mercedes-Benz", subclass: "G-Class", drawing: "Indigo", sort: 1, price: 5900, quantity: 45 },
-    { id: 7, class: "Lamborghini", subclass: "Murciélago", drawing: "Blue", sort: 3, price: 8200, quantity: 45 },
-    { id: 8, class: "Hummer", subclass: "H3T", drawing: "Goldenrod", sort: 2, price: 0600, quantity: 45 },
-    { id: 9, class: "Maserati", subclass: "Quattroporte", drawing: "Teal", sort: 1, price: 5500, quantity: 45 },
-    { id: 10, class: "Honda", subclass: "Accord", drawing: "Mauv", sort: 1, price: 0500, quantity: 45 },
-    { id: 11, class: "MINI", subclass: "Cooper", drawing: "Goldenrod", sort: 1, price: 4300, quantity: 45 },
-    { id: 12, class: "Mitsubishi", subclass: "Cordia", drawing: "Pink", sort: 2, price: 1400, quantity: 45 },
-    { id: 13, class: "Oldsmobile", subclass: "Achieva", drawing: "Mauv", sort: 3, price: 8700, quantity: 45 },
-    { id: 14, class: "Maserati", subclass: "228", drawing: "Blue", sort: 1, price: 7100, quantity: 45 },
-    { id: 15, class: "Hyundai", subclass: "Elantra", drawing: "Yellow", sort: 1, price: 9800, quantity: 45 },
-    { id: 16, class: "Mazda", subclass: "B-Series", drawing: "Turquoise", sort: 1, price: 0900, quantity: 45 },
-    { id: 17, class: "Acura", subclass: "RL", drawing: "Pink", sort: 1, price: 2300, quantity: 45 },
-    { id: 18, class: "Chevrolet", subclass: "2500", drawing: "Turquoise", sort: 2, price: 2600, quantity: 45 },
-    { id: 19, class: "Dodge", subclass: "Intrepid", drawing: "Aquamarine", sort: 3, price: 5400, quantity: 45 },
-    { id: 20, class: "Subaru", subclass: "Legacy", drawing: "Pink", sort: 2, price: 1100, quantity: 45 },
-    { id: 21, class: "Pontiac", subclass: "Firebird", drawing: "Indigo", sort: 1, price: 9800, quantity: 45 },
-    { id: 22, class: "Hummer", subclass: "H1", drawing: "Goldenrod", sort: 1, price: 4800, quantity: 45 },
-    { id: 23, class: "Chrysler", subclass: "Crossfire", drawing: "Goldenrod", sort: 3, price: 1100, quantity: 45 },
-    { id: 24, class: "Austin", subclass: "Mini Cooper", drawing: "Blue", sort: 1, price: 9300, quantity: 45 },
-    { id: 25, class: "Ford", subclass: "Crown Victoria", drawing: "Khaki", sort: 1, price: 9900, quantity: 45 },
-    { id: 26, class: "Infiniti", subclass: "Q", drawing: "Goldenrod", sort: 3, price: 5300, quantity: 45 },
-    { id: 27, class: "Suzuki", subclass: "Samurai", drawing: "Turquoise", sort: 3, price: 2600, quantity: 45 },
-    { id: 28, class: "Lincoln", subclass: "Town Car", drawing: "Teal", sort: 2, price: 8000, quantity: 45 },
-    { id: 29, class: "Dodge", subclass: "Dakota Club", drawing: "Yellow", sort: 1, price: 2900, quantity: 45 },
-    { id: 30, class: "Isuzu", subclass: "Trooper", drawing: "Purple", sort: 1, price: 9000, quantity: 45 },
-    { id: 31, class: "Chevrolet", subclass: "Venture", drawing: "Violet", sort: 2, price: 5100, quantity: 45 },
-    { id: 32, class: "Mercedes-Benz", subclass: "400E", drawing: "Red", sort: 3, price: 8200, quantity: 45 },
-    { id: 33, class: "Chrysler", subclass: "Pacifica", drawing: "Purple", sort: 2, price: 0500, quantity: 45 },
-    { id: 34, class: "Maybach", subclass: "62", drawing: "Khaki", sort: 3, price: 4700, quantity: 45 },
-    { id: 35, class: "Pontiac", subclass: "LeMans", drawing: "Mauv", sort: 2, price: 5500, quantity: 45 },
-    { id: 36, class: "Toyota", subclass: "Echo", drawing: "Maroon", sort: 2, price: 7300, quantity: 45 },
-    { id: 37, class: "GMC", subclass: "Yukon", drawing: "Maroon", sort: 2, price: 0800, quantity: 45 },
-    { id: 38, class: "Acura", subclass: "MDX", drawing: "Pink", sort: 3, price: 3500, quantity: 45 },
-    { id: 39, class: "GMC", subclass: "Suburban 2500", drawing: "Aquamarine", sort: 1, price: 9300, quantity: 45 },
-    { id: 40, class: "Hyundai", subclass: "XG350", drawing: "Orange", sort: 2, price: 8900, quantity: 45 },
-    { id: 41, class: "Ford", subclass: "Fusion", drawing: "Aquamarine", sort: 2, price: 4800, quantity: 45 },
-    { id: 42, class: "Toyota", subclass: "Celica", drawing: "Goldenrod", sort: 2, price: 1800, quantity: 45 },
-    { id: 43, class: "Kia", subclass: "Forte", drawing: "Violet", sort: 1, price: 8100, quantity: 45 },
-    { id: 44, class: "Plymouth", subclass: "Voyager", drawing: "Crimson", sort: 2, price: 3300, quantity: 45 },
-    { id: 45, class: "Mercedes-Benz", subclass: "SLK-Class", drawing: "Goldenrod", sort: 3, price: 2900, quantity: 45 },
-    { id: 46, class: "Chevrolet", subclass: "Express 1500", drawing: "Purple", sort: 1, price: 3300, quantity: 45 },
-    { id: 47, class: "Chrysler", subclass: "LHS", drawing: "Maroon", sort: 3, price: 8500, quantity: 45 },
-    { id: 48, class: "Maybach", subclass: "62", drawing: "Yellow", sort: 2, price: 7600, quantity: 45 },
-    { id: 49, class: "Lincoln", subclass: "LS", drawing: "Violet", sort: 1, price: 1500, quantity: 45 },
-    { id: 50, class: "BMW", subclass: "M3", drawing: "Pink", sort: 2, price: 7000, quantity: 45 },
-    { id: 51, class: "Mitsubishi", subclass: "Precis", drawing: "Maroon", sort: 2, price: 6800, quantity: 45 },
-    { id: 52, class: "Ford", subclass: "Mustang", drawing: "Teal", sort: 3, price: 0400, quantity: 45 },
-    { id: 53, class: "Mazda", subclass: "Protege", drawing: "Khaki", sort: 2, price: 0300, quantity: 45 },
-    { id: 54, class: "Chevrolet", subclass: "G-Series G10", drawing: "Khaki", sort: 2, price: 6600, quantity: 45 },
-    { id: 55, class: "Chevrolet", subclass: "Prizm", drawing: "Indigo", sort: 1, price: 9700, quantity: 45 },
-    { id: 56, class: "Dodge", subclass: "Ram 1500", drawing: "Green", sort: 3, price: 2800, quantity: 45 },
-    { id: 57, class: "Ford", subclass: "F150", drawing: "Teal", sort: 3, price: 8100, quantity: 45 },
-    { id: 58, class: "Mercedes-Benz", subclass: "300CE", drawing: "Turquoise", sort: 2, price: 2100, quantity: 45 },
-    { id: 59, class: "Aston Martin", subclass: "V12 Vantage", drawing: "Goldenrod", sort: 3, price: 0600, quantity: 45 },
-    { id: 60, class: "Nissan", subclass: "Sentra", drawing: "Blue", sort: 3, price: 8600, quantity: 45 },
-    { id: 61, class: "Suzuki", subclass: "SX4", drawing: "Red", sort: 1, price: 0100, quantity: 45 },
-    { id: 62, class: "Suzuki", subclass: "Kizashi", drawing: "Orange", sort: 2, price: 9800, quantity: 45 },
-    { id: 63, class: "Buick", subclass: "Century", drawing: "Crimson", sort: 2, price: 1700, quantity: 45 },
-    { id: 64, class: "Volkswagen", subclass: "GTI", drawing: "Blue", sort: 1, price: 2600, quantity: 45 },
-    { id: 65, class: "Chevrolet", subclass: "Camaro", drawing: "Yellow", sort: 3, price: 1300, quantity: 45 },
-    { id: 66, class: "Bentley", subclass: "Continental GT", drawing: "Maroon", sort: 3, price: 5600, quantity: 45 },
-    { id: 67, class: "Cadillac", subclass: "STS-V", drawing: "Red", sort: 2, price: 4100, quantity: 45 },
-    { id: 68, class: "Plymouth", subclass: "Breeze", drawing: "Violet", sort: 2, price: 6300, quantity: 45 },
-    { id: 69, class: "Ford", subclass: "GT", drawing: "Orange", sort: 3, price: 4200, quantity: 45 },
-    { id: 70, class: "Acura", subclass: "NSX", drawing: "Green", sort: 1, price: 6700, quantity: 45 },
-    { id: 71, class: "Chevrolet", subclass: "TrailBlazer", drawing: "Purple", sort: 2, price: 0800, quantity: 45 },
-    { id: 72, class: "Subaru", subclass: "Legacy", drawing: "Maroon", sort: 3, price: 6000, quantity: 45 },
-    { id: 73, class: "Hummer", subclass: "H2", drawing: "Yellow", sort: 3, price: 9300, quantity: 45 },
-    { id: 74, class: "Pontiac", subclass: "Solstice", drawing: "Teal", sort: 3, price: 5300, quantity: 45 },
-    { id: 75, class: "Suzuki", subclass: "SJ", drawing: "Fuscia", sort: 2, price: 2300, quantity: 45 },
-    { id: 76, class: "Toyota", subclass: "Sienna", drawing: "Pink", sort: 2, price: 2100, quantity: 45 },
-    { id: 77, class: "BMW", subclass: "X5 M", drawing: "Khaki", sort: 3, price: 6500, quantity: 45 },
-    { id: 78, class: "Ford", subclass: "Taurus", drawing: "Indigo", sort: 1, price: 9200, quantity: 45 },
-    { id: 79, class: "Volkswagen", subclass: "Cabriolet", drawing: "Yellow", sort: 1, price: 5100, quantity: 45 },
-    { id: 80, class: "Mercedes-Benz", subclass: "SL-Class", drawing: "Goldenrod", sort: 3, price: 3500, quantity: 45 },
-    { id: 81, class: "Spyker", subclass: "C8 Laviolette", drawing: "Maroon", sort: 2, price: 3200, quantity: 45 },
-    { id: 82, class: "Subaru", subclass: "Forester", drawing: "Green", sort: 2, price: 2200, quantity: 45 },
-    { id: 83, class: "Toyota", subclass: "Solara", drawing: "Mauv", sort: 3, price: 3100, quantity: 45 },
-    { id: 84, class: "Mitsubishi", subclass: "Lancer", drawing: "Blue", sort: 3, price: 4000, quantity: 45 },
-    { id: 85, class: "Mercedes-Benz", subclass: "GLK-Class", drawing: "Khaki", sort: 1, price: 6600, quantity: 45 },
-    { id: 86, class: "Mazda", subclass: "Mazdaspeed 3", drawing: "Aquamarine", sort: 1, price: 2800, quantity: 45 },
-    { id: 87, class: "Maybach", subclass: "62", drawing: "Teal", sort: 1, price: 0400, quantity: 45 },
-    { id: 88, class: "Plymouth", subclass: "Laser", drawing: "Red", sort: 3, price: 5900, quantity: 45 },
-    { id: 89, class: "Maybach", subclass: "57", drawing: "Violet", sort: 2, price: 9700, quantity: 45 },
-    { id: 90, class: "Acura", subclass: "Integra", drawing: "Blue", sort: 3, price: 5700, quantity: 45 },
-    { id: 91, class: "Toyota", subclass: "RAV4", drawing: "Green", sort: 3, price: 8000, quantity: 45 },
-    { id: 92, class: "Chevrolet", subclass: "Suburban 2500", drawing: "Turquoise", sort: 2, price: 2100, quantity: 45 },
-    { id: 93, class: "Land Rover", subclass: "Range Rover", drawing: "Teal", sort: 2, price: 3300, quantity: 45 },
-    { id: 94, class: "Lotus", subclass: "Elan", drawing: "Blue", sort: 2, price: 3200, quantity: 45 },
-    { id: 95, class: "BMW", subclass: "3 Series", drawing: "Fuscia", sort: 3, price: 9600, quantity: 45 },
-    { id: 96, class: "Dodge", subclass: "Neon", drawing: "Mauv", sort: 2, price: 0300, quantity: 45 },
-    { id: 97, class: "Audi", subclass: "A3", drawing: "Aquamarine", sort: 2, price: 4700, quantity: 45 },
-    { id: 98, class: "Chevrolet", subclass: "Impala", drawing: "Fuscia", sort: 2, price: 8400, quantity: 45 },
-    { id: 99, class: "Chevrolet", subclass: "Equinox", drawing: "Indigo", sort: 3, price: 6200, quantity: 45 },
-    { id: 100, class: "Acura", subclass: "RL", drawing: "Blue", sort: 1, price: 6300, quantity: 45 }
-]; 
-        
+    let drawings = products.map(product => product.drawing);
+    let uniq_drawings = [...new Set(drawings)];
 
-    </script>
-    <script src="/plugins/create_deal_events.js"></script>
-    <!-- jQuery -->
-    <script src="/plugins/jquery/jquery.min.js"></script>
-    <!-- Bootstrap 4 -->
-    <script src="/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <!-- Select2 -->
-    <script src="/plugins/select2/js/select2.full.min.js"></script>
-    <!-- DataTables -->
-    <script src="/plugins/datatables/jquery.dataTables.min.js"></script>
-    <script src="/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
-    <script src="/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
-    <script src="/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
-    <!-- AdminLTE App -->
-    <script src="/dist/js/adminlte.min.js"></script>
-    <!-- AdminLTE for demo purposes -->
-    <script src="/dist/js/demo.js"></script>
-    <!-- SweetAlert2 -->
+    const drawingAutoComplete = new autoComplete({
+      selector: "#drawingAutoComplete",
+      data: {
+        src: uniq_drawings,
+        cache: true,
+      },
+      resultItem: {
+        highlight: true,
+      },
+      resultsList: {
+        element: (list, data) => {
+          if (!data.results.length) {
+            const message = document.createElement("div");
+            message.setAttribute("class", "no_result");
+            message.innerHTML = `<span style="padding:10px;color:red">Не найдено результатов для "${data.query}"</span>`;
+            list.prepend(message);
+          }
+        },
+        noResults: true,
+      },
+      searchEngine: "loose",
+      events: {
+        input: {
+          selection: (event) => {
+            const selection = event.detail.selection.value;
+            drawingAutoComplete.input.value = selection;
 
-
-    <script>
-    $(function () {
-        $("#example1").DataTable({
-            "responsive": true,
-            "autoWidth": false,
-                "lengthMenu": [[5,10,20,50,100], [5,10,20,50,100, "All"]]
-        });
+          }
+        }
+      }
     });
-    </script>
+
+    let overall_codes = products.map(product=> product.overall_code);
+
+    const codeAutoComplete = new autoComplete({
+      selector: "#codeAutoComplete",
+      data: {
+        src: overall_codes,
+        cache: true,
+      },
+      resultItem: {
+        highlight: true,
+      },
+      resultsList: {
+        element: (list, data) => {
+            if (!data.results.length) {
+                const message = document.createElement("div");
+                message.setAttribute("class", "no_result");
+                message.innerHTML = `<span style="padding:10px;color:red">Не найдено результатов для "${data.query}"</span>`;
+                list.prepend(message);
+            }
+        },
+        noResults: true,
+      },
+      searchEngine: "strict",
+      events: {
+        input: {
+            selection: (event) => {
+                const selection = event.detail.selection.value;
+                codeAutoComplete.input.value = selection;
+
+                const selected_name = document.getElementById('nameAutoComplete').value;
+                const selected_drawing = document.getElementById('drawingAutoComplete').value;
+                const selected_sort = document.getElementById('sort').value;
+                const selected_service = document.getElementById('service').value;    
+                products.map(product =>
+                {
+                    if( codeAutoComplete.input.value == product.overall_code)
+                    {
+                        document.getElementById('nameAutoComplete').value = product.product_name;
+                        document.getElementById('drawingAutoComplete').value = product.drawing;
+                        document.getElementById('sort').value = product.sort;
+                        if(product.AdditionalServiceId == null)
+                        {
+                            document.getElementById('service').value = '0';
+                        }
+                        else
+                        {
+                            document.getElementById('service').value = product.AdditionalServiceId;
+                        }
+                    
+                    }
+                })
+            }
+        }
+    }
+    });
+
+  }
+
+  getProducts();
+</script>
+
+<script>
+  var selected_name = document.getElementById('nameAutoComplete');
+  var selected_drawing = document.getElementById('drawingAutoComplete');
+  var selected_sort = document.getElementById('sort');
+  var selected_service = document.getElementById('service');    
+  
+
+  const getProduct = async () => {
+    const response = await fetch('/product/product-search');
+    products = await response.json();
+    let service = selected_service.value == 0 ? null : selected_service.value;
+    var find = false;
+    var searching_product_id;
+    var searching_product_code;
+
+  
+    for(let i=0; i<products.length; i++)
+    {
+      if(selected_name.value == products[i].product_name) 
+      {
+        if(selected_drawing.value == products[i].drawing) 
+        { 
+          if(selected_sort.value == products[i].sort)
+          {
+            if(service == products[i].AdditionalServiceId)
+            {
+              find = true;
+              searching_product_id = products[i].id;
+              searching_product_code = products[i].overall_code;
+
+            }
+          }
+        }          
+      }
+    }
+  
+    if(find)
+    {
+      console.log('Yes you found it!');
+      document.getElementById('codeAutoComplete').value = searching_product_code;
+      document.getElementById('error_message').innerHTML ='';
+    }
+    else
+    {
+      console.log('No you dont found');
+      document.getElementById('codeAutoComplete').value = '';
+      document.getElementById('error_message').innerHTML = 
+      `
+      <div class="alert alert-danger alert-dismissible fade show">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <span> Товар не найден, проверьте введенную информацию еще раз! </span>
+      </div>
+      `;
+    }
+
+    
+
+  }
+
+  selected_drawing.addEventListener('input', () => getProduct());
+  selected_sort.addEventListener('input', () => getProduct());
+  selected_service.addEventListener('change', () => getProduct());
+  selected_name.addEventListener('input', () => getProduct());
+
+
+
+</script>
+
+
