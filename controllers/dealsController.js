@@ -24,7 +24,7 @@ router.get('/deals-history',(req,res)=>{
     
  
       
-    Deal.findAll({include: {model:Client, as:'Client'},where:{status:1}})
+    Deal.findAll({include: {model:Client, as:'Client'}})
     .then(deals=>
         
     res.render('partials/deals/deals_history',{deals})

@@ -18,33 +18,30 @@
         <div class="container-fluid">
             <div class="row mb-3">
                 <div class="col-3">
-                    <a href="" class="btn btn-success"><i class="fa fa-file-contract"></i>  Новая Сделка</a>
+                    <a href="/client/create-deal/{{client.id}}" class="btn btn-success"><i class="fa fa-file-contract"></i>  Новая Сделка</a>
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-3">
                     <div class="card">
                         <div class="card-body box-profile">
-                            {{#each clients}}
-                                <h3 class="profile-username font-weight-bold">{{full_name}} 
-                                    <a href="/client/client-edit/{{id}}" class="float-right"><i class="fa fa-edit"></i></a>
-                                </h3>
-                                
-                                <ul class="list-group list-group-unbordered mb-3">
-                                    <li class="list-group-item">
-                                        <b>Телефон:</b> <span class="float-right">{{phone_number}}</span>
-                                    </li>
-                                    <li class="list-group-item" style="border-bottom: none;">
-                                        <b>Компания:</b> <span class="float-right">{{company}}</span>
-                                    </li>
-                                    <li class="list-group-item" style="border-bottom: none;">
-                                        <b>Долг:</b> <span class="float-right text-danger">{{currencyFormat balance}} UZS </span>
-                                    </li>
-                                    <li class="list-group-item">
-                                        <b>Предоплата:</b> <span class="float-right text-success">{{currencyFormat balance}} UZS </span>
-                                    </li>
-                                </ul>
-                            {{/each }}
+                            <h3 class="profile-username font-weight-bold">{{client.full_name}} 
+                                <a href="/client/client-edit/{{client.id}}" class="float-right"><i class="fa fa-edit"></i></a>
+                            </h3>
+                            <ul class="list-group list-group-unbordered mb-3">
+                                <li class="list-group-item">
+                                    <b>Телефон:</b> <span class="float-right">{{client.phone_number}}</span>
+                                </li>
+                                <li class="list-group-item" style="border-bottom: none;">
+                                    <b>Компания:</b> <span class="float-right">{{client.company}}</span>
+                                </li>
+                                <li class="list-group-item" style="border-bottom: none;">
+                                    <b>Долг:</b> <span class="float-right text-danger">{{currencyFormat client.balance}} UZS </span>
+                                </li>
+                                <li class="list-group-item">
+                                    <b>Предоплата:</b> <span class="float-right text-success">{{currencyFormat client.balance}} UZS </span>
+                                </li>
+                            </ul>
                         </div>
                     </div>
                     <div class="card">
@@ -58,21 +55,13 @@
                             
                             <strong><i class="fas fa-donate mr-1"></i> Общая Стоимость Сделок</strong>
                             <p class="text-muted">
-                                {{#if overal_deals_cost}}
-                                {{currencyFormat overal_deals_cost}} UZS
-                                {{else}}
-                                0 
-                                {{/if}}
+                                {{overall_deals_price}} UZS
                             </p>
                             <hr>
 
                             <strong><i class="fas fa-calendar-check mr-1"></i> Последняя Сделка</strong>
                             <p class="text-muted">
-                                {{#if last_deal_date }}
-                                {{formatTime last_deal_date "YYYY-MM-DD"}}
-                                {{else}}
-                                {{last_deal_date_none}}
-                                {{/if}}
+                                {{last_deal_at}}
                             </p>
                         </div>
                     </div>
@@ -80,67 +69,67 @@
                 
                 <div class="col-md-9">
                     <div class="card">
-                                <div class="card-header">
-                                    <h3 class="card-title">Сделки</h3>
-                                </div>
-                                <div class="card-body">
-                                    <div class="table-responsive">
-                                        <table id="dealsTable"  class="table table-bordered table-striped">
-                                            <thead>
-                                                <tr>
-                                                    <th>Дата</th>
-                                                    <th>Общая Цена</th>
-                                                    <th>Скидка</th>
-                                                    <th>К Оплате</th>
-                                                    <th>Оплачено</th>
-                                                    <th>Долг</th>
-                                                    <th>Подробнее</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {{#each client_deals}}
-                                                <tr>
-                                                    <td>{{formatTime deal_date "YYYY-MM-DD"}}</td>
-                                                    
-                                                    {{#if fixed_price}}
-                                                        <td>{{currencyFormat fixed_price}}</td>
-                                                    {{else}}
-                                                        <td>0</td>
-                                                    {{/if}}
+                        <div class="card-header">
+                            <h3 class="card-title">Сделки</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table id="dealsTable"  class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Дата</th>
+                                            <th>Общая Цена</th>
+                                            <th>Скидка</th>
+                                            <th>К Оплате</th>
+                                            <th>Оплачено</th>
+                                            <th>Долг</th>
+                                            <th>Подробнее</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {{#each deals}}
+                                        <tr>
+                                            <td>{{formatTime deal_date "YYYY-MM-DD"}}</td>
+                                            
+                                            {{#if fixed_price}}
+                                                <td>{{currencyFormat fixed_price}}</td>
+                                            {{else}}
+                                                <td>0</td>
+                                            {{/if}}
 
-                                                    {{#if cash_discount}}
-                                                        <td>{{currencyFormat cash_discount}}</td>
-                                                    {{else}}
-                                                        <td>0</td>
-                                                    {{/if}}
-                                                    
-                                                    {{#if final_price}}
-                                                        <td>{{currencyFormat final_price}}</td>
-                                                    {{else}}
-                                                        <td>0</td>
-                                                    {{/if}}
+                                            {{#if cash_discount}}
+                                                <td>{{currencyFormat cash_discount}}</td>
+                                            {{else}}
+                                                <td>0</td>
+                                            {{/if}}
+                                            
+                                            {{#if final_price}}
+                                                <td>{{currencyFormat final_price}}</td>
+                                            {{else}}
+                                                <td>0</td>
+                                            {{/if}}
 
-                                                    {{#if paid_cash}}
-                                                    <td class="text-success text-bold">{{currencyFormat paid_cash}}</td>
-                                                    {{else}}
-                                                    <td>0</td>
-                                                    {{/if}}
+                                            {{#if paid_cash}}
+                                            <td class="text-success text-bold">{{currencyFormat paid_cash}}</td>
+                                            {{else}}
+                                            <td>0</td>
+                                            {{/if}}
 
-                                                    {{#if final_price}}
-                                                    <td class="text-danger text-bold">{{currencyFormat (math  final_price "-" paid_cash)}}</td>
-                                                    {{else}}
-                                                    <td>0</td>
-                                                    {{/if}}
-                                                    
-                                                    <td>
-                                                        <a href="/client/client-deal-detail/{{id}}"  class="btn btn-primary">Подробнее</a>
-                                                    </td>
-                                                </tr>
-                                                {{/each }}
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
+                                            {{#if final_price}}
+                                            <td class="text-danger text-bold">{{currencyFormat (math  final_price "-" paid_cash)}}</td>
+                                            {{else}}
+                                            <td>0</td>
+                                            {{/if}}
+                                            
+                                            <td>
+                                                <a href="/client/client-deal-detail/{{id}}"  class="btn btn-primary">Подробнее</a>
+                                            </td>
+                                        </tr>
+                                        {{/each }}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

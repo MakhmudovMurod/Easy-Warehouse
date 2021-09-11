@@ -170,7 +170,7 @@ router.post('/client-edit/:id',
 
         if(!errors.isEmpty())
         {
-            return res.render('partials/clients/client_edit',{error,req_values});
+            return res.render('partials/clients/client_edit',{error,req_values,client});
         }
         else
         {
@@ -254,251 +254,47 @@ router.post('/client-edit/:id',
                 return res.redirect('/client/client-profile/'+ req.params.id);
             }
         }
-        
     })
     .catch(err=>console.log(err));
 });
-
 
 // CLIENT PROFILE PAGE
 router.get('/client-profile/:id', (req,res)=>{
-
-    /* Note: in here [req.params.id] is the CLIENT ID */
-
     Promise.all([
-        Client.findOne({attributes:['balance'],where:{id:req.params.id}}),
-        Deal.findAll({attributes:['id','final_price','paid_cash'],where:{ClientId:req.params.id,status:1}}),
-        Deal.count({where:{ClientId:req.params.id,status:1}}),
-      ])
-      .then(data=>{
-          var balance = data[0].balance;
-          var client_deals = data[1];
-          var client_deal_number = data[2];     
-          
-  
-          if(balance === 0)
-          {
-              for(i=0;i<client_deal_number; i++)
-              {   
-                  var final_price = client_deals[i].final_price;
-                  var deal_id = client_deals[i].id;
-                  Deal.update({
-                      paid_cash:final_price
-                  },{where:{ClientId:req.params.id,id:deal_id}})
-              }    
-          }
-      })
-   
-    Promise.all([
-        /* [0] */   Client.findAll({limit:1,where:{id:req.params.id}}),
-        /* [1] */   Deal.count({where:{ClientId:req.params.id,status:1}}),
-        /* [2] */   Deal.sum('final_price',{where:{'ClientId':req.params.id}}),
-        /* [3] */   Deal.findOne({
-                                  attributes:['deal_date'],
-                                  order: [['deal_date', 'DESC']], 
-                                  where:{ClientId:req.params.id,status:1}
-                                }),
-        /* [4] */   Deal.findAll({where:{ClientId:req.params.id,status:1}}),
-        /* [5] */   Product.findAll(),
-        // /* [6] */   Problematic_sold_product
+        Client.findAll({limit:1,where:{id:req.params.id}}),
+        Deal.findAll({where:{ClientId:req.params.id}}),
+        Deal.count({where:{ClientId:req.params.id}}),
+        Deal.sum('final_price',{where:{ClientId:req.params.id}}),
+        Deal.findAll({limit:1,order:[['deal_date', 'DESC']],where:{ClientId:req.params.id}})
     ])
-    .then(data =>{
-        var clients = data[0];
-        if( data[3])
-        {   var last_deal_date = data[3].deal_date;
-            var deals_number = data[1];
-            var overal_deals_cost = data[2];
-        }
-        else
-        {   var last_deal_date_none = "пока нет сделок";
-            var deals_number = "пока нет сделок";
-            var overal_deals_cost = "пока нет сделок";
-        }
-        var client_deals = data[4];
-        var products = data[5];
+    .then(data=>{
+        const client = data[0][0];
+        const deals = data[1];
+        const deals_number = data[2];
+        const overall_deals_price = Number.isNaN(data[3]) ? 0 : data[3];
+        // const last_deal_at = data[4][0].deal_date == null ? 'пока нет сделок' : data[4][0].deal_date;
+        const last_deal_at ='пока нет сделок';
+
         
-        res.render('partials/clients/client_profile',{clients,deals_number,overal_deals_cost,last_deal_date,
-                                                        last_deal_date_none,client_deals,products,});
-    })        
-    .catch(err => console.log(err));
+
+        return res.render('partials/clients/client_profile',{client,deals,deals_number,overall_deals_price,last_deal_at});
+    })
+    .catch(error=>console.log(error));
 });
 
 // CREATE NEW DEAL PAGE
-router.get('/client-deal/:id',(req,res)=>{
-    
-    /* Note: in here [req.params.id] is the CLIENT ID */
-    
-
-
+router.get('/create-deal/:id',(req,res)=>{
     Promise.all([
-        Deal.findOne({attributes:['status','id'], order:[['createdAt','DESC']]}),
-        Deal.findOne({attributes:['id','status'], where:{status:0}}),
-                
-    ])
-    .then(ob=>{
-
         
-        if(ob !== null)
-        {
-            var status = ob[0].status;
-            var last_deal_id = ob[0].id;
-            
-            var status_2 = ob[1].status;
-            var deal_id_2 = ob[1].id;
-
-            console.log(last_deal_id);
-            
-
-            if(status == 0)
-            {   
-                
-                Deal.update({
-                    ClientId:req.params.id,
-                },{where:{id:last_deal_id}})
-            }
-            if(status_2 == 0)
-            {
-                Deal.update({
-                    ClientId:req.params.id,
-                },{where:{id:deal_id_2}})
-            }
-
-            if(status == 1)
-            {
-                Deal.create({
-                    ClientId:req.params.id,
-                })
-            }
-        }
-        
-    })
-    .catch(err=>console.log(err));
-    
-            
-    Promise.all([
-        Deal.create({Client:req.params.id}),
-        Product.findAll({}),
-        Deal.findOne({attributes:['id'],order: [['createdAt', 'DESC']]}),
-        Product.findAll({where:{'available_quantity':{[Op.gt]:0}}}),
-        Product.count({where:{'available_quantity':{[Op.gt]:0}}}),
-        Product.findAll({where:{'available_quantity':{[Op.gt]:0}}}),
     ])
-
     .then(data=>{
-        var products = data[1];
-        var deal_id = data[2].id;
-        var available_products = data[3];
-        var product_number = data[4];
-
-        var arr = [];
-        
-        for(i=0; i<product_number; i++)
-        {
-            arr.push
-            ({ 
-                id: data[5][i].id, 
-                class:data[5][i].product_class,
-                subclass:data[5][i].prduct_subclass, 
-                drawing:data[5][i].drawing, 
-                sort:data[5][i].sort, 
-                price:data[5][i].price,
-                quantity:data[5][i].available_quantity, 
-            })
-        }
-
-
-
-        
-        res.render('partials/clients/create_deal',{products,deal_id,available_products,
-        product_number,
-        arr});
+        return res.render('partials/clients/create_deal')
     })
-    .catch(err=>console.log(err));
+    .catch(error=>console.log(error));
 });
-router.post('/client-deal/:id',(req,res)=>{
+router.post('/create-deal/:id',(req,res)=>{
 
-    /* Note: in here [req.params.id] is the Deal ID */
-    
-
-    var array = req.body.product_id;
-    var sold_products_number = array.length;
-    var isArray = Array.isArray(array);
-
-
-
-    for(i=0;i<sold_products_number; i++)
-    {
-        if(sold_products_number > 1)
-            {
-                Sold_product.create({
-                    DealId:req.params.id,
-                    ProductId:req.body.product_id[i],
-                // product:price
-                    sold_quantity:req.body.product_quantity[i],
-                    overall_sold_cost:req.body.total[i],
-                })
-                Product.decrement('available_quantity',
-                                {
-                                    by: req.body.product_quantity[i],
-                                    where:{id:req.body.product_id[i]}
-                                })
-        }
-    }
-    
-    if(isArray===false)
-    {
-        Sold_product.create({
-            DealId:req.params.id,
-            ProductId:req.body.product_id,
-        // product:price
-            sold_quantity:req.body.product_quantity,
-            overall_sold_cost:req.body.total,
-        })
-        Product.decrement('available_quantity',
-                        {
-                            by: req.body.product_quantity,
-                            where:{id:req.body.product_id}
-                        })
-    }
-
-    
-    Deal.update({
-        fixed_price:req.body.deal_fixed_price,
-        total_additional_price:0,
-        cash_discount:req.body.deal_cash_discount,
-        final_price:req.body.deal_final_price,
-        deal_date:req.body.create_deal_date,
-        paid_cash:req.body.deal_paid_cash,
-        status:1
-        
-    },{where:{id:req.params.id}})
-
-    var balance_difference = req.body.deal_final_price - req.body.deal_paid_cash; 
-    
-    Promise.all([
-        Deal.findOne({attributes:['ClientId'],order: [['createdAt', 'DESC']],where:{id:req.params.id}}),
-    ])
-    .then(ob=>{
-            
-        var client_id = ob[0].ClientId;
-
-        Client.decrement('balance',
-                            {
-                                by:balance_difference,
-                                where:{id:client_id}, 
-                            })
-
-    })
-
-    
-    
-    .then(
-        
-        res.redirect('/client/client-list/')
-    )
-    .catch(err=>console.log(err));
-
-})
+});
 
 // DEAL DETAIL PAGE
 router.get('/client-deal-detail/:id',(req,res)=>{

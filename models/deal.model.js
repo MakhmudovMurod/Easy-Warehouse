@@ -7,11 +7,7 @@ const Deal = sequelize.define('Deal', {
         type:DataTypes.BIGINT
     },
 
-    total_additional_price:{
-        type:DataTypes.BIGINT
-    },
-
-    cash_discount:{
+    overall_discount:{
         type:DataTypes.INTEGER,
         defaultValue:0,
     },
@@ -20,19 +16,14 @@ const Deal = sequelize.define('Deal', {
         type:DataTypes.BIGINT
     },
 
-    deal_date:{
-        type:DataTypes.DATE,
-    },
-
     paid_cash:{
         type:DataTypes.BIGINT
     },
 
-    status:{
-        type:DataTypes.BOOLEAN,
-        defaultValue:false,
+    deal_date:{
+        type:DataTypes.DATE,
     },
-
+    
     createdAt:{
         type:DataTypes.DATE
     },
